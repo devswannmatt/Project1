@@ -5,6 +5,7 @@ html
     link(rel='stylesheet', href='/styles.css')
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css')
     link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css')
+    link(rel='stylesheet', href='https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap')
   body
     nav.navbar.navbar-expand-lg.navbar-light.bg-light
       a.navbar-brand(href='/') MyPages
@@ -14,9 +15,10 @@ html
         ul.navbar-nav.mr-auto
           li.nav-item
             a.nav-link(href='/') Home
-          li.nav-item
-            a.nav-link(href='/add') Add Page
           each page in pages
             li.nav-item
               a.nav-link(href=`/page/${page._id}`) #{page.title}
+        ul.navbar-nav.ml-auto
+          li.nav-item
+            a.nav-link(href='/add') Add Page
     .container.mt-5

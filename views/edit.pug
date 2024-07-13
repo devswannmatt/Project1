@@ -9,9 +9,10 @@ form(action=`/edit/${page._id}`, method='POST')
     label(for='content') Content:
     textarea.form-control(id='content', name='content', rows='5', required)= page.content
   div.form-group
-    button.btn.btn-success(type='submit') Save Changes
+    button.btn.btn-success(type='submit')
+      i.fa.fa-save
 a(href='/')
   button.btn.btn-secondary(type='button').btn-back
-    i.fa.fa-arrow-left Back to list
+    i.fa.fa-arrow-left
 
 include partials/footer

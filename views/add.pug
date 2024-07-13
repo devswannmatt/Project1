@@ -9,9 +9,10 @@ form(action='/add', method='POST')
     label(for='content') Content:
     textarea.form-control(id='content', name='content', rows='5', required)
   div.form-group
-    button.btn.btn-success(type='submit') Add Page
+    button.btn.btn-success(type='submit')
+      i.fa.fa-plus
 a(href='/')
   button.btn.btn-secondary(type='button').btn-back
-    i.fa.fa-arrow-left Back to list
+    i.fa.fa-arrow-left
 
 include partials/footer
