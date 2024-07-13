@@ -1,0 +1,16 @@
+include partials/header
+
+h1 Pages
+ul.list-group
+  each page in pages
+    li.list-group-item.d-flex.justify-content-between.align-items-center
+      a(href=`/page/${page._id}`) #{page.title}
+      .button-bar
+        form(action=`/delete/${page._id}`, method='POST', class='mr-2')
+          button.btn.btn-danger(type='submit')
+            i.fa.fa-trash Delete
+        a(href=`/edit/${page._id}`)
+          button.btn.btn-primary(type='button').btn-edit
+            i.fa.fa-edit Edit
+
+include partials/footer
