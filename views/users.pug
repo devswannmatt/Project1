@@ -1,0 +1,28 @@
+include partials/header
+
+h1 Registered Users
+table.table.table-striped
+  thead
+    tr
+      th First Name
+      th Last Name
+      th Email
+      th Role
+      th Actions
+  tbody
+    each user in users
+      tr
+        form(action='/users/role', method='POST', class='form-inline')
+          input(type='hidden', name='userId', value=user._id)
+          td= user.firstName
+          td= user.lastName
+          td= user.email
+          td
+            select.form-control(name='role')
+              each role in roles
+                option(value=role.name selected=user.role === role.name)= role.name
+          td
+            button.btn.btn-primary(type='submit')
+              i.fa.fa-save
+
+include partials/footer

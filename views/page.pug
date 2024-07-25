@@ -2,15 +2,5 @@ include partials/header
 
 h1= page.title
 p= page.content
-.button-bar
-  form(action=`/delete/${page._id}`, method='POST', class='mr-2')
-    button.btn.btn-danger(type='submit')
-      i.fa.fa-trash
-  a(href=`/edit/${page._id}`)
-    button.btn.btn-primary(type='button').btn-edit
-      i.fa.fa-edit
-  a(href='/')
-    button.btn.btn-secondary(type='button').btn-back
-      i.fa.fa-arrow-left
 
 include partials/footer

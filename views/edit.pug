@@ -7,12 +7,9 @@ form(action=`/edit/${page._id}`, method='POST')
     input.form-control(type='text', id='title', name='title', value=page.title, required)
   div.form-group
     label(for='content') Content:
-    textarea.form-control(id='content', name='content', rows='5', required)= page.content
+    textarea.form-control(id='content', name='content', required)= page.content
   div.form-group
     button.btn.btn-success(type='submit')
       i.fa.fa-save
-a(href='/')
-  button.btn.btn-secondary(type='button').btn-back
-    i.fa.fa-arrow-left
 
 include partials/footer

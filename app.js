@@ -1,20 +1,68 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-const { Page, connectDB } = require('./models');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const { Page, Log, User, Role, connectDB } = require('./models');
 const app = express();
 const port = 3000;
+
+const pagesRouter = require('./routes/pages');
+const usersRouter = require('./routes/users');
+const rolesRouter = require('./routes/roles');
+const logsRouter = require('./routes/logs');
+const authRouter = require('./routes/auth');
+const accountRouter = require('./routes/account');
+const { ensureAuthenticated, ensureAdmin } = require('./middleware/auth');
 
 connectDB();
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-// Middleware to parse the body of POST requests
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({
+  secret: 'b77f0fb7aba13547f30493569980c924ab18111a5ce0ed09507c135330216e1647fde3ec4f2e351f26845ccac08c24cc25f36d482d1a198ff46a65e5021d8e9d', // Use the generated secret key
+  resave: false,
+  saveUninitialized: false,
+  store: MongoStore.create({ mongoUrl: 'mongodb://127.0.0.1:27017/config' })
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStrategy(async (username, password, done) => {
+  try {
+    const user = await User.findOne({ username });
+    if (!user) {
+      return done(null, false, { message: 'Incorrect username.' });
+    }
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) {
+      return done(null, false, { message: 'Incorrect password.' });
+    }
+    return done(null, user);
+  } catch (err) {
+    return done(err);
+  }
+}));
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
+});
 
 // Middleware to fetch pages for navigation
 app.use(async (req, res, next) => {
@@ -26,80 +74,18 @@ app.use(async (req, res, next) => {
   }
 });
 
-app.get('/', async (req, res) => {
-  try {
-    const pages = await Page.find();
-    res.render('index', { title: 'Pages', pages });
-  } catch (error) {
-    console.error('Error fetching pages:', error);
-    res.status(500).send('Internal Server Error');
-  }
+// Middleware to make user available in templates
+app.use((req, res, next) => {
+  res.locals.user = req.user;
+  next();
 });
 
-app.get('/page/:id', async (req, res) => {
-  try {
-    const page = await Page.findById(req.params.id);
-    if (page) {
-      res.render('page', { title: page.title, page });
-    } else {
-      res.status(404).send('Page not found');
-    }
-  } catch (error) {
-    console.error('Error fetching page:', error);
-    res.status(500).send('Internal Server Error');
-  }
-});
-
-app.get('/add', (req, res) => {
-  res.render('add', { title: 'Add Page' });
-});
-
-app.post('/add', async (req, res) => {
-  try {
-    const { title, content } = req.body;
-    const page = new Page({ title, content });
-    await page.save();
-    res.redirect('/');
-  } catch (error) {
-    console.error('Error adding page:', error);
-    res.status(500).send('Internal Server Error');
-  }
-});
-
-app.get('/edit/:id', async (req, res) => {
-  try {
-    const page = await Page.findById(req.params.id);
-    if (page) {
-      res.render('edit', { title: 'Edit Page', page });
-    } else {
-      res.status(404).send('Page not found');
-    }
-  } catch (error) {
-    console.error('Error fetching page for edit:', error);
-    res.status(500).send('Internal Server Error');
-  }
-});
-
-app.post('/edit/:id', async (req, res) => {
-  try {
-    const { title, content } = req.body;
-    await Page.findByIdAndUpdate(req.params.id, { title, content });
-    res.redirect(`/page/${req.params.id}`);
-  } catch (error) {
-    console.error('Error updating page:', error);
-    res.status(500).send('Internal Server Error');
-  }
-});
-
-app.post('/delete/:id', async (req, res) => {
-  try {
-    await Page.findByIdAndDelete(req.params.id);
-    res.redirect('/');
-  } catch (error) {
-    console.error('Error deleting page:', error);
-    res.status(500).send('Internal Server Error');
-  }
-});
+app.use('/', pagesRouter);
+app.use('/', usersRouter);
+app.use('/', rolesRouter);
+app.use('/', logsRouter);
+app.use('/', authRouter);
+app.use('/', accountRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

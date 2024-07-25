@@ -1,0 +1,15 @@
+include partials/header
+
+h1 Logs
+table.table.table-striped
+  thead
+    tr
+      th Timestamp
+      th Message
+  tbody
+    each log in logs
+      tr
+        td= log.timestamp.toISOString()
+        td= log.message
+
+include partials/footer

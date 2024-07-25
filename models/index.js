@@ -1,27 +1,15 @@
 const mongoose = require('mongoose');
+const Page = require('./page');
+const Log = require('./log');
+const User = require('./user');
+const Role = require('./role');
 
 const connectDB = async () => {
-  console.log('Attempting to Connect MongoDB')
-  try {
-    await mongoose.connect('mongodb://127.0.0.1:27017/config');
-    console.log('MongoDB connected successfully');
-  } catch (error) {
-    console.error('MongoDB connection error:', error);
-    process.exit(1);
-  }
+  await mongoose.connect('mongodb://127.0.0.1:27017/config', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
+  console.log('MongoDB connected');
 };
 
-const PageSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-  },
-  content: {
-    type: String,
-    required: true,
-  },
-});
-
-const Page = mongoose.model('Page', PageSchema);
-
-module.exports = { Page, connectDB };
+module.exports = { Page, Log, User, Role, connectDB };

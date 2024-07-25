@@ -1,0 +1,47 @@
+include partials/header
+
+h1 Manage Roles
+if error
+  div.alert.alert-danger(id="error-alert")= error
+table.table.table-striped
+  thead
+    tr
+      th Role Name
+  tbody
+    each role in roles
+      tr
+        td
+          form(action='/roles/edit', method='POST', class='form-inline', style='display: inline;')
+            input(type='hidden', name='roleId', value=role._id)
+            input.form-control(type='text', name='name', value=role.name, required, readonly=role.name === 'admin')
+            if role.name !== 'admin'
+              button.btn.btn-primary(type='submit')
+                i.fa.fa-edit
+          if role.name !== 'admin'
+            form(action='/roles/delete', method='POST', class='form-inline', style='display: inline; margin-left: 10px;')
+              input(type='hidden', name='roleId', value=role._id)
+              button.btn.btn-danger(type='submit')
+                i.fa.fa-trash
+    tr
+      td
+        form(action='/roles', method='POST', class='form-inline', style='display: inline;')
+          input.form-control(type='text', id='name', name='name', placeholder='New Role Name', required)
+          button.btn.btn-success(type='submit')
+            i.fa.fa-plus
+
+include partials/footer
+
+script.
+  document.addEventListener("DOMContentLoaded", function() {
+    const alertBox = document.getElementById('error-alert');
+    if (alertBox) {
+      alertBox.classList.add('alert-show');
+      setTimeout(() => {
+        alertBox.classList.remove('alert-show');
+        alertBox.classList.add('alert-hide');
+        setTimeout(() => {
+          alertBox.style.display = 'none';
+        }, 500); // Matches the transition duration
+      }, 5000); // 5 seconds display
+    }
+  });

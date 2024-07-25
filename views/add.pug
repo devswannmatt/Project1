@@ -1,18 +1,15 @@
 include partials/header
 
-h1 Add a new page
+h1 Add Page
 form(action='/add', method='POST')
   div.form-group
     label(for='title') Title:
     input.form-control(type='text', id='title', name='title', required)
   div.form-group
     label(for='content') Content:
-    textarea.form-control(id='content', name='content', rows='5', required)
+    textarea.form-control(id='content', name='content', required)
   div.form-group
     button.btn.btn-success(type='submit')
       i.fa.fa-plus
-a(href='/')
-  button.btn.btn-secondary(type='button').btn-back
-    i.fa.fa-arrow-left
 
 include partials/footer
