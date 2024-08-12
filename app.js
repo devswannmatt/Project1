@@ -4,10 +4,12 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const passport = require('passport');
+const flash = require('connect-flash');  // Import connect-flash
 const LocalStrategy = require('passport-local').Strategy;
 const { Page, Log, User, Role, connectDB } = require('./models');
 const app = express();
 const port = 3000;
+const populateNavData = require('./middleware/populateNavData');
 
 const pagesRouter = require('./routes/pages');
 const usersRouter = require('./routes/users');
@@ -24,6 +26,12 @@ app.set('view engine', 'pug');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Populate navigation data middleware
+app.use(populateNavData);  // Use the middleware for every request
+
+// Connect flash middleware
+app.use(flash());  // Use connect-flash
 
 app.use(session({
   secret: 'b77f0fb7aba13547f30493569980c924ab18111a5ce0ed09507c135330216e1647fde3ec4f2e351f26845ccac08c24cc25f36d482d1a198ff46a65e5021d8e9d', // Use the generated secret key
@@ -67,6 +75,10 @@ passport.deserializeUser(async (id, done) => {
 // Middleware to fetch pages for navigation
 app.use(async (req, res, next) => {
   try {
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error_msg = req.flash('error_msg');
+    res.locals.error = req.flash('error');
+    res.locals.user = req.user || null;  // Make the user object available in templates
     res.locals.pages = await Page.find();
     next();
   } catch (error) {

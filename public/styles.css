@@ -6,17 +6,16 @@ body {
   position: relative; /* Ensures the alert is positioned relative to the viewport */
 }
 
-.navbar {
-  margin-bottom: 20px;
-}
-
 .container {
   max-width: 900px;
-  margin: 20px auto;
+  margin: auto;
   padding: 20px;
-  background-color: #e0f7fa; /* Light cyan background */
-  border-radius: 8px;
+  background-color: #ffb3b3;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.pull-right {
+  float: right;
 }
 
 h1, h2, h3 {
@@ -90,12 +89,35 @@ button[type="submit"]:active, .btn-primary:active {
   border-color: #1e7e34;
 }
 
+.navbar {
+  margin-bottom: 20px;
+}
+
 .navbar-light .navbar-brand, .navbar-light .navbar-nav .nav-link {
   color: #4682b4;
 }
 
 .navbar-light .navbar-nav .nav-link:hover {
   color: #315f7d;
+}
+
+.navbar-nav .dropdown:hover > .dropdown-menu {
+  display: block;
+}
+
+.navbar-nav .dropdown:hover > .nav-link {
+  background-color: #e9ecef; /* Optional: change background color on hover */
+}
+
+.dropdown-menu {
+  display: none;
+  margin-top: 0; /* Adjusts the spacing of the dropdown */
+  transition: visibility 0.2s, opacity 0.2s linear;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+  opacity: 1;
 }
 
 .form-group label {

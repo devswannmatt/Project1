@@ -1,18 +1,19 @@
 include partials/header
 
 h1 Account Management
-form(action='/account', method='POST')
-  div.form-group
-    label(for='firstName') First Name:
-    input.form-control(type='text', id='firstName', name='firstName', value=user.firstName)
-  div.form-group
-    label(for='lastName') Last Name:
-    input.form-control(type='text', id='lastName', name='lastName', value=user.lastName)
-  div.form-group
-    label(for='email') Email:
-    input.form-control(type='email', id='email', name='email', value=user.email, required)
-  div.form-group
-    button.btn.btn-success(type='submit')
-      i.fa.fa-save
+form(action='/account', method='POST' id='accountForm')
+  +formInput('firstName', 'text', 'First Name', user.firstName, true)
+  +formInput('lastName', 'text', 'Last Name', user.lastName, true)
+  +formInput('email', 'email', 'Email Address', user.email, true)
+  +formInput('facebook', 'url', 'Facebook Profile URL', user.facebook, false)
+
+  // Using the multiSelect mixin for Game Systems
+  +multiSelect('gameSystems', 'Game Systems', gameSystems.map(gs => gs.name), user.gameSystems)
+
+  button.btn.btn-primary(type='submit' id='saveButton')
+    i.fa.fa-save
+  span#loadingSpinner(style='display: none; margin-left: 10px;')
+    i.fa.fa-spinner.fa-spin
+
 
 include partials/footer

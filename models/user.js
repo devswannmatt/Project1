@@ -7,7 +7,9 @@ const userSchema = new mongoose.Schema({
   firstName: { type: String },
   lastName: { type: String },
   email: { type: String, unique: true, required: true },
-  role: { type: String, default: 'user' } // Default role is 'user'
+  role: { type: String, default: 'user' },
+  facebook: { type: String, required: false },
+  gameSystems: { type: [String], required: false }
 });
 
 // Password hashing middleware

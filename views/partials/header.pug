@@ -1,4 +1,7 @@
 doctype html
+
+include mixins
+
 html
   head
     title= title
@@ -7,37 +10,35 @@ html
     link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css')
     link(rel='stylesheet', href='https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap')
   body
-    .container
-      nav.navbar.navbar-expand-lg.navbar-light.bg-light
-        a.navbar-brand(href='/') MyPages
-        button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarNav', aria-controls='navbarNav', aria-expanded='false', aria-label='Toggle navigation')
-          span.navbar-toggler-icon
-        .collapse.navbar-collapse#navbarNav
-          ul.navbar-nav.mr-auto
+    nav.navbar.navbar-expand-lg.navbar-light.bg-light
+      a.navbar-brand(href='/') Hobby Hangout
+      button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarNav', aria-controls='navbarNav', aria-expanded='false', aria-label='Toggle navigation')
+        span.navbar-toggler-icon
+      .collapse.navbar-collapse#navbarNav
+        ul.navbar-nav.mr-auto
+          each gameSystem in gameSystems
+            li.nav-item.dropdown
+              a#navbarDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+                = gameSystem.name
+              .dropdown-menu(aria-labelledby='navbarDropdown')
+                each page in categorizedPages[gameSystem.name]
+                  a.dropdown-item(href=`/page/${page._id}`) #{page.title}
+
+        ul.navbar-nav.ml-auto
+          if user
+            if user.role === 'admin'
+              li.nav-item
+                a.nav-link(href='/page/new') New Page
             li.nav-item
-              a.nav-link(href='/') Home
-            each page in pages
-              li.nav-item
-                a.nav-link(href=`/page/${page._id}`) #{page.title}
-          ul.navbar-nav.ml-auto
-            if user
-              if user.role === 'admin'
-                li.nav-item.dropdown
-                  a#navbarDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-                    | System
-                  .dropdown-menu(aria-labelledby='navbarDropdown')
-                    a.dropdown-item(href='/add') Add Page
-                    a.dropdown-item(href='/logs') Logs
-                    a.dropdown-item(href='/users') Users
-                    a.dropdown-item(href='/roles') Roles
-              li.nav-item
-                a.nav-link(href='/account')
-                  i.fa.fa-user
-                  |  Account
-              li.nav-item
-                a.nav-link(href='/logout') Logout
-            else
-              li.nav-item
-                a.nav-link(href='/login') Login
-              li.nav-item
-                a.nav-link(href='/register') Register
+              a.nav-link(href='/upload') Upload Image
+            li.nav-item
+              a.nav-link(href='/account')
+                i.fa.fa-user
+                |  Account
+            li.nav-item
+              a.nav-link(href='/logout') Logout
+          else
+            li.nav-item
+              a.nav-link(href='/login') Login
+            li.nav-item
+              a.nav-link(href='/register') Register

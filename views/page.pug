@@ -1,6 +1,16 @@
 include partials/header
 
-h1= page.title
-p= page.content
+div.pull-right
+    if user && user.role === 'admin'
+        a.btn.btn-primary(href=`/pages/edit/${page._id}`)
+            i.fa.fa-edit
 
+h1= page.title
+
+  if page.category
+    p.text-muted Category: #{page.category}
+
+  div.content
+    != page.content
+    
 include partials/footer

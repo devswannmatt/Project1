@@ -1,15 +1,12 @@
 include partials/header
 
-h1 Edit Page
-form(action=`/edit/${page._id}`, method='POST')
-  div.form-group
-    label(for='title') Title:
-    input.form-control(type='text', id='title', name='title', value=page.title, required)
-  div.form-group
-    label(for='content') Content:
-    textarea.form-control(id='content', name='content', required)= page.content
-  div.form-group
-    button.btn.btn-success(type='submit')
-      i.fa.fa-save
+h1= page ? 'Edit Page' : 'New Page'
+
+form(action= page ? `/pages/edit/${page._id}` : '/pages', method='POST')
+  +formInput('title', 'text', 'Title', page ? page.title : '', true)
+  +formSelect('category', 'Category', gameSystems.map(gs => gs.name), page ? page.category : '')
+  +formTextarea('content', 'Content', page ? page.content : '')
+
+  button.btn.btn-primary(type='submit') Save
 
 include partials/footer

@@ -1,0 +1,36 @@
+//- Mixin for creating a form input
+mixin formInput(name, type='text', labelText='', value='', required=false)
+  .form-group
+    label(for=name)= labelText
+    input.form-control(
+      type=type, 
+      id=name, 
+      name=name, 
+      value=value, 
+      required=required
+    )
+
+//- Mixin for creating a multi-select dropdown
+mixin multiSelect(name, labelText='', options=[], selectedOptions=[])
+  .form-group
+    label(for=name)= labelText
+    select.form-control(name=name id=name multiple)
+      each option in options
+        option(
+          value=option 
+          selected=(selectedOptions.includes(option) ? true : false)
+        )= option
+
+//- Mixin for creating a textarea
+mixin formTextarea(name, labelText='', value='')
+  .form-group
+    label(for=name)= labelText
+    textarea.form-control(id=name, name=name, rows='10')= value
+
+//- Mixin for creating a dropdown select field
+mixin formSelect(name, labelText='', options=[], selectedOption='')
+  .form-group
+    label(for=name)= labelText
+    select.form-control(id=name, name=name)
+      each option in options
+        option(value=option selected=(option === selectedOption ? 'selected' : false))= option
