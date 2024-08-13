@@ -27,10 +27,15 @@ html
         ul.navbar-nav.ml-auto
           if user
             if user.role === 'admin'
-              li.nav-item
-                a.nav-link(href='/page/new') New Page
-            li.nav-item
-              a.nav-link(href='/upload') Upload Image
+              li.nav-item.dropdown
+                  a#navbarDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+                    | System
+                  .dropdown-menu(aria-labelledby='navbarDropdown')
+                    a.dropdown-item(href='/add') Add Page
+                    a.dropdown-item(href='/upload') Upload Image
+                    a.dropdown-item(href='/logs') Logs
+                    a.dropdown-item(href='/users') Users
+                    a.dropdown-item(href='/roles') Roles
             li.nav-item
               a.nav-link(href='/account')
                 i.fa.fa-user

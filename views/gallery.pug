@@ -1,0 +1,13 @@
+include partials/header
+
+h1 Gallery
+
+if images.length
+  .row
+    each image in images
+      .col-md-4
+        img(src=`/uploads/${image.filename}`, alt='Image', class='img-thumbnail')
+else
+  p No images have been uploaded yet.
+
+include partials/footer

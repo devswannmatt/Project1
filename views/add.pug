@@ -1,15 +1,15 @@
 include partials/header
 
-h1 Add Page
-form(action='/add', method='POST')
-  div.form-group
-    label(for='title') Title:
-    input.form-control(type='text', id='title', name='title', required)
-  div.form-group
-    label(for='content') Content:
-    textarea.form-control(id='content', name='content', required)
-  div.form-group
-    button.btn.btn-success(type='submit')
-      i.fa.fa-plus
+h1 Add New Page
+
+form(action='/pages', method='POST')
+  +formInput('title', 'text', 'Title', '', true)
+
+  // Use formSelect mixin for the category dropdown
+  +formSelect('category', 'Category', gameSystems.map(gs => gs.name), '')
+
+  +formTextarea('content', 'Content', '')
+
+  button.btn.btn-primary(type='submit') Save
 
 include partials/footer

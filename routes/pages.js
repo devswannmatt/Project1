@@ -1,7 +1,24 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const path = require('path');
 const { ensureAuthenticated, ensureAdmin } = require('../middleware/auth');
 const Page = require('../models/page');
+const Image = require('../models/image');
+
+
+// Set up Multer storage
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/'); // Upload directory
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname)); // Append timestamp and file extension
+  }
+});
+
+// Initialize upload middleware
+const upload = multer({ storage: storage });
 
 // Route to render the homepage
 router.get('/', async (req, res) => {
@@ -131,6 +148,42 @@ router.post('/pages/edit/:id', ensureAuthenticated, async (req, res) => {
     console.error(err);
     req.flash('error_msg', 'Error updating page');
     res.redirect(`/pages/edit/${req.params.id}`);
+  }
+});
+
+// Get upload form
+router.get('/upload', ensureAuthenticated, (req, res) => {
+  res.render('upload', { title: 'Upload Image', error: null, success: null });
+});
+
+// Handle image upload
+router.post('/upload', ensureAuthenticated, upload.single('image'), async (req, res) => {
+  if (!req.file) {
+    return res.render('upload', { title: 'Upload Image', error: 'No file uploaded', success: null });
+  }
+
+  // Save image metadata to the database
+  const newImage = new Image({
+    filename: req.file.filename
+  });
+
+  try {
+    await newImage.save();
+    res.render('upload', { title: 'Upload Image', error: null, success: 'File uploaded successfully!' });
+  } catch (error) {
+    console.error('Error saving image metadata:', error);
+    res.render('upload', { title: 'Upload Image', error: 'Error saving image metadata', success: null });
+  }
+});
+
+// Get gallery
+router.get('/gallery', ensureAuthenticated, async (req, res) => {
+  try {
+    const images = await Image.find().sort({ uploadDate: -1 });
+    res.render('gallery', { title: 'Gallery', images });
+  } catch (error) {
+    console.error('Error fetching images:', error);
+    res.status(500).send('Internal Server Error');
   }
 });
 

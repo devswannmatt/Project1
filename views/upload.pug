@@ -1,0 +1,16 @@
+include partials/header
+
+h1 Upload Image
+form(action='/upload', method='POST', enctype='multipart/form-data')
+  .form-group
+    label(for='image') Select image to upload
+    input.form-control(type='file', id='image', name='image', accept='image/*')
+  button.btn.btn-primary(type='submit') Upload
+
+if error
+  div.alert.alert-danger= error
+
+if success
+  div.alert.alert-success= success
+
+include partials/footer
