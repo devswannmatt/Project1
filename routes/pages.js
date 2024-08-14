@@ -39,7 +39,7 @@ router.get('/add', ensureAuthenticated, ensureAdmin, (req, res) => {
 router.get('/page/:id', async (req, res) => {
   console.log('Page')
   try {
-    const page = await Page.findById(req.params.id).populate('template');
+    const page = await Page.findById(req.params.id).populate('template').populate('category');
     if (!page) {
       req.flash('error_msg', 'Page not found');
       return res.redirect('/');
@@ -50,7 +50,11 @@ router.get('/page/:id', async (req, res) => {
     if (page.template && page.template.location) payload.template = page.template.location
 
     // Render the page with the dynamic template inclusion
-    res.render(`pages/${page.template.name}`, payload);
+
+    var target = `pages/missing.pug`
+    if (page.template && page.template.name) target = `pages/${page.template.name}`
+
+    res.render(target, payload);
   } catch (err) {
     console.error('Error fetching page:', err);
     req.flash('error_msg', 'Error fetching page');
@@ -146,7 +150,7 @@ router.post('/pages/edit/:id', ensureAuthenticated, async (req, res) => {
   try {
     await Page.findByIdAndUpdate(req.params.id, { title, content, category, template });
     req.flash('success_msg', 'Page updated successfully');
-    res.redirect('/');
+    res.redirect(`/page/${req.params.id}`);
   } catch (err) {
     console.error(err);
     req.flash('error_msg', 'Error updating page');

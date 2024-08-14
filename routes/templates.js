@@ -19,6 +19,8 @@ router.post('/templates', ensureAuthenticated, async (req, res) => {
       location
     });
 
+    console.log('templates > saved')
+
     await newTemplate.save();
     req.flash('success_msg', 'Page template added successfully');
     res.redirect('/templates/new');

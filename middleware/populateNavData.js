@@ -8,17 +8,17 @@ async function populateNavData(req, res, next) {
     const pageTemplates = await PageContent.find();
     const pages = await Page.find();
 
-    console.log('pageTemplates', pageTemplates)
-
     // Group pages by category
     const categorizedPages = {};
     gameSystems.forEach(gs => {
-      categorizedPages[gs.name] = pages.filter(page => page.category === gs.name);
+      categorizedPages[gs.name] = pages.filter(page => page.category && page.category.equals(gs._id));
     });
 
+    console.log('categorizedPages', categorizedPages)
+
     // Attach the data to res.locals
-    res.locals.pageTemplates = pageTemplates;
-    res.locals.gameSystems = gameSystems;
+    res.locals.pageTemplates    = pageTemplates;
+    res.locals.gameSystems      = gameSystems;
     res.locals.categorizedPages = categorizedPages;
     
     next();

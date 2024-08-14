@@ -11,8 +11,9 @@ const PageSchema = new Schema({
     required: true
   },
   category: {
-    type: String,
-    required: false
+    type: Schema.Types.ObjectId,
+    ref: 'GameSystem',
+    required: true
   },
   template: {
     type: Schema.Types.ObjectId,
