@@ -1,0 +1,12 @@
+include partials/header
+
+h1 Add New Page Template
+
+form(action='/templates', method='POST')
+  +formInput('name', 'text', 'Template Name', '', true)
+  +formInput('description', 'text', 'Description', '', true)
+  +formInput('location', 'text', 'Location (e.g., /views/partials/basic.pug)', '', true)
+
+  button.btn.btn-primary(type='submit') Save
+
+include partials/footer

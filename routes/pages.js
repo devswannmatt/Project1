@@ -32,44 +32,40 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/add', ensureAuthenticated, ensureAdmin, (req, res) => {
+  console.log('Add')
   res.render('add', { title: 'Add Page' });
 });
 
 router.get('/page/:id', async (req, res) => {
+  console.log('Page')
   try {
-    const page = await Page.findById(req.params.id);
-    if (page) {
-      res.render('page', { title: page.title, page });
-    } else {
-      res.status(404).send('Page not found');
+    const page = await Page.findById(req.params.id).populate('template');
+    if (!page) {
+      req.flash('error_msg', 'Page not found');
+      return res.redirect('/');
     }
-  } catch (error) {
-    console.error('Error fetching page:', error);
-    res.status(500).send('Internal Server Error');
-  }
-});
 
-router.get('/pages/new', ensureAuthenticated, async (req, res) => {
-  try {
-    const gameSystems = await GameSystem.find();
-    res.render('newPage', { title: 'Create New Page', gameSystems });
+    const payload = { title: page.title, page }
+
+    if (page.template && page.template.location) payload.template = page.template.location
+
+    // Render the page with the dynamic template inclusion
+    res.render(`pages/${page.template.name}`, payload);
   } catch (err) {
-    console.error(err);
-    req.flash('error_msg', 'Error loading game systems');
-    res.redirect('/pages');
+    console.error('Error fetching page:', err);
+    req.flash('error_msg', 'Error fetching page');
+    res.redirect('/');
   }
 });
 
 // Create a new page
 router.post('/pages', ensureAuthenticated, async (req, res) => {
-  const { title, content, category } = req.body;
+  console.log('Pages')
+  const { title, content, category, template } = req.body;
+  console.log('template', template)
 
   try {
-    const newPage = new Page({
-      title,
-      content,
-      category
-    });
+    const newPage = new Page({ title, content, category, template });
     
     await newPage.save();
     req.flash('success_msg', 'Page created successfully');
@@ -83,13 +79,12 @@ router.post('/pages', ensureAuthenticated, async (req, res) => {
 
 router.post('/add', ensureAuthenticated, ensureAdmin, async (req, res) => {
   try {
-    const { title, content } = req.body;
-    const page = new Page({ title, content });
+    const { title, content, category, template } = req.body;
+    const page = new Page({ title, content, category, template });
     await page.save();
 
     const log = new Log({ message: `Page created: ${title}` });
     await log.save();
-
     res.redirect('/');
   } catch (error) {
     console.error('Error adding page:', error);
@@ -99,10 +94,10 @@ router.post('/add', ensureAuthenticated, ensureAdmin, async (req, res) => {
 
 // Get the form to edit an existing page
 router.get('/pages/edit/:id', ensureAuthenticated, async (req, res) => {
+  console.log('Page Edit ID')
   try {
     const page = await Page.findById(req.params.id);
-    const gameSystems = await GameSystem.find();
-    res.render('edit', { title: 'Edit Page', page, gameSystems });
+    res.render('edit', { title: 'Edit Page', page });
   } catch (err) {
     console.error(err);
     req.flash('error_msg', 'Error fetching page or game systems');
@@ -110,10 +105,18 @@ router.get('/pages/edit/:id', ensureAuthenticated, async (req, res) => {
   }
 });
 
+// Get upload form
+router.get('/upload', ensureAuthenticated, (req, res) => {
+  res.render('upload', { title: 'Upload Image', error: null, success: null });
+});
+
 router.post('/edit/:id', ensureAuthenticated, async (req, res) => {
+  console.log('POST Page Edit ID')
   try {
-    const { title, content } = req.body;
-    await Page.findByIdAndUpdate(req.params.id, { title, content });
+    const { title, content, category, template } = req.body;
+    console.log('req.body', req.body)
+
+    await Page.findByIdAndUpdate(req.params.id, { title, content, category, template });
 
     const log = new Log({ message: `Page edited: ${title}` });
     await log.save();
@@ -124,7 +127,6 @@ router.post('/edit/:id', ensureAuthenticated, async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
-
 
 router.post('/delete/:id', ensureAuthenticated, async (req, res) => {
   try {
@@ -138,10 +140,11 @@ router.post('/delete/:id', ensureAuthenticated, async (req, res) => {
 
 // Update an existing page
 router.post('/pages/edit/:id', ensureAuthenticated, async (req, res) => {
-  const { title, content, category } = req.body;
-
+  console.log('Update')
+  const { title, content, category, template } = req.body;
+  console.log('Update > 1', template)
   try {
-    await Page.findByIdAndUpdate(req.params.id, { title, content, category });
+    await Page.findByIdAndUpdate(req.params.id, { title, content, category, template });
     req.flash('success_msg', 'Page updated successfully');
     res.redirect('/');
   } catch (err) {
@@ -149,11 +152,6 @@ router.post('/pages/edit/:id', ensureAuthenticated, async (req, res) => {
     req.flash('error_msg', 'Error updating page');
     res.redirect(`/pages/edit/${req.params.id}`);
   }
-});
-
-// Get upload form
-router.get('/upload', ensureAuthenticated, (req, res) => {
-  res.render('upload', { title: 'Upload Image', error: null, success: null });
 });
 
 // Handle image upload

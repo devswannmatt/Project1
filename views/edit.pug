@@ -4,7 +4,11 @@ h1= page ? 'Edit Page' : 'New Page'
 
 form(action= page ? `/pages/edit/${page._id}` : '/pages', method='POST')
   +formInput('title', 'text', 'Title', page ? page.title : '', true)
-  +formSelect('category', 'Category', gameSystems.map(gs => gs.name), page ? page.category : '')
+  if gameSystems
+    +formSelect('category', 'Category', gameSystems.map(gs => ({ value: gs._id, text: gs.name }), page ? page.category : ''))
+  if pageTemplates
+    console.log(pageTemplates)
+    +formSelect('template', 'Page Template', pageTemplates.map(pt => ({ value: pt._id, text: pt.name })), page && page.template ? page.template._id : '')
   +formTextarea('content', 'Content', page ? page.content : '')
 
   button.btn.btn-primary(type='submit') Save

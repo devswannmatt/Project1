@@ -1,22 +1,25 @@
-const express = require('express');
-const path = require('path');
-const bodyParser = require('body-parser');
-const session = require('express-session');
-const MongoStore = require('connect-mongo');
-const passport = require('passport');
-const flash = require('connect-flash');  // Import connect-flash
-const LocalStrategy = require('passport-local').Strategy;
-const { Page, Log, User, Role, connectDB } = require('./models');
-const app = express();
-const port = 3000;
+const express         = require('express');
+const path            = require('path');
+const bodyParser      = require('body-parser');
+const session         = require('express-session');
+const MongoStore      = require('connect-mongo');
+const passport        = require('passport');
+const flash           = require('connect-flash');  // Import connect-flash
+const LocalStrategy   = require('passport-local').Strategy;
 const populateNavData = require('./middleware/populateNavData');
 
-const pagesRouter = require('./routes/pages');
-const usersRouter = require('./routes/users');
-const rolesRouter = require('./routes/roles');
-const logsRouter = require('./routes/logs');
-const authRouter = require('./routes/auth');
-const accountRouter = require('./routes/account');
+const app = express();
+const port = 3000;
+
+const { Page, Log, User, Role, connectDB } = require('./models');
+
+const pagesRouter    = require('./routes/pages');
+const usersRouter    = require('./routes/users');
+const rolesRouter    = require('./routes/roles');
+const logsRouter     = require('./routes/logs');
+const authRouter     = require('./routes/auth');
+const accountRouter  = require('./routes/account');
+const templateRouter = require('./routes/templates');
 const { ensureAuthenticated, ensureAdmin } = require('./middleware/auth');
 
 connectDB();
@@ -99,6 +102,7 @@ app.use('/', rolesRouter);
 app.use('/', logsRouter);
 app.use('/', authRouter);
 app.use('/', accountRouter);
+app.use('/', templateRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

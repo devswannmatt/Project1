@@ -7,10 +7,12 @@ div.pull-right
 
 h1= page.title
 
-  if page.category
-    p.text-muted Category: #{page.category}
+if page.category
+  p.text-muted Category: #{page.category}
 
-  div.content
-    != page.content
-    
+div.content
+  != page.content
+
+block content
+
 include partials/footer

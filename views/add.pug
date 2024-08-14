@@ -4,10 +4,10 @@ h1 Add New Page
 
 form(action='/pages', method='POST')
   +formInput('title', 'text', 'Title', '', true)
-
-  // Use formSelect mixin for the category dropdown
-  +formSelect('category', 'Category', gameSystems.map(gs => gs.name), '')
-
+  if gameSystems
+    +formSelect('category', 'Category', gameSystems.map(gs => ({ value: gs._id, text: gs.name }), page ? page.category : ''))
+  if pageTemplates
+    +formSelect('template', 'Page Template', pageTemplates.map(pt => ({ value: pt._id, text: pt.name })), page && page.template ? page.template._id : '')
   +formTextarea('content', 'Content', '')
 
   button.btn.btn-primary(type='submit') Save

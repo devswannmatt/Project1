@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// Create Schema
 const PageSchema = new Schema({
   title: {
     type: String,
@@ -13,6 +12,11 @@ const PageSchema = new Schema({
   },
   category: {
     type: String,
+    required: false
+  },
+  template: {
+    type: Schema.Types.ObjectId,
+    ref: 'PageContent',
     required: true
   },
   createdAt: {
