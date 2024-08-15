@@ -14,8 +14,6 @@ async function populateNavData(req, res, next) {
       categorizedPages[gs.name] = pages.filter(page => page.category && page.category.equals(gs._id));
     });
 
-    console.log('categorizedPages', categorizedPages)
-
     // Attach the data to res.locals
     res.locals.pageTemplates    = pageTemplates;
     res.locals.gameSystems      = gameSystems;

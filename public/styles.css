@@ -168,3 +168,25 @@ footer {
   text-align: center;
   color: #777;
 }
+
+#floating-frame {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 300px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  border-radius: 8px;
+}
+
+.img-thumbnail {
+  max-width: 100%;
+  height: auto;
+}
+
+.modal-desc {
+  padding: 20px;
+}

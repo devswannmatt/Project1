@@ -20,6 +20,8 @@ const logsRouter     = require('./routes/logs');
 const authRouter     = require('./routes/auth');
 const accountRouter  = require('./routes/account');
 const templateRouter = require('./routes/templates');
+const imagesRouter   = require('./routes/images');
+
 const { ensureAuthenticated, ensureAdmin } = require('./middleware/auth');
 
 connectDB();
@@ -103,6 +105,7 @@ app.use('/', logsRouter);
 app.use('/', authRouter);
 app.use('/', accountRouter);
 app.use('/', templateRouter);
+app.use('/', imagesRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

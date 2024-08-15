@@ -1,0 +1,27 @@
+include partials/header
+
+h1 Edit Image
+
+form(action=`/images/edit/${image._id}`, method='POST')
+  .form-group
+    label(for='name') Image Name
+    input.form-control(type='text', id='name', name='name', value=image.name)
+
+  .form-group
+    label(for='description') Description
+    textarea.form-control(id='description', name='description')= image.description
+
+  .form-group
+    label(for='owner') Owner
+    input.form-control(type='text', id='owner', name='owner', value=image.owner)
+
+  .form-group
+    label(for='category') Category
+    select.form-control(id='category', name='category')
+      option(value='') Select a category
+      each gs in gameSystems
+        option(value=gs._id selected=(image.category && image.category.equals(gs._id) ? 'selected' : ''))= gs.name
+
+  button.btn.btn-primary(type='submit') Save
+
+include partials/footer

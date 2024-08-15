@@ -2,15 +2,14 @@ include partials/header
 
 h1= page ? 'Edit Page' : 'New Page'
 
-form(action= page ? `/pages/edit/${page._id}` : '/pages', method='POST')
+form(action=`/pages/edit/${page._id}`, method='POST', onsubmit='floatingMessage("Saving changes...", "...success!", "Reloading page!")')
   +formInput('title', 'text', 'Title', page ? page.title : '', true)
   if gameSystems
-    +formSelect('category', 'Category', gameSystems.map(gs => ({ value: gs._id, text: gs.name }), page ? page.category : ''))
+    +formSelect('category', 'Category', gameSystems.map(gs => ({ value: gs._id, text: gs.name })), page.category ? page.category._id.toString() : '')
   if pageTemplates
-    console.log(pageTemplates)
-    +formSelect('template', 'Page Template', pageTemplates.map(pt => ({ value: pt._id, text: pt.name })), page && page.template ? page.template._id : '')
+    +formSelect('template', 'Page Template', pageTemplates.map(pt => ({ value: pt._id, text: pt.name })), page.template ? page.template._id.toString() : '')
   +formTextarea('content', 'Content', page ? page.content : '')
 
-  button.btn.btn-primary(type='submit') Save
+  button.btn.btn-primary.pull-right(type='submit')
 
 include partials/footer

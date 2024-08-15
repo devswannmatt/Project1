@@ -1,5 +1,59 @@
+
+div#floating-frame
+  p#floating-frame-message1
+  p#floating-frame-message2
+  p#floating-frame-message3
+
 </div>
 
-script(src='https://code.jquery.com/jquery-3.5.1.slim.min.js')
+script(src='https://code.jquery.com/jquery-3.6.0.min.js')
 script(src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js')
 script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js')
+
+script.
+      // Your jQuery code here
+    $(document).ready(function() {
+        console.log('jQuery is working!');
+        // Example call to the function
+    });
+            // Example of the floatingMessage function
+    function floatingMessage(message1, message2, message3) {
+        const msg1 = $('#floating-frame-message1');
+        const msg2 = $('#floating-frame-message2');
+        const msg3 = $('#floating-frame-message3');
+
+        // Fade in msg1 immediately
+        msg1.text(message1).fadeIn(1000, function() {
+            // After 1 second, fade in msg2
+            setTimeout(function() {
+                msg2.text(message2).fadeIn(1000, function() {
+                    // After 1 second, fade in msg3
+                    setTimeout(function() {
+                        msg3.text(message3).fadeIn(1000, function() {
+                            // After all messages have faded in, wait for 3 seconds, then fade them out
+                            setTimeout(function() {
+                                msg1.fadeOut(1000);
+                                msg2.fadeOut(1000);
+                                msg3.fadeOut(1000);
+                            }, 3000); // 3-second delay before fade out
+                        });
+                    }, 1000); // 1-second delay before msg3 fades in
+                });
+            }, 1000); // 1-second delay before msg2 fades in
+        });
+    }
+
+    // JavaScript to handle image click and show modal
+    $(document).ready(function() {
+        $('#imageModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var config = button.data()
+            var footer = `<i>${config.owner} - ${new Date(config.uploaddate).toLocaleDateString()}</i>`
+
+            var modal = $(this)
+            modal.find('.modal-title').text(config.name)
+            modal.find('#modal-body-image').attr('src', config.image)
+            modal.find('#modal-body-desc').text(config.description)
+            modal.find('.modal-footer').html(footer)
+        })
+    });

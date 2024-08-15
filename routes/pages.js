@@ -62,6 +62,19 @@ router.get('/page/:id', async (req, res) => {
   }
 });
 
+// Get the form to edit an existing page
+router.get('/pages/edit/:id', ensureAuthenticated, async (req, res) => {
+  console.log('Page Edit ID')
+  try {
+    const page = await Page.findById(req.params.id).populate('template').populate('category');
+    res.render('edit', { title: 'Edit Page', page });
+  } catch (err) {
+    console.error(err);
+    req.flash('error_msg', 'Error fetching page or game systems');
+    res.redirect('/pages');
+  }
+});
+
 // Create a new page
 router.post('/pages', ensureAuthenticated, async (req, res) => {
   console.log('Pages')
@@ -93,19 +106,6 @@ router.post('/add', ensureAuthenticated, ensureAdmin, async (req, res) => {
   } catch (error) {
     console.error('Error adding page:', error);
     res.status(500).send('Internal Server Error');
-  }
-});
-
-// Get the form to edit an existing page
-router.get('/pages/edit/:id', ensureAuthenticated, async (req, res) => {
-  console.log('Page Edit ID')
-  try {
-    const page = await Page.findById(req.params.id);
-    res.render('edit', { title: 'Edit Page', page });
-  } catch (err) {
-    console.error(err);
-    req.flash('error_msg', 'Error fetching page or game systems');
-    res.redirect('/pages');
   }
 });
 
@@ -146,11 +146,13 @@ router.post('/delete/:id', ensureAuthenticated, async (req, res) => {
 router.post('/pages/edit/:id', ensureAuthenticated, async (req, res) => {
   console.log('Update')
   const { title, content, category, template } = req.body;
-  console.log('Update > 1', template)
+
   try {
-    await Page.findByIdAndUpdate(req.params.id, { title, content, category, template });
-    req.flash('success_msg', 'Page updated successfully');
-    res.redirect(`/page/${req.params.id}`);
+    setTimeout(async () => {
+      await Page.findByIdAndUpdate(req.params.id, { title, content, category, template });
+      req.flash('success_msg', 'Page updated successfully');
+      res.redirect(`/page/${req.params.id}`);
+    }, 10000)
   } catch (err) {
     console.error(err);
     req.flash('error_msg', 'Error updating page');
@@ -181,7 +183,7 @@ router.post('/upload', ensureAuthenticated, upload.single('image'), async (req, 
 // Get gallery
 router.get('/gallery', ensureAuthenticated, async (req, res) => {
   try {
-    const images = await Image.find().sort({ uploadDate: -1 });
+    const images = await Image.find().sort({ uploadDate: -1 }).populate('category');
     res.render('gallery', { title: 'Gallery', images });
   } catch (error) {
     console.error('Error fetching images:', error);

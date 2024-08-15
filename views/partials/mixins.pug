@@ -33,4 +33,4 @@ mixin formSelect(name, labelText='', options=[], selectedOption='')
     label(for=name)= labelText
     select.form-control(id=name, name=name)
       each option in options
-        option(value=option.value selected=(option.value === selectedOption ? 'selected' : false))= option.text
+        option(value=option.value selected=(option.value == selectedOption ? 'selected' : false))= option.text

@@ -7,6 +7,23 @@ const ImageSchema = new Schema({
     type: String,
     required: true
   },
+  name: {
+    type: String,
+    required: false
+  },
+  description: {
+    type: String,
+    required: false
+  },
+  category: {
+    type: Schema.Types.ObjectId,
+    ref: 'GameSystem',
+    required: false
+  },
+  owner: {
+    type: String,
+    required: false
+  },
   uploadDate: {
     type: Date,
     default: Date.now

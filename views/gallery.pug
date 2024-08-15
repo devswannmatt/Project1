@@ -5,9 +5,30 @@ h1 Gallery
 if images.length
   .row
     each image in images
-      .col-md-4
-        img(src=`/uploads/${image.filename}`, alt='Image', class='img-thumbnail')
+      .col-md-2
+        a(href='#', data-toggle='modal', data-target='#imageModal', data-image=`/uploads/${image.filename}`, data-name=image.name, data-description=image.description, data-uploaddate=image.uploadDate, data-owner=image.owner)
+          img(src=`/uploads/${image.filename}`, alt=image.name || 'Image', class='img-thumbnail', style='max-width: 100%; height: auto;')
+        p
+          a(href=`/images/edit/${image._id}`)
+            span=image.name || 'No Name'
+          if image.category
+            span.text-muted  - #{image.category.name}
 else
   p No images have been uploaded yet.
+
+// Bootstrap Modal
+div.modal.fade(id='imageModal', tabindex='-1', role='dialog', aria-labelledby='imageModalLabel', aria-hidden='true')
+  div.modal-dialog.modal-xl(role='document')
+    div.modal-content
+      div.modal-header
+        h5.modal-title(id='imageModalLabel') Image
+        button.close(type='button', data-dismiss='modal', aria-label='Close')
+          span(aria-hidden='true') &times;
+      div.modal-body
+        img#modal-body-image(src='', alt='', style='width: 100%;')
+        span.modal-desc#modal-body-desc
+      div.modal-footer
+
+
 
 include partials/footer
