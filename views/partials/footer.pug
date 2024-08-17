@@ -9,6 +9,7 @@ div#floating-frame
 script(src='https://code.jquery.com/jquery-3.6.0.min.js')
 script(src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js')
 script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf.min.js')
 
 script.
       // Your jQuery code here
@@ -48,12 +49,99 @@ script.
         $('#imageModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget) // Button that triggered the modal
             var config = button.data()
-            var footer = `<i>${config.owner} - ${new Date(config.uploaddate).toLocaleDateString()}</i>`
-
             var modal = $(this)
             modal.find('.modal-title').text(config.name)
             modal.find('#modal-body-image').attr('src', config.image)
-            modal.find('#modal-body-desc').text(config.description)
-            modal.find('.modal-footer').html(footer)
+            modal.find('#modal-body-desc').html(`"${config.description}"`)
+            modal.find('#modal-body-extra').html(`Credit: ${config.owner} Uploaded: ${new Date(config.uploaddate).toLocaleDateString()}`)
+            modal.find('#modal-edit-link').attr('href', `/images/edit/${config.id}`)
         })
+
+        $('#pdfModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var config = button.data()
+            var modal  = $(this)
+            modal.find('.modal-title').text(button.data('name'))
+            modal.find('#modal-edit-link').attr('href', `/images/edit/${config.id}`)
+
+            pageNum = 1;
+
+            pdfjsLib.getDocument(config.pdf).promise.then(function(pdfDoc_) {
+                pdfDoc = pdfDoc_;
+                document.getElementById('pageCount').textContent = pdfDoc.numPages;
+                renderPage(pageNum);
+            });
+        });
+
+        var pdfjsLib = window['pdfjs-dist/build/pdf'];  // Initialize pdfjsLib
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf.worker.min.js';
+
+        var pdfDoc = null,
+            pageNum = 1,
+            pageRendering = false,
+            pageNumPending = null,
+            canvas = document.getElementById('pdfViewerCanvas'),
+            ctx = canvas.getContext('2d');
+
+        function renderPage(num) {
+            pageRendering = true;
+            pdfDoc.getPage(num).then(function(page) {
+                var scale = 1.5;
+                var viewport = page.getViewport({ scale: scale });
+
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                // Clear any existing content in the canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                var renderContext = {
+                    canvasContext: ctx,
+                    viewport: viewport
+                };
+                var renderTask = page.render(renderContext);
+
+                renderTask.promise.then(function() {
+                pageRendering = false;
+                if (pageNumPending !== null) {
+                    renderPage(pageNumPending);
+                    pageNumPending = null;
+                }
+                });
+            });
+            document.getElementById('pageNum').textContent   = pageNum;
+            document.getElementById('pageCount').textContent = pdfDoc.numPages;
+        }
+
+        function queueRenderPage(num) {
+            if (pageRendering) {
+                pageNumPending = num;
+            } else {
+                renderPage(num);
+            }
+        }
+
+        function onPrevPage() {
+            if (pdfDoc.numPages == 1) return;
+            if (pageNum <= 1) {
+                pageNum = pdfDoc.numPages
+            } else {
+                pageNum--;
+            }
+            queueRenderPage(pageNum);
+        }
+
+        function onNextPage() {
+            if (pdfDoc.numPages == 1) return;
+            if (pageNum >= pdfDoc.numPages) {
+                pageNum = 1
+            } else {
+                pageNum++;
+            }
+            queueRenderPage(pageNum);
+        }
+
+        document.getElementById('prevPage').addEventListener('click', onPrevPage);
+        document.getElementById('nextPage').addEventListener('click', onNextPage);
     });
+

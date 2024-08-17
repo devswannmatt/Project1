@@ -183,12 +183,21 @@ router.post('/upload', ensureAuthenticated, upload.single('image'), async (req, 
 // Get gallery
 router.get('/gallery', ensureAuthenticated, async (req, res) => {
   try {
-    const images = await Image.find().sort({ uploadDate: -1 }).populate('category');
-    res.render('gallery', { title: 'Gallery', images });
+    // Fetch all images and populate the category
+    const files  = await Image.find().sort({ uploadDate: -1 }).populate('category');
+
+    const images = filterByExtenstion(/\.(jpg|jpeg|png|gif|bmp|webp|svg)$/i, files)
+    const pdfs   = filterByExtenstion(/\.(pdf)$/i, files)
+
+    res.render('gallery', { title: 'Gallery', images, pdfs });
   } catch (error) {
     console.error('Error fetching images:', error);
     res.status(500).send('Internal Server Error');
   }
 });
+
+function filterByExtenstion(extensions, files) {
+  return files.filter(image => extensions.test(image.filename));
+}
 
 module.exports = router;
