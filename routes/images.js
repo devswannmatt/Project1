@@ -51,4 +51,17 @@ router.post('/images/edit/:id', async (req, res) => {
   }
 });
 
+// Route to delete an image
+router.post('/images/delete/:id', async (req, res) => {
+  try {
+    await Image.findByIdAndDelete(req.params.id);
+    req.flash('success_msg', 'Image deleted successfully');
+    res.redirect('/gallery');
+  } catch (err) {
+    console.error('Error deleting image:', err);
+    req.flash('error_msg', 'Error deleting image');
+    res.redirect(`/images/edit/${req.params.id}`);
+  }
+});
+
 module.exports = router;

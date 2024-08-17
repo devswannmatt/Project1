@@ -3,25 +3,17 @@ include partials/header
 h1 Edit Image
 
 form(action=`/images/edit/${image._id}`, method='POST')
-  .form-group
-    label(for='name') Image Name
-    input.form-control(type='text', id='name', name='name', value=image.name)
+  +formInput('name', 'text', 'Image Name', image.name)
+  +formTextarea('description', 'Description', image.description)
+  +formInput('owner', 'text', 'Owner', image.owner)
 
-  .form-group
-    label(for='description') Description
-    textarea.form-control(id='description', name='description')= image.description
+  +formSelect('category', 'Category', gameSystems.map(gs => ({ value: gs._id.toString(), text: gs.name })), image.category ? image.category.toString() : '')
 
-  .form-group
-    label(for='owner') Owner
-    input.form-control(type='text', id='owner', name='owner', value=image.owner)
+  +formButton('Save', 'submit', 'btn-primary')
 
-  .form-group
-    label(for='category') Category
-    select.form-control(id='category', name='category')
-      option(value='') Select a category
-      each gs in gameSystems
-        option(value=gs._id selected=(image.category && image.category.equals(gs._id) ? 'selected' : ''))= gs.name
+hr
 
-  button.btn.btn-primary(type='submit') Save
+form(action=`/images/delete/${image._id}`, method='POST')
+  +formButton('Delete', 'submit', 'btn-danger')(onclick='return confirm("Are you sure you want to delete this image?");')
 
 include partials/footer

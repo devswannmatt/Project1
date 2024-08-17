@@ -34,3 +34,6 @@ mixin formSelect(name, labelText='', options=[], selectedOption='')
     select.form-control(id=name, name=name)
       each option in options
         option(value=option.value selected=(option.value == selectedOption ? 'selected' : false))= option.text
+
+mixin formButton(text, type = 'submit', className = 'btn-primary')
+  button.btn(type=type class=className)= text
