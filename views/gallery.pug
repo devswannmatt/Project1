@@ -17,9 +17,9 @@ else
 h2 PDF
 if pdfs.length
   .row
-    .col-md-2
+    .col-md-6
       p
-        table
+        table.table.table-striped
           tr 
             th Category
             th Name
@@ -41,13 +41,9 @@ div.modal.fade(id='imageModal', tabindex='-1', role='dialog', aria-labelledby='i
       div.modal-header
         h5.modal-title(id='imageModalLabel') Image
         div.pull-right
-          button.close(type='button', data-dismiss='modal', aria-label='Close')
-            span(aria-hidden='true')
-              i.fas.fa-close
+          +formButton('close-modal', 'close-modal', 'btn-primary pull-right', 'close')
           a#modal-edit-link(href='')
-            button.close
-              span(aria-hidden='true')
-                i.fas.fa-edit
+            +formButton('close-modal', 'close-modal', 'btn-primary pull-right', 'edit')
       div.modal-body
         img#modal-body-image(src='', alt='', style='width: 100%;')
         div.modal-desc-container
@@ -70,7 +66,7 @@ div.modal.fade(id='pdfModal', tabindex='-1', role='dialog', aria-labelledby='pdf
               span(aria-hidden='true')
                 i.fas.fa-edit
       div.modal-body
-        canvas#pdfViewerCanvas(style='width: 100%; height: auto;')  // Canvas for rendering PDF
+        canvas#pdfViewerCanvas(style='width: 100%; height: auto;')
       div.modal-footer
         button.btn.btn-secondary(type='button', id='prevPage')
           i.fas.fa-backward

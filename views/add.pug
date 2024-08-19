@@ -2,14 +2,13 @@ include partials/header
 
 h1 Add New Page
 
-form(action='/pages', method='POST')
+form(action='/add', method='POST')
   +formInput('title', 'text', 'Title', '', true)
   if gameSystems
     +formSelect('category', 'Category', gameSystems.map(gs => ({ value: gs._id, text: gs.name }), page ? page.category : ''))
   if pageTemplates
     +formSelect('template', 'Page Template', pageTemplates.map(pt => ({ value: pt._id, text: pt.name })), page && page.template ? page.template._id : '')
-  +formTextarea('content', 'Content', '')
-
-  button.btn.btn-primary(type='submit') Save
+  +formTextarea('content', 'Content', '', true)
+  +formButton('Save Changes', 'submit', 'btn-success pull-right', 'save')
 
 include partials/footer

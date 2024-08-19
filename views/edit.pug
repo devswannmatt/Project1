@@ -9,7 +9,9 @@ form(action=`/pages/edit/${page._id}`, method='POST', onsubmit='floatingMessage(
   if pageTemplates
     +formSelect('template', 'Page Template', pageTemplates.map(pt => ({ value: pt._id, text: pt.name })), page.template ? page.template._id.toString() : '')
   +formTextarea('content', 'Content', page ? page.content : '')
+  +formButton('Save Changes', 'submit', 'btn-success pull-right', 'save')
 
-  button.btn.btn-primary.pull-right(type='submit')
+form(action=`/pages/delete/${page._id}`, method='POST')
+  +formButton('Delete', 'submit', 'btn-danger pull-right', 'trash-alt', 'holdDeleteBtn')(onclick='return confirm("Are you sure you want to delete this page?");')
 
 include partials/footer

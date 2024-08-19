@@ -22,10 +22,10 @@ mixin multiSelect(name, labelText='', options=[], selectedOptions=[])
         )= option
 
 //- Mixin for creating a textarea
-mixin formTextarea(name, labelText='', value='')
+mixin formTextarea(name, labelText='', value='', required=false)
   .form-group
     label(for=name)= labelText
-    textarea.form-control(id=name, name=name, rows='10')= value
+    textarea.form-control(id=name, name=name, rows='10', required=required)= value
 
 //- Mixin for creating a dropdown select field
 mixin formSelect(name, labelText='', options=[], selectedOption='')
@@ -35,5 +35,9 @@ mixin formSelect(name, labelText='', options=[], selectedOption='')
       each option in options
         option(value=option.value selected=(option.value == selectedOption ? 'selected' : false))= option.text
 
-mixin formButton(text, type = 'submit', className = 'btn-primary')
-  button.btn(type=type class=className)= text
+mixin formButton(text, type = 'submit', extraClass = 'btn-primary', icon, id)
+  button.btn(id=id type=type class=extraClass data-dismiss=type)
+    if icon
+      i(class=`fas fa-${icon}`)
+    else
+      span=text

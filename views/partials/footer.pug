@@ -145,3 +145,26 @@ script.
         document.getElementById('nextPage').addEventListener('click', onNextPage);
     });
 
+    document.addEventListener('DOMContentLoaded', function() {
+        var holdDeleteBtn = document.getElementById('holdDeleteBtn');
+        var deleteForm = document.getElementById('deleteForm');
+        var holdTimeout;
+
+        holdDeleteBtn.addEventListener('mousedown', function() {
+        holdTimeout = setTimeout(function() {
+            if (confirm('Are you sure you want to delete this page?')) {
+                deleteForm.submit();
+            }
+        }, 3000); // 3 seconds hold time
+        });
+
+        holdDeleteBtn.addEventListener('mouseup', function() {
+            clearTimeout(holdTimeout);
+        });
+
+        holdDeleteBtn.addEventListener('mouseleave', function() {
+            clearTimeout(holdTimeout);
+        });
+    });
+
+

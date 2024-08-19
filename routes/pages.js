@@ -5,15 +5,16 @@ const path = require('path');
 const { ensureAuthenticated, ensureAdmin } = require('../middleware/auth');
 const Page = require('../models/page');
 const Image = require('../models/image');
+const Log = require('../models/log');
 
 
 // Set up Multer storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/'); // Upload directory
+    cb(null, 'uploads/');
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)); // Append timestamp and file extension
+    cb(null, Date.now() + path.extname(file.originalname));
   }
 });
 
@@ -49,8 +50,6 @@ router.get('/page/:id', async (req, res) => {
 
     if (page.template && page.template.location) payload.template = page.template.location
 
-    // Render the page with the dynamic template inclusion
-
     var target = `pages/missing.pug`
     if (page.template && page.template.name) target = `pages/${page.template.name}`
 
@@ -62,7 +61,6 @@ router.get('/page/:id', async (req, res) => {
   }
 });
 
-// Get the form to edit an existing page
 router.get('/pages/edit/:id', ensureAuthenticated, async (req, res) => {
   console.log('Page Edit ID')
   try {
@@ -75,7 +73,6 @@ router.get('/pages/edit/:id', ensureAuthenticated, async (req, res) => {
   }
 });
 
-// Create a new page
 router.post('/pages', ensureAuthenticated, async (req, res) => {
   console.log('Pages')
   const { title, content, category, template } = req.body;
@@ -83,14 +80,14 @@ router.post('/pages', ensureAuthenticated, async (req, res) => {
 
   try {
     const newPage = new Page({ title, content, category, template });
-    
     await newPage.save();
+    
     req.flash('success_msg', 'Page created successfully');
     res.redirect('/');
   } catch (err) {
     console.error(err);
     req.flash('error_msg', 'Error creating page');
-    res.redirect('/pages/new');
+    res.send('Failed');
   }
 });
 
@@ -104,8 +101,9 @@ router.post('/add', ensureAuthenticated, ensureAdmin, async (req, res) => {
     await log.save();
     res.redirect('/');
   } catch (error) {
-    console.error('Error adding page:', error);
-    res.status(500).send('Internal Server Error');
+    const log = new Log({ message: `Page creation error: ${error}` });
+    await log.save();
+    res.redirect('/logs');
   }
 });
 
@@ -132,13 +130,16 @@ router.post('/edit/:id', ensureAuthenticated, async (req, res) => {
   }
 });
 
-router.post('/delete/:id', ensureAuthenticated, async (req, res) => {
+// Route to delete a page
+router.post('/pages/delete/:id', async (req, res) => {
   try {
     await Page.findByIdAndDelete(req.params.id);
+    req.flash('success_msg', 'Page deleted successfully');
     res.redirect('/');
-  } catch (error) {
-    console.error('Error deleting page:', error);
-    res.status(500).send('Internal Server Error');
+  } catch (err) {
+    console.error('Error deleting page:', err);
+    req.flash('error_msg', 'Error deleting page');
+    res.redirect(`/pages/edit/${req.params.id}`);
   }
 });
 
@@ -167,9 +168,7 @@ router.post('/upload', ensureAuthenticated, upload.single('image'), async (req, 
   }
 
   // Save image metadata to the database
-  const newImage = new Image({
-    filename: req.file.filename
-  });
+  const newImage = new Image({filename: req.file.filename});
 
   try {
     await newImage.save();
@@ -185,7 +184,6 @@ router.get('/gallery', ensureAuthenticated, async (req, res) => {
   try {
     // Fetch all images and populate the category
     const files  = await Image.find().sort({ uploadDate: -1 }).populate('category');
-
     const images = filterByExtenstion(/\.(jpg|jpeg|png|gif|bmp|webp|svg)$/i, files)
     const pdfs   = filterByExtenstion(/\.(pdf)$/i, files)
 
