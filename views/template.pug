@@ -7,7 +7,7 @@ form(action=template ? `/templates/edit/${template._id}` : '/templates/add', met
   +formTextarea('description', 'Description', template ? template.description : '')
   +formInput('location', 'text', 'Location', template ? template.location : '', true)
 
-  +formButton(template ? 'Save Changes' : 'Create Template', 'submit', 'btn-primary')
+  +formButton(template ? 'Save Changes' : 'Create Template', 'submit', 'btn-success', 'save')
 
 if template
   hr

@@ -38,7 +38,6 @@ router.get('/add', ensureAuthenticated, ensureAdmin, (req, res) => {
 });
 
 router.get('/page/:id', async (req, res) => {
-  console.log('Page')
   try {
     const page = await Page.findById(req.params.id).populate('template').populate('category');
     if (!page) {
@@ -46,12 +45,20 @@ router.get('/page/:id', async (req, res) => {
       return res.redirect('/');
     }
 
+    console.log('page > 1')
+
     const payload = { title: page.title, page }
+
+    console.log('page > 2')
 
     if (page.template && page.template.location) payload.template = page.template.location
 
+    console.log('page > 3')
+
     var target = `missing`
     if (page.template && page.template.name) target = `templates/${page.template.location}`
+
+    console.log('page > 4', payload)
 
     res.render(target, payload);
   } catch (err) {
