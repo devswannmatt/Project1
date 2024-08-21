@@ -1,0 +1,17 @@
+include partials/header
+
+h1 #{template ? 'Edit Template' : 'Add Template'}
+
+form(action=template ? `/templates/edit/${template._id}` : '/templates/add', method='POST')
+  +formInput('name', 'text', 'Template Name', template ? template.name : '', true)
+  +formTextarea('description', 'Description', template ? template.description : '')
+  +formInput('location', 'text', 'Location', template ? template.location : '', true)
+
+  +formButton(template ? 'Save Changes' : 'Create Template', 'submit', 'btn-primary')
+
+if template
+  hr
+  form(action=`/templates/delete/${template._id}`, method='POST')
+    +formButton('Delete', 'submit', 'btn-danger', 'trash-alt')(onclick='return confirm("Are you sure you want to delete this template?");')
+
+include partials/footer

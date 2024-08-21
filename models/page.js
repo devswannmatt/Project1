@@ -17,7 +17,7 @@ const PageSchema = new Schema({
   },
   template: {
     type: Schema.Types.ObjectId,
-    ref: 'PageContent',
+    ref: 'Template',
     required: true
   },
   createdAt: {

@@ -1,11 +1,11 @@
 const GameSystem = require('../models/gameSystem');
-const PageContent = require('../models/pageContent')
+const Template = require('../models/template')
 const Page = require('../models/page');
 
 async function populateNavData(req, res, next) {
   try {
     const gameSystems   = await GameSystem.find();
-    const pageTemplates = await PageContent.find();
+    const pageTemplates = await Template.find();
     const pages = await Page.find();
 
     // Group pages by category
@@ -18,7 +18,8 @@ async function populateNavData(req, res, next) {
     res.locals.pageTemplates    = pageTemplates;
     res.locals.gameSystems      = gameSystems;
     res.locals.categorizedPages = categorizedPages;
-    
+    res.locals.isModal = req.query.modal
+
     next();
   } catch (err) {
     console.error('Error populating navigation data:', err);

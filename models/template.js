@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 // Create Schema
-const PageContentSchema = new Schema({
+const TemplateSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -18,4 +18,4 @@ const PageContentSchema = new Schema({
   }
 });
 
-module.exports = mongoose.model('PageContent', PageContentSchema);
+module.exports = mongoose.model('Template', TemplateSchema);

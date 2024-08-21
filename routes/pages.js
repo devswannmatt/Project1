@@ -50,8 +50,8 @@ router.get('/page/:id', async (req, res) => {
 
     if (page.template && page.template.location) payload.template = page.template.location
 
-    var target = `pages/missing.pug`
-    if (page.template && page.template.name) target = `pages/${page.template.name}`
+    var target = `missing`
+    if (page.template && page.template.name) target = `templates/${page.template.location}`
 
     res.render(target, payload);
   } catch (err) {
@@ -69,7 +69,7 @@ router.get('/pages/edit/:id', ensureAuthenticated, async (req, res) => {
   } catch (err) {
     console.error(err);
     req.flash('error_msg', 'Error fetching page or game systems');
-    res.redirect('/pages');
+    res.redirect('/logs');
   }
 });
 

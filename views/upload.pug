@@ -5,7 +5,7 @@ form(action='/upload', method='POST', enctype='multipart/form-data')
   .form-group
     label(for='image') Select image to upload
     input.form-control(type='file', id='image', name='image', accept='image/*')
-  button.btn.btn-primary(type='submit') Upload
+  +formButton('Upload', 'submit', 'btn-success', 'save')
 
 if error
   div.alert.alert-danger= error

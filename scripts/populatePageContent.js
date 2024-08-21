@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const PageContent = require('../models/pageContent');
+const Template = require('../models/template');
 
 // MongoDB URI
 const db = 'mongodb://127.0.0.1:27017/config'; // Replace with your actual MongoDB URI
@@ -16,10 +16,10 @@ const pageTemplates = [
 ];
 
 // Function to populate the database
-const populatePageContent = async () => {
+const populateTemplate = async () => {
   try {
-    await PageContent.deleteMany(); // Clear existing data
-    await PageContent.insertMany(pageTemplates);
+    await Template.deleteMany(); // Clear existing data
+    await Template.insertMany(pageTemplates);
     console.log('Page content templates populated successfully');
     mongoose.connection.close();
   } catch (err) {
@@ -29,4 +29,4 @@ const populatePageContent = async () => {
 };
 
 // Run the population script
-populatePageContent();
+populateTemplate();

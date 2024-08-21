@@ -1,8 +1,12 @@
+if (!isModal)
+    div#floating-frame
+        p#floating-frame-message1
+        p#floating-frame-message2
+        p#floating-frame-message3
 
-div#floating-frame
-  p#floating-frame-message1
-  p#floating-frame-message2
-  p#floating-frame-message3
++modalBuilder('img', 'xl', 'imgModalLabel')
++modalBuilder('pdf', 'xl', 'pdfModalLabel')
++iframeBuilder()
 
 </div>
 
@@ -67,6 +71,14 @@ script.
                 document.getElementById('pageCount').textContent = pdfDoc.numPages;
                 renderPage(pageNum);
             });
+        });
+
+        $('#iframeModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var config = button.data()
+            var modal  = $(this)
+            modal.find('.modal-dialog').attr('class', `modal-${config.size}`)
+            modal.find('#iframe-modal-content').attr('src', `${config.src}?modal=true`)
         });
 
         var pdfjsLib = window['pdfjs-dist/build/pdf'];  // Initialize pdfjsLib
@@ -173,4 +185,19 @@ script.
 
         // Initialize preview with existing content
         contentPreview.innerHTML = contentTextarea.value;
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const iframeModal = document.getElementById('iframeModal');
+        const iframeModalContent = document.getElementById('iframeModalContent');
+
+        // Set the iframe source when the modal is shown
+        iframeModal.addEventListener('show.bs.modal', function () {
+        iframeModalContent.src = '/templates/add';
+        });
+
+        // Clear the iframe source when the modal is hidden (optional)
+        iframeModal.addEventListener('hidden.bs.modal', function () {
+        iframeModalContent.src = '';
+        });
     });

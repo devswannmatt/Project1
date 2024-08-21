@@ -1,5 +1,8 @@
 include partials/header
 
+button.btn.btn-success.pull-right(data-toggle='modal', data-target='#iframeModal', data-src='/upload' data-size='lg')
+  i(class=`fas fa-plus`)
+
 h2 Gallery
 if images.length
   .row
@@ -29,8 +32,5 @@ if pdfs.length
               td 
                 a(href='#', data-toggle='modal', data-id=`${pdf._id}` data-target='#pdfModal', data-pdf=`/uploads/${pdf.filename}`, data-name=pdf.name, data-description=pdf.description, data-uploaddate=pdf.uploadDate, data-owner=pdf.owner)
                   span=pdf.name || 'No Name'
-
-+modalBuilder('img', 'xl', 'imgModalLabel')
-+modalBuilder('pdf', 'xl', 'pdfModalLabel')
 
 include partials/footer
