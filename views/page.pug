@@ -1,14 +1,11 @@
 include partials/header
 
 div.pull-right
-    if user && user.role === 'admin'
-        a(href=`/pages/edit/${page._id}`)
-         +formButton('Edit', 'submit', 'btn-primary pull-right', 'edit')
+  if user && user.role === 'admin'
+    a(href=`/pages/edit/${page._id}`)
+      +formButton('Edit', 'submit', 'btn-primary pull-right', 'edit')
 
-h2= page.title
-
-if page.category
-  span.text-muted Category: #{page.category.name}
+span.text-muted #{page.category.name} / #{page.title}
 
 div.content
   != page.content

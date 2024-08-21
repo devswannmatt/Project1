@@ -1,17 +1,26 @@
 include partials/header
 
 h1= page ? 'Edit Page' : 'New Page'
-
 form(action=`/pages/edit/${page._id}`, method='POST', onsubmit='floatingMessage("Saving changes...", "...success!", "Reloading page!")')
-  +formInput('title', 'text', 'Title', page ? page.title : '', true)
-  if gameSystems
-    +formSelect('category', 'Category', gameSystems.map(gs => ({ value: gs._id, text: gs.name })), page.category ? page.category._id.toString() : '')
-  if pageTemplates
-    +formSelect('template', 'Page Template', pageTemplates.map(pt => ({ value: pt._id, text: pt.name })), page.template ? page.template._id.toString() : '')
-  +formTextarea('content', 'Content', page ? page.content : '')
-  +formButton('Save Changes', 'submit', 'btn-success pull-right', 'save')
-
-form(action=`/pages/delete/${page._id}`, method='POST')
-  +formButton('Delete', 'submit', 'btn-danger pull-right', 'trash-alt', 'holdDeleteBtn')(onclick='return confirm("Are you sure you want to delete this page?");')
+  table.table
+    tr
+      td
+        +formInput('title', 'text', 'Title', page ? page.title : '', true, true)
+    tr
+      td
+        +formSelect('category', 'Category', gameSystems.map(gs => ({ value: gs._id, text: gs.name })), page.category ? page.category._id.toString() : '', true)
+    tr
+      td
+        +formSelect('template', 'Page Template', pageTemplates.map(pt => ({ value: pt._id, text: pt.name })), page.template ? page.template._id.toString() : '', true)
+    tr
+      td
+        +formTextarea('content', 'Content', page ? page.content : '', true, true)
+        +formTextareaPreview()
+    tr 
+      td 
+        +formButton('Save Changes', 'submit', 'btn-success pull-right', 'save')
+        </form>
+        form(action=`/pages/delete/${page._id}`, method='POST')
+          +formButton('Delete', 'submit', 'btn-danger pull-right', 'trash-alt', 'holdDeleteBtn', onsubmit='floatingMessage("Saving changes...", "...success!", "Reloading page!")' )(onclick='return confirm("Are you sure you want to delete this page?");')
 
 include partials/footer

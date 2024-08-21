@@ -1,43 +1,91 @@
 //- Mixin for creating a form input
-mixin formInput(name, type='text', labelText='', value='', required=false)
+mixin formInput(name, type, label, value = '', required = false, showClear = false)
   .form-group
-    label(for=name)= labelText
-    input.form-control(
-      type=type, 
-      id=name, 
-      name=name, 
-      value=value, 
-      required=required
-    )
+    label(for=name) #{label}
+    if showClear
+      .input-group
+        input.form-control(type=type 'id'=`${name}_preview` name=`${name}_preview` value=value disabled)
+        input.form-control(type=type 'id'=name name=name value=value required=required)
+        .input-group-append
+          +clearButton(name)
+    else
+      input.form-control(type=type 'id'=name name=name value=value required=required)
 
-//- Mixin for creating a multi-select dropdown
 mixin multiSelect(name, labelText='', options=[], selectedOptions=[])
   .form-group
     label(for=name)= labelText
     select.form-control(name=name id=name multiple)
       each option in options
-        option(
-          value=option 
-          selected=(selectedOptions.includes(option) ? true : false)
-        )= option
+        option(value=option selected=(selectedOptions.includes(option) ? true : false))= option
 
-//- Mixin for creating a textarea
-mixin formTextarea(name, labelText='', value='', required=false)
+mixin formTextarea(name, label, value = '', required = false, showClear = false)
   .form-group
-    label(for=name)= labelText
-    textarea.form-control(id=name, name=name, rows='10', required=required)= value
+    label(for=name) #{label}
+    if showClear
+      .input-group
+        textarea.form-control(id=name name=name required=required)= value
+        .input-group-append
+          +clearButton(name)
+      .input-group
+        div.htmlRenderArea
+    else
+      textarea.form-control(id=name name=name required=required)= value
 
-//- Mixin for creating a dropdown select field
-mixin formSelect(name, labelText='', options=[], selectedOption='')
+mixin formTextareaPreview()
   .form-group
-    label(for=name)= labelText
-    select.form-control(id=name, name=name)
-      each option in options
-        option(value=option.value selected=(option.value == selectedOption ? 'selected' : false))= option.text
+    label(for='contentPreview') Content Preview
+    .preview-container#contentPreview(style='border: 1px solid #ccc; padding: 10px; margin-top: 10px; min-height: 100px; background-color: #f9f9f9;')
+    
+mixin formSelect(name, label, options, selectedValue = '', showClear = false)
+  .form-group
+    label(for=name) #{label}
+    if showClear
+      .input-group
+        select.form-control(id=`${name}_preview` name=`${name}_preview` disabled)
+          option(value='') Select a #{label}
+          each option in options
+            option(value=option.value selected=(option.value == selectedValue) ? 'selected' : '')= option.text
+        select.form-control(id=name name=name)
+          option(value='') Select a #{label}
+          each option in options
+            option(value=option.value selected=(option.value == selectedValue) ? 'selected' : '')= option.text
+        .input-group-append
+          +clearButton(name)
+    else
+      select.form-control(id=name name=name)
+        option(value='') Select a #{label}
+        each option in options
+          option(value=option.value selected=(option.value == selectedValue) ? 'selected' : '')= option.text
 
 mixin formButton(text, type = 'submit', extraClass = 'btn-primary', icon, id)
-  button.btn(id=id type=type class=extraClass data-dismiss=type)
+  button.btn(id=id type=type 'class'=extraClass data-dismiss=type)
     if icon
       i(class=`fas fa-${icon}`)
     else
-      span=text
+      span= text
+
+mixin modalBuilder(type, size, title)
+  div.modal.fade(id=`${type}Modal`, tabindex='-1', role='dialog', aria-labelledby=`${type}ModalLabel`, aria-hidden='true')
+    div.modal-dialog(class=`modal-${size}` role='document')
+      div.modal-content
+        div.modal-header
+          h5.modal-title(id=title)
+          div.pull-right
+            if type=='pdf'
+              include pdfPage
+            +formButton('close-modal', 'modal', 'btn-danger pull-right', 'close')
+            a#modal-edit-link(href='')
+              +formButton('edit-modal', 'edit', 'btn-primary pull-right', 'edit')
+        div.modal-body
+          if type=='pdf'
+            canvas#pdfViewerCanvas(style='width: 100%; height: auto;')
+          if type=='img'
+            img#modal-body-image(src='', alt='', style='width: 100%;')
+            div.modal-desc-container
+              span.modal-desc-text
+                span#modal-body-desc
+                div#modal-body-extra
+          
+mixin clearButton(field)
+  button.btn.btn-sm.btn-outline-danger(type='button' onclick=`document.getElementById('${field}').value=''`)
+    i(class=`fas fa-close`)

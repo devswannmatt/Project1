@@ -5,14 +5,12 @@ if images.length
   .row
     each image in images
       .col-md-2
-        a(href='#', data-toggle='modal', data-id=`${image._id}` data-target='#imageModal', data-image=`/uploads/${image.filename}`, data-name=image.name, data-description=image.description, data-uploaddate=image.uploadDate, data-owner=image.owner)
+        a(href='#', data-toggle='modal', data-id=`${image._id}` data-target='#imgModal', data-image=`/uploads/${image.filename}`, data-name=image.name, data-description=image.description, data-uploaddate=image.uploadDate, data-owner=image.owner)
           img(src=`/uploads/${image.filename}`, alt=image.name || 'Image', class='img-thumbnail', style='max-width: 100%; height: auto;')
         p
           span=image.name || 'No Name'
           if image.category
             span.text-muted  - #{image.category.name}
-else
-  p No images have been uploaded yet.
 
 h2 PDF
 if pdfs.length
@@ -31,47 +29,8 @@ if pdfs.length
               td 
                 a(href='#', data-toggle='modal', data-id=`${pdf._id}` data-target='#pdfModal', data-pdf=`/uploads/${pdf.filename}`, data-name=pdf.name, data-description=pdf.description, data-uploaddate=pdf.uploadDate, data-owner=pdf.owner)
                   span=pdf.name || 'No Name'
-else 
-  p No PDFS have been uploaded yet.
 
-// Bootstrap Modal
-div.modal.fade(id='imageModal', tabindex='-1', role='dialog', aria-labelledby='imageModalLabel', aria-hidden='true')
-  div.modal-dialog.modal-xl(role='document')
-    div.modal-content
-      div.modal-header
-        h5.modal-title(id='imageModalLabel') Image
-        div.pull-right
-          +formButton('close-modal', 'close-modal', 'btn-primary pull-right', 'close')
-          a#modal-edit-link(href='')
-            +formButton('close-modal', 'close-modal', 'btn-primary pull-right', 'edit')
-      div.modal-body
-        img#modal-body-image(src='', alt='', style='width: 100%;')
-        div.modal-desc-container
-          span.modal-desc-text
-            span#modal-body-desc
-            div#modal-body-extra
-
-// PDF Modal
-div.modal.fade(id='pdfModal', tabindex='-1', role='dialog', aria-labelledby='pdfModalLabel', aria-hidden='true')
-  div.modal-dialog.modal-lg(role='document')
-    div.modal-content
-      div.modal-header
-        h5.modal-title(id='imageModalLabel') Image
-        div.pull-right
-          button.close(type='button', data-dismiss='modal', aria-label='Close')
-            span(aria-hidden='true')
-              i.fas.fa-close
-          a#modal-edit-link(href='')
-            button.close
-              span(aria-hidden='true')
-                i.fas.fa-edit
-      div.modal-body
-        canvas#pdfViewerCanvas(style='width: 100%; height: auto;')
-      div.modal-footer
-        button.btn.btn-secondary(type='button', id='prevPage')
-          i.fas.fa-backward
-        span#pageNumber Page <span id="pageNum">1</span> of <span id="pageCount">1</span>
-        button.btn.btn-secondary(type='button', id='nextPage')
-          i.fas.fa-forward
++modalBuilder('img', 'xl', 'imgModalLabel')
++modalBuilder('pdf', 'xl', 'pdfModalLabel')
 
 include partials/footer

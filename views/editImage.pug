@@ -6,14 +6,10 @@ form(action=`/images/edit/${image._id}`, method='POST')
   +formInput('name', 'text', 'Image Name', image.name)
   +formTextarea('description', 'Description', image.description)
   +formInput('owner', 'text', 'Owner', image.owner)
-
   +formSelect('category', 'Category', gameSystems.map(gs => ({ value: gs._id.toString(), text: gs.name })), image.category ? image.category.toString() : '')
-
-  +formButton('Save', 'submit', 'btn-primary')
-
-hr
+  +formButton('Save Changes', 'submit', 'btn-success pull-right', 'save')
 
 form(action=`/images/delete/${image._id}`, method='POST')
-  +formButton('Delete', 'submit', 'btn-danger')(onclick='return confirm("Are you sure you want to delete this image?");')
+  +formButton('Delete', 'submit', 'btn-danger pull-right', 'trash-alt', 'holdDeleteBtn')(onclick='return confirm("Are you sure you want to delete this image?");')
 
 include partials/footer

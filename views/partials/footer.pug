@@ -12,12 +12,8 @@ script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.
 script(src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf.min.js')
 
 script.
-      // Your jQuery code here
-    $(document).ready(function() {
-        console.log('jQuery is working!');
-        // Example call to the function
-    });
-            // Example of the floatingMessage function
+
+    // Example of the floatingMessage function
     function floatingMessage(message1, message2, message3) {
         const msg1 = $('#floating-frame-message1');
         const msg2 = $('#floating-frame-message2');
@@ -46,7 +42,7 @@ script.
 
     // JavaScript to handle image click and show modal
     $(document).ready(function() {
-        $('#imageModal').on('show.bs.modal', function (event) {
+        $('#imgModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget) // Button that triggered the modal
             var config = button.data()
             var modal = $(this)
@@ -167,4 +163,14 @@ script.
         });
     });
 
+    document.addEventListener('DOMContentLoaded', function() {
+        var contentTextarea = document.getElementById('content');
+        var contentPreview = document.getElementById('contentPreview');
 
+        contentTextarea.addEventListener('input', function() {
+            contentPreview.innerHTML = contentTextarea.value;
+        });
+
+        // Initialize preview with existing content
+        contentPreview.innerHTML = contentTextarea.value;
+    });

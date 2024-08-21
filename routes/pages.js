@@ -149,11 +149,11 @@ router.post('/pages/edit/:id', ensureAuthenticated, async (req, res) => {
   const { title, content, category, template } = req.body;
 
   try {
-    setTimeout(async () => {
+    // setTimeout(async () => {
       await Page.findByIdAndUpdate(req.params.id, { title, content, category, template });
       req.flash('success_msg', 'Page updated successfully');
       res.redirect(`/page/${req.params.id}`);
-    }, 10000)
+    // }, 10000)
   } catch (err) {
     console.error(err);
     req.flash('error_msg', 'Error updating page');
