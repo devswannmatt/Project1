@@ -90,9 +90,10 @@ mixin iframeBuilder(size, target)
   div.modal.fade(id='iframeModal', tabindex='-1', role='dialog', aria-labelledby='iframeModalLabel', aria-hidden='true')
     div.modal-dialog(class=`modal-${size}` role='document')
       div.modal-content
-        div.modal-body
+        div.modal-header
           button.close(type='button', data-dismiss='modal', aria-label='Close')
             span(aria-hidden='true') &times;
+        div.modal-body
           iframe#iframe-modal-content(src=`${target}?modal=true`, width='100%', height='400', frameborder='0')
 
 mixin clearButton(field)

@@ -8,12 +8,21 @@ if (!isModal)
 +modalBuilder('pdf', 'xl', 'pdfModalLabel')
 +iframeBuilder()
 
-</div>
+// Modal Structure
+div.modal.fade(id='draggableModal', tabindex='-1', role='dialog', aria-labelledby='draggableModalLabel', aria-hidden='true')
+  div.modal-dialog.modal-lg(role='document')
+    div.modal-content
+      div.modal-header
+        h5.modal-title#draggableModalLabel Draggable and Resizable Modal
+        button.close(type='button', data-dismiss='modal', aria-label='Close')
+          span(aria-hidden='true') &times;
+      div.modal-body
+        p You can drag or resize this modal.
+      div.modal-footer
+        button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+        button.btn.btn-primary(type='button') Save changes
 
-script(src='https://code.jquery.com/jquery-3.6.0.min.js')
-script(src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js')
-script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js')
-script(src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf.min.js')
+</div>
 
 script.
 
@@ -155,6 +164,13 @@ script.
 
         document.getElementById('prevPage').addEventListener('click', onPrevPage);
         document.getElementById('nextPage').addEventListener('click', onNextPage);
+
+        $("#pdfModal .modal-content").draggable({ handle: ".modal-header" });
+        $("#pdfModal .modal-content").resizable({ alsoResize: ".modal-dialog" });
+        $("#imgModal .modal-content").draggable({ handle: ".modal-header" });
+        $("#imgModal .modal-content").resizable({ alsoResize: ".modal-dialog" });
+        $("#iframeModal .modal-content").draggable({ handle: ".modal-header" });
+        $("#iframeModal .modal-content").resizable({ alsoResize: ".modal-dialog" });
     });
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -222,4 +238,3 @@ script.
 
         xhr.send(formData);
     });
-

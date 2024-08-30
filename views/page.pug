@@ -1,12 +1,8 @@
 include partials/header
 
-button.btn.btn-primary.pull-right(data-toggle='modal', data-target='#iframeModal', data-src=`/pages/edit/${page._id}` data-size='xl')
-  i(class=`fas fa-edit`)
-
-//- div.pull-right
-//-   if user && user.role === 'admin'
-//-     a(href=`/pages/edit/${page._id}`)
-//-       +formButton('Edit', 'submit', 'btn-primary pull-right', 'edit')
+if user && user.role === 'admin'
+  button.btn.btn-primary.pull-right(data-toggle='modal', data-target='#iframeModal', data-src=`/pages/edit/${page._id}` data-size='xl')
+    i(class=`fas fa-edit`)
 
 span.text-muted #{page.category.name} / #{page.title}
 
