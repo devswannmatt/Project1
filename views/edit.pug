@@ -1,6 +1,11 @@
 include partials/header
 
-h1= page ? 'Edit Page' : 'New Page'
+p=JSON.stringify(page, null, 2)
+
+p=page.category ? page.category._id : ''
+
+p=page.template ? page.template._id : ''
+
 form(action=`/pages/edit/${page._id}`, method='POST', onsubmit='floatingMessage("Saving changes...", "...success!", "Reloading page!")')
   table.table
     tr
@@ -20,7 +25,6 @@ form(action=`/pages/edit/${page._id}`, method='POST', onsubmit='floatingMessage(
       td 
         +formButton('Save Changes', 'submit', 'btn-success pull-right', 'save')
         </form>
-        form(action=`/pages/delete/${page._id}`, method='POST')
-          +formButton('Delete', 'submit', 'btn-danger pull-right', 'trash-alt', 'holdDeleteBtn', onsubmit='floatingMessage("Saving changes...", "...success!", "Reloading page!")' )(onclick='return confirm("Are you sure you want to delete this page?");')
+        +deleteButton(`Deleting ${page.title}`)
 
 include partials/footer

@@ -1,6 +1,13 @@
 include partials/header
 
-h1 Edit Image
+h1 Edit Image Details
+
+.form-group
+  label()= 'Image Preview'
+  .input-group
+    img(src=`/uploads/${image.filename}`, alt=image.name || 'Image', class='img-thumbnail', style='height:250px;')
+    a(href=`/uploads/${image.filename}` download)
+      +formButton('Download Copy', '', 'btn-primary', 'download')
 
 form(action=`/images/edit/${image._id}`, method='POST')
   +formInput('name', 'text', 'Image Name', image.name)

@@ -18,10 +18,10 @@ mixin multiSelect(name, labelText='', options=[], selectedOptions=[])
       each option in options
         option(value=option selected=(selectedOptions.includes(option) ? true : false))= option
 
-mixin formTextarea(name, label, value = '', required = false, showClear = false)
+mixin formTextarea(name, label, value = '', required = false, advanced = false)
   .form-group
     label(for=name) #{label}
-    if showClear
+    if advanced
       .input-group
         textarea.form-control(id=name name=name required=required)= value
         .input-group-append
@@ -36,19 +36,20 @@ mixin formTextareaPreview()
     label(for='contentPreview') Content Preview
     .preview-container#contentPreview(style='border: 1px solid #ccc; padding: 10px; margin-top: 10px; min-height: 100px; background-color: #f9f9f9;')
     
-mixin formSelect(name, label, options, selectedValue = '', showClear = false)
+mixin formSelect(name, label, options, selectedValue = '', advanced = false)
+  p=option
   .form-group
     label(for=name) #{label}
-    if showClear
+    if advanced
       .input-group
         select.form-control(id=`${name}_preview` name=`${name}_preview` disabled)
           option(value='') Select a #{label}
           each option in options
-            option(value=option.value selected=(option.value == selectedValue) ? 'selected' : '')= option.text
+            option(value=option.value selected=option.value == selectedValue)= `${option.text} (${option.value})`
         select.form-control(id=name name=name)
           option(value='') Select a #{label}
           each option in options
-            option(value=option.value selected=(option.value == selectedValue) ? 'selected' : '')= option.text
+            option(value=option.value selected=option.value == selectedValue)= `${option.text} (${option.value})`
         .input-group-append
           +clearButton(name)
     else
@@ -58,44 +59,38 @@ mixin formSelect(name, label, options, selectedValue = '', showClear = false)
           option(value=option.value selected=(option.value == selectedValue) ? 'selected' : '')= option.text
 
 mixin formButton(text, type = 'submit', extraClass = 'btn-primary', icon, id)
-  button.btn(id=id type=type 'class'=extraClass data-dismiss=type)
+  button.btn-sm(id=id type=type 'class'=extraClass data-dismiss=type)
     if icon
       i(class=`fas fa-${icon}`)
     else
       span= text
 
-mixin modalBuilder(type, size, title)
-  div.modal.fade(id=`${type}Modal`, tabindex='-1', role='dialog', aria-labelledby=`${type}ModalLabel`, aria-hidden='true')
+mixin modalBuilder(type, size)
+  div.modal.fade(id=`modal`, type=`${type}` tabindex='-1', role='dialog', aria-labelledby=`${type}ModalLabel`, aria-hidden='true')
     div.modal-dialog(class=`modal-${size}` role='document')
       div.modal-content
         div.modal-header
-          h5.modal-title(id=title)
+          h5.modal-title
           div.pull-right
-            if type=='pdf'
-              include pdfPage
+            include pdfPage
             +formButton('close-modal', 'modal', 'btn-danger pull-right', 'close')
             a#modal-edit-link(href='')
               +formButton('edit-modal', 'edit', 'btn-primary pull-right', 'edit')
+            a#modal-download-link(href='' download)
+              +formButton('download-modal', 'download', 'btn-primary pull-right', 'download')
         div.modal-body
-          if type=='pdf'
-            canvas#pdfViewerCanvas(style='width: 100%; height: auto;')
-          if type=='img'
-            img#modal-body-image(src='', alt='', style='width: 100%;')
+            canvas#modal-pdf-viewer-canvas(style='width: 100%; height: 100%;')
+            img#modal-body-image(style='width: 100%; height: 100%;', src='', alt='')
             div.modal-desc-container
               span.modal-desc-text
                 span#modal-body-desc
                 div#modal-body-extra
-
-mixin iframeBuilder(size, target)
-  div.modal.fade(id='iframeModal', tabindex='-1', role='dialog', aria-labelledby='iframeModalLabel', aria-hidden='true')
-    div.modal-dialog(class=`modal-${size}` role='document')
-      div.modal-content
-        div.modal-header
-          button.close(type='button', data-dismiss='modal', aria-label='Close')
-            span(aria-hidden='true') &times;
-        div.modal-body
-          iframe#iframe-modal-content(src=`${target}?modal=true`, width='100%', height='400', frameborder='0')
+            iframe#frm-modal-content(style='width: 100%; min-height: 800px;', frameborder='0')
 
 mixin clearButton(field)
   button.btn.btn-sm.btn-outline-danger(type='button' onclick=`document.getElementById('${field}').value=''`)
     i(class=`fas fa-close`)
+
+mixin deleteButton(msg1, msg2, msg3)
+  form(action=`/pages/delete/${page._id}`, method='POST')
+    +formButton('Delete', 'submit', 'btn-danger pull-right', 'trash-alt', 'holdDeleteBtn', onsubmit=`floatingMessage("${msg1}", "${msg2}", "${msg3}")`)

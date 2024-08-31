@@ -4,104 +4,91 @@ if (!isModal)
         p#floating-frame-message2
         p#floating-frame-message3
 
-+modalBuilder('img', 'xl', 'imgModalLabel')
-+modalBuilder('pdf', 'xl', 'pdfModalLabel')
-+iframeBuilder()
-
-// Modal Structure
-div.modal.fade(id='draggableModal', tabindex='-1', role='dialog', aria-labelledby='draggableModalLabel', aria-hidden='true')
-  div.modal-dialog.modal-lg(role='document')
-    div.modal-content
-      div.modal-header
-        h5.modal-title#draggableModalLabel Draggable and Resizable Modal
-        button.close(type='button', data-dismiss='modal', aria-label='Close')
-          span(aria-hidden='true') &times;
-      div.modal-body
-        p You can drag or resize this modal.
-      div.modal-footer
-        button.btn.btn-secondary(type='button', data-dismiss='modal') Close
-        button.btn.btn-primary(type='button') Save changes
++modalBuilder('img', 'xl')
 
 </div>
 
 script.
 
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-    });
+    $(function () { $('[data-toggle="tooltip"]').tooltip(); });
 
-    // Example of the floatingMessage function
     function floatingMessage(message1, message2, message3) {
         const msg1 = $('#floating-frame-message1');
         const msg2 = $('#floating-frame-message2');
         const msg3 = $('#floating-frame-message3');
-
-        // Fade in msg1 immediately
         msg1.text(message1).fadeIn(1000, function() {
-            // After 1 second, fade in msg2
             setTimeout(function() {
                 msg2.text(message2).fadeIn(1000, function() {
-                    // After 1 second, fade in msg3
                     setTimeout(function() {
                         msg3.text(message3).fadeIn(1000, function() {
-                            // After all messages have faded in, wait for 3 seconds, then fade them out
                             setTimeout(function() {
                                 msg1.fadeOut(1000);
                                 msg2.fadeOut(1000);
                                 msg3.fadeOut(1000);
-                            }, 3000); // 3-second delay before fade out
+                            }, 3000);
                         });
-                    }, 1000); // 1-second delay before msg3 fades in
+                    }, 1000);
                 });
-            }, 1000); // 1-second delay before msg2 fades in
+            }, 1000);
         });
     }
 
-    // JavaScript to handle image click and show modal
     $(document).ready(function() {
-        $('#imgModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget) // Button that triggered the modal
+        $('#modal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
             var config = button.data()
-            var modal = $(this)
+            var modal  = $(this)
+
+            console.log('config', config)
+
             modal.find('.modal-title').text(config.name)
-            modal.find('#modal-body-image').attr('src', config.image)
-            modal.find('#modal-body-desc').html(`"${config.description}"`)
-            modal.find('#modal-body-extra').html(`Credit: ${config.owner} Uploaded: ${new Date(config.uploaddate).toLocaleDateString()}`)
-            modal.find('#modal-edit-link').attr('href', `/images/edit/${config.id}`)
+
+            if (config.type === 'img') {
+                modal.find('#modal-body-image').show().attr('src', config.image)
+                modal.find('#modal-body-desc').html(`"${config.description}"`)
+                modal.find('#modal-body-extra').html(`Credit: ${config.owner} Uploaded: ${new Date(config.uploaddate).toLocaleDateString()}`)
+            } else {
+                modal.find('#modal-body-image').hide()
+            }
+
+            if (config.type === 'pdf') {
+                modal.find('#modal-pdf-controls').show()
+                modal.find('#modal-pdf-viewer-canvas').show()
+                pageNum = 1;
+                pdfjsLib.getDocument(config.pdf).promise.then(function(pdfDoc_) {
+                    pdfDoc = pdfDoc_;
+                    document.getElementById('pdf-page-count').textContent = pdfDoc.numPages;
+                    renderPage(pageNum);
+                });
+            } else {
+                modal.find('#modal-pdf-controls').hide()
+                modal.find('#modal-pdf-viewer-canvas').hide()
+            }
+
+            if (config.type === 'frm') {
+                modal.find('#frm-modal-content').show().attr('src', `${config.src}?modal=true`)
+                modal.find('.modal-dialog').attr('class', `modal-${config.size}`)
+                modal.find('#modal-body-desc').hide().html(`"${config.description}"`)
+                modal.find('#modal-edit-link').hide()
+                modal.find('#modal-download-link').hide()
+                modal.find('.modal-desc-container').hide()
+            } else {
+                modal.find('#frm-modal-content').hide()
+                modal.find('#modal-edit-link').show().attr('href', `/images/edit/${config.id}`)
+                modal.find('#modal-download-link').show().attr('href', `${config.image}`)
+                modal.find('.modal-desc-container').show()
+            }
+
         })
 
-        $('#pdfModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget) // Button that triggered the modal
-            var config = button.data()
-            var modal  = $(this)
-            modal.find('.modal-title').text(button.data('name'))
-            modal.find('#modal-edit-link').attr('href', `/images/edit/${config.id}`)
-
-            pageNum = 1;
-
-            pdfjsLib.getDocument(config.pdf).promise.then(function(pdfDoc_) {
-                pdfDoc = pdfDoc_;
-                document.getElementById('pageCount').textContent = pdfDoc.numPages;
-                renderPage(pageNum);
-            });
-        });
-
-        $('#iframeModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget) // Button that triggered the modal
-            var config = button.data()
-            var modal  = $(this)
-            modal.find('.modal-dialog').attr('class', `modal-${config.size}`)
-            modal.find('#iframe-modal-content').attr('src', `${config.src}?modal=true`)
-        });
-
-        var pdfjsLib = window['pdfjs-dist/build/pdf'];  // Initialize pdfjsLib
+        var pdfjsLib = window['pdfjs-dist/build/pdf'];
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf.worker.min.js';
 
         var pdfDoc = null,
             pageNum = 1,
             pageRendering = false,
             pageNumPending = null,
-            canvas = document.getElementById('pdfViewerCanvas'),
+            canvas = document.getElementById('modal-pdf-viewer-canvas'),
             ctx = canvas.getContext('2d');
 
         function renderPage(num) {
@@ -111,16 +98,11 @@ script.
                 var viewport = page.getViewport({ scale: scale });
 
                 canvas.height = viewport.height;
-                canvas.width = viewport.width;
-
-                // Clear any existing content in the canvas
+                canvas.width  = viewport.width;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                var renderContext = {
-                    canvasContext: ctx,
-                    viewport: viewport
-                };
-                var renderTask = page.render(renderContext);
+                var renderContext = { canvasContext: ctx, viewport: viewport };
+                var renderTask    = page.render(renderContext);
 
                 renderTask.promise.then(function() {
                 pageRendering = false;
@@ -130,8 +112,8 @@ script.
                 }
                 });
             });
-            document.getElementById('pageNum').textContent   = pageNum;
-            document.getElementById('pageCount').textContent = pdfDoc.numPages;
+            document.getElementById('pdf-page-number').textContent = pageNum;
+            document.getElementById('pdf-page-count').textContent  = pdfDoc.numPages;
         }
 
         function queueRenderPage(num) {
@@ -162,37 +144,25 @@ script.
             queueRenderPage(pageNum);
         }
 
-        document.getElementById('prevPage').addEventListener('click', onPrevPage);
-        document.getElementById('nextPage').addEventListener('click', onNextPage);
+        document.getElementById('modal-pdf-prev').addEventListener('click', onPrevPage);
+        document.getElementById('modal-pdf-next').addEventListener('click', onNextPage);
 
-        $("#pdfModal .modal-content").draggable({ handle: ".modal-header" });
-        $("#pdfModal .modal-content").resizable({ alsoResize: ".modal-dialog" });
-        $("#imgModal .modal-content").draggable({ handle: ".modal-header" });
-        $("#imgModal .modal-content").resizable({ alsoResize: ".modal-dialog" });
-        $("#iframeModal .modal-content").draggable({ handle: ".modal-header" });
-        $("#iframeModal .modal-content").resizable({ alsoResize: ".modal-dialog" });
+        $("#modal .modal-content").draggable({ handle: ".modal-header" });
     });
 
     document.addEventListener('DOMContentLoaded', function() {
         var holdDeleteBtn = document.getElementById('holdDeleteBtn');
-        var deleteForm = document.getElementById('deleteForm');
+        var deleteForm    = document.getElementById('deleteForm');
         var holdTimeout;
 
         holdDeleteBtn.addEventListener('mousedown', function() {
         holdTimeout = setTimeout(function() {
-            if (confirm('Are you sure you want to delete this page?')) {
-                deleteForm.submit();
-            }
-        }, 3000); // 3 seconds hold time
+            if (confirm('Are you sure you want to delete this page?')) { deleteForm.submit(); }
+        }, 3000);
         });
 
-        holdDeleteBtn.addEventListener('mouseup', function() {
-            clearTimeout(holdTimeout);
-        });
-
-        holdDeleteBtn.addEventListener('mouseleave', function() {
-            clearTimeout(holdTimeout);
-        });
+        holdDeleteBtn.addEventListener('mouseup',    function() { clearTimeout(holdTimeout); });
+        holdDeleteBtn.addEventListener('mouseleave', function() { clearTimeout(holdTimeout); });
     });
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -208,18 +178,11 @@ script.
     });
 
     document.addEventListener('DOMContentLoaded', function() {
-        const iframeModal = document.getElementById('iframeModal');
-        const iframeModalContent = document.getElementById('iframeModalContent');
+        const iframeModal = document.getElementById('frmModal');
+        const iframeModalContent = document.getElementById('frmModalContent');
 
-        // Set the iframe source when the modal is shown
-        iframeModal.addEventListener('show.bs.modal', function () {
-        iframeModalContent.src = '/templates/add';
-        });
-
-        // Clear the iframe source when the modal is hidden (optional)
-        iframeModal.addEventListener('hidden.bs.modal', function () {
-        iframeModalContent.src = '';
-        });
+        iframeModal.addEventListener('show.bs.modal',   function () { iframeModalContent.src = '/templates/add'; });
+        iframeModal.addEventListener('hidden.bs.modal', function () { iframeModalContent.src = ''; });
     });
 
         // Example JavaScript for updating progress bar (for AJAX upload)

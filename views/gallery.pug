@@ -1,6 +1,6 @@
 include partials/header
 
-button.btn.btn-success.pull-right(data-toggle='modal', data-target='#iframeModal', data-src='/upload' data-size='lg')
+button.btn.btn-success.pull-right(data-toggle='modal', data-target='#modal', data-src='/upload' data-size='lg')
   i(class=`fas fa-plus`)
 
 h2 Gallery
@@ -8,7 +8,7 @@ if images.length
   .row
     each image in images
       .col-md-2
-        a(href='#', data-toggle='modal', data-id=`${image._id}` data-target='#imgModal', data-image=`/uploads/${image.filename}`, data-name=image.name, data-description=image.description, data-uploaddate=image.uploadDate, data-owner=image.owner)
+        a(href='#', data-type='img', data-toggle='modal', data-id=`${image._id}` data-target='#modal', data-image=`/uploads/${image.filename}`, data-name=image.name, data-description=image.description, data-uploaddate=image.uploadDate, data-owner=image.owner)
           img(src=`/uploads/${image.filename}`, alt=image.name || 'Image', class='img-thumbnail', style='max-width: 100%; height: auto;')
         p
           span=image.name || 'No Name'
@@ -30,7 +30,7 @@ if pdfs.length
                 if pdf.category
                   span.text-muted #{pdf.category.name}
               td 
-                a(href='#', data-toggle='modal', data-id=`${pdf._id}` data-target='#pdfModal', data-pdf=`/uploads/${pdf.filename}`, data-name=pdf.name, data-description=pdf.description, data-uploaddate=pdf.uploadDate, data-owner=pdf.owner)
+                a(href='#', data-type='pdf', data-toggle='modal', data-id=`${pdf._id}` data-target='#modal', data-pdf=`/uploads/${pdf.filename}`, data-name=pdf.name, data-description=pdf.description, data-uploaddate=pdf.uploadDate, data-owner=pdf.owner)
                   span=pdf.name || 'No Name'
 
 include partials/footer
