@@ -1,21 +1,18 @@
 const express = require('express');
-const router = express.Router();
-const multer = require('multer');
-const path = require('path');
+const router  = express.Router();
+const multer  = require('multer');
+const path    = require('path');
+const Page    = require('../models/page');
+const Image   = require('../models/image');
+const Log     = require('../models/log');
 const { ensureAuthenticated, ensureAdmin } = require('../middleware/auth');
-const Page = require('../models/page');
-const Image = require('../models/image');
-const Log = require('../models/log');
 
+console.log('Log', Log)
 
 // Set up Multer storage
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
+  destination: function (req, file, cb) { cb(null, 'uploads/'); },
+  filename: function (req, file, cb)    { cb(null, Date.now() + path.extname(file.originalname)); }
 });
 
 // Initialize upload middleware
@@ -48,10 +45,9 @@ router.get('/page/:id', async (req, res) => {
 
     const payload = { title: page.title, page }
 
-    if (page.template && page.template.location) payload.template = page.template.location
-
     var target = `missing`
-    if (page.template && page.template.name) target = `templates/${page.template.location}`
+    if (page.template && page.template.location) payload.template = page.template.location
+    if (page.template && page.template.name)     target = `templates/${page.template.location}`
 
     res.render(target, payload);
   } catch (err) {
@@ -64,9 +60,6 @@ router.get('/page/:id', async (req, res) => {
 router.get('/pages/edit/:id', ensureAuthenticated, async (req, res) => {
   try {
     const page = await Page.findById(req.params.id).populate('template').populate('category');
-    // if (page.template._id !== undefined) page.template.id = page.template._id.toString()
-    // if (page.category._id !== undefined) page.category.id = page.category._id.toString()
-    console.log('page', page)
     res.render('edit', { title: 'Edit Page', page });
   } catch (err) {
     console.error(err);
@@ -78,7 +71,6 @@ router.get('/pages/edit/:id', ensureAuthenticated, async (req, res) => {
 router.post('/pages', ensureAuthenticated, async (req, res) => {
   console.log('Pages')
   const { title, content, category, template } = req.body;
-  console.log('template', template)
 
   try {
     const newPage = new Page({ title, content, category, template });
@@ -94,17 +86,15 @@ router.post('/pages', ensureAuthenticated, async (req, res) => {
 });
 
 router.post('/add', ensureAuthenticated, ensureAdmin, async (req, res) => {
+  const { title, content, category, template } = req.body;
   try {
-    const { title, content, category, template } = req.body;
     const page = new Page({ title, content, category, template });
     await page.save();
 
-    const log = new Log({ message: `Page created: ${title}` });
-    await log.save();
+    Log.postLog(`Page: ${title} (${req.params.id})`, 'Create', true)
     res.redirect('/');
-  } catch (error) {
-    const log = new Log({ message: `Page creation error: ${error}` });
-    await log.save();
+  } catch (err) {
+    Log.postLog(`Page: ${title} (${req.params.id}) - ${err}`, 'Create')
     res.redirect('/logs');
   }
 });
@@ -114,23 +104,20 @@ router.get('/upload', ensureAuthenticated, (req, res) => {
   res.render('upload', { title: 'Upload Image', error: null, success: null });
 });
 
-router.post('/edit/:id', ensureAuthenticated, async (req, res) => {
-  console.log('POST Page Edit ID')
-  try {
-    const { title, content, category, template } = req.body;
-    console.log('req.body', req.body)
+// router.post('/edit/:id', ensureAuthenticated, async (req, res) => {
+//   console.log('POST Page Edit ID')
+//   try {
+//     const { title, content, category, template } = req.body;
 
-    await Page.findByIdAndUpdate(req.params.id, { title, content, category, template });
+//     await Page.findByIdAndUpdate(req.params.id, { title, content, category, template });
 
-    const log = new Log({ message: `Page edited: ${title}` });
-    await log.save();
-
-    res.redirect(`/page/${req.params.id}`);
-  } catch (error) {
-    console.error('Error updating page:', error);
-    res.status(500).send('Internal Server Error');
-  }
-});
+//     Log.postLog(`Page edited: ${title}`, 'Edit')
+//     res.redirect(`/page/${req.params.id}`);
+//   } catch (error) {
+//     Log.postLog(`Page edited: ${title}`, 'Error')
+//     res.status(500).send('Internal Server Error');
+//   }
+// });
 
 // Route to delete a page
 router.post('/pages/delete/:id', async (req, res) => {
@@ -151,14 +138,11 @@ router.post('/pages/edit/:id', ensureAuthenticated, async (req, res) => {
   const { title, content, category, template } = req.body;
 
   try {
-    // setTimeout(async () => {
-      await Page.findByIdAndUpdate(req.params.id, { title, content, category, template });
-      req.flash('success_msg', 'Page updated successfully');
-      res.redirect(`/page/${req.params.id}`);
-    // }, 10000)
+    await Page.findByIdAndUpdate(req.params.id, { title, content, category, template });
+    Log.postLog(`Page: ${title} (${req.params.id})`, 'Edit', true)
+    res.redirect(`/page/${req.params.id}`);
   } catch (err) {
-    console.error(err);
-    req.flash('error_msg', 'Error updating page');
+    Log.postLog(`Page: ${title} (${req.params.id}) - ${err}`, 'Error')
     res.redirect(`/pages/edit/${req.params.id}`);
   }
 });

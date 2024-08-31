@@ -1,11 +1,5 @@
 include partials/header
 
-p=JSON.stringify(page, null, 2)
-
-p=page.category ? page.category._id : ''
-
-p=page.template ? page.template._id : ''
-
 form(action=`/pages/edit/${page._id}`, method='POST', onsubmit='floatingMessage("Saving changes...", "...success!", "Reloading page!")')
   table.table
     tr

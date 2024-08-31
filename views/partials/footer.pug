@@ -5,6 +5,7 @@ if (!isModal)
         p#floating-frame-message3
 
 +modalBuilder('img', 'xl')
++contextMenu()
 
 </div>
 
@@ -45,15 +46,18 @@ script.
 
             if (config.type === 'img') {
                 modal.find('#modal-body-image').show().attr('src', config.image)
-                modal.find('#modal-body-desc').html(`"${config.description}"`)
+                modal.find('#modal-body-desc').html(`${config.description || ''}`)
                 modal.find('#modal-body-extra').html(`Credit: ${config.owner} Uploaded: ${new Date(config.uploaddate).toLocaleDateString()}`)
+                modal.find('#modal-download-link').show().attr('href', `${config.image}`)
             } else {
+                modal.find('#modal-download-link').hide()
                 modal.find('#modal-body-image').hide()
             }
 
             if (config.type === 'pdf') {
                 modal.find('#modal-pdf-controls').show()
                 modal.find('#modal-pdf-viewer-canvas').show()
+                modal.find('#modal-download-link').show().attr('href', `${config.pdf}`)
                 pageNum = 1;
                 pdfjsLib.getDocument(config.pdf).promise.then(function(pdfDoc_) {
                     pdfDoc = pdfDoc_;
@@ -63,19 +67,18 @@ script.
             } else {
                 modal.find('#modal-pdf-controls').hide()
                 modal.find('#modal-pdf-viewer-canvas').hide()
+                modal.find('#modal-download-link').hide()
             }
 
             if (config.type === 'frm') {
                 modal.find('#frm-modal-content').show().attr('src', `${config.src}?modal=true`)
                 modal.find('.modal-dialog').attr('class', `modal-${config.size}`)
-                modal.find('#modal-body-desc').hide().html(`"${config.description}"`)
+                modal.find('#modal-body-desc').hide().html(`${config.description || ''}`)
                 modal.find('#modal-edit-link').hide()
-                modal.find('#modal-download-link').hide()
                 modal.find('.modal-desc-container').hide()
             } else {
                 modal.find('#frm-modal-content').hide()
                 modal.find('#modal-edit-link').show().attr('href', `/images/edit/${config.id}`)
-                modal.find('#modal-download-link').show().attr('href', `${config.image}`)
                 modal.find('.modal-desc-container').show()
             }
 
@@ -150,7 +153,20 @@ script.
         $("#modal .modal-content").draggable({ handle: ".modal-header" });
     });
 
+    
     document.addEventListener('DOMContentLoaded', function() {
+        const contextMenu = document.getElementById('customContextMenu');
+
+        document.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+            contextMenu.style.top = `${event.pageY}px`;
+            contextMenu.style.left = `${event.pageX}px`;
+            contextMenu.style.display = 'block';
+        });
+        document.addEventListener('click', function() { contextMenu.style.display = 'none'; });
+        contextMenu.addEventListener('contextmenu', function(event) { event.preventDefault(); });
+
+        //-----
         var holdDeleteBtn = document.getElementById('holdDeleteBtn');
         var deleteForm    = document.getElementById('deleteForm');
         var holdTimeout;
@@ -163,29 +179,24 @@ script.
 
         holdDeleteBtn.addEventListener('mouseup',    function() { clearTimeout(holdTimeout); });
         holdDeleteBtn.addEventListener('mouseleave', function() { clearTimeout(holdTimeout); });
-    });
 
-    document.addEventListener('DOMContentLoaded', function() {
+        //-----
         var contentTextarea = document.getElementById('content');
-        var contentPreview = document.getElementById('contentPreview');
+        var contentPreview  = document.getElementById('contentPreview');
 
-        contentTextarea.addEventListener('input', function() {
-            contentPreview.innerHTML = contentTextarea.value;
-        });
-
-        // Initialize preview with existing content
+        contentTextarea.addEventListener('input', function() { contentPreview.innerHTML = contentTextarea.value; });
         contentPreview.innerHTML = contentTextarea.value;
-    });
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const iframeModal = document.getElementById('frmModal');
+        //-----
+        const iframeModal        = document.getElementById('frmModal');
         const iframeModalContent = document.getElementById('frmModalContent');
 
         iframeModal.addEventListener('show.bs.modal',   function () { iframeModalContent.src = '/templates/add'; });
         iframeModal.addEventListener('hidden.bs.modal', function () { iframeModalContent.src = ''; });
+
     });
 
-        // Example JavaScript for updating progress bar (for AJAX upload)
+    // Example JavaScript for updating progress bar (for AJAX upload)
     document.getElementById('uploadForm').addEventListener('submit', function(event) {
         event.preventDefault();
         const formData = new FormData(this);
@@ -194,8 +205,8 @@ script.
 
         xhr.upload.onprogress = function(e) {
             if (e.lengthComputable) {
-            const percentComplete = (e.loaded / e.total) * 100;
-            document.getElementById('uploadProgress').style.width = percentComplete + '%';
+                const percentComplete = (e.loaded / e.total) * 100;
+                document.getElementById('uploadProgress').style.width = percentComplete + '%';
             }
         };
 

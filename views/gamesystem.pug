@@ -1,0 +1,17 @@
+include partials/header
+
+h1 #{gameSystem._id ? 'Edit Game System' : 'Add Game System'}
+
+form(action=gameSystem._id ? `/game-systems/edit/${gameSystem._id}` : '/game-systems/add', method='POST')
+  +formInput('name', 'text', 'Game System Name', gameSystem ? gameSystem.name : '', true)
+  +formTextarea('description', 'Description', gameSystem ? gameSystem.description : '')
+  +formInput('code', 'text', 'Short Code', gameSystem ? gameSystem.code : '', true)
+
+  +formButton(gameSystem._id ? 'Save Changes' : 'Create Game System', 'submit', 'btn-success', 'save')
+
+if gameSystem._id
+  hr
+  form(action=`/game-systems/delete/${gameSystem._id}`, method='POST')
+    +formButton('Delete', 'submit', 'btn-danger', 'trash-alt')(onclick='return confirm("Are you sure you want to delete this game system?");')
+
+include partials/footer

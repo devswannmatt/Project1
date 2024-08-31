@@ -11,7 +11,7 @@ if images.length
         a(href='#', data-type='img', data-toggle='modal', data-id=`${image._id}` data-target='#modal', data-image=`/uploads/${image.filename}`, data-name=image.name, data-description=image.description, data-uploaddate=image.uploadDate, data-owner=image.owner)
           img(src=`/uploads/${image.filename}`, alt=image.name || 'Image', class='img-thumbnail', style='max-width: 100%; height: auto;')
         p
-          span=image.name || 'No Name'
+          span=image.name || ''
           if image.category
             span.text-muted  - #{image.category.name}
 
@@ -31,6 +31,6 @@ if pdfs.length
                   span.text-muted #{pdf.category.name}
               td 
                 a(href='#', data-type='pdf', data-toggle='modal', data-id=`${pdf._id}` data-target='#modal', data-pdf=`/uploads/${pdf.filename}`, data-name=pdf.name, data-description=pdf.description, data-uploaddate=pdf.uploadDate, data-owner=pdf.owner)
-                  span=pdf.name || 'No Name'
+                  span=pdf.name || ''
 
 include partials/footer

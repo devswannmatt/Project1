@@ -4,12 +4,20 @@ h1 Logs
 table.table.table-striped
   thead
     tr
+      th State
       th Timestamp
+      th Operation
       th Message
   tbody
     each log in logs
       tr
-        td= log.timestamp.toISOString()
-        td= log.message
+        td
+          if log.success
+            i(class='fas fa-circle-check success')
+          else
+            i(class='fas fa-circle-xmark danger')
+        td=log.timestamp.toLocaleString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' })
+        td=log.type
+        td=log.message
 
 include partials/footer

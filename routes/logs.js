@@ -5,7 +5,7 @@ const { Log } = require('../models');
 
 router.get('/logs', ensureAuthenticated, ensureAdmin, async (req, res) => {
   try {
-    const logs = await Log.find().sort({ timestamp: -1 });
+    const logs = await Log.Log.find().sort({ timestamp: -1 });
     res.render('logs', { title: 'Logs', logs });
   } catch (error) {
     console.error('Error fetching logs:', error);
