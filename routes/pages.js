@@ -18,7 +18,6 @@ const storage = multer.diskStorage({
 // Initialize upload middleware
 const upload = multer({ storage: storage });
 
-// Route to render the homepage
 router.get('/', async (req, res) => {
   try {
     const pages = await Page.find();
@@ -104,21 +103,6 @@ router.get('/upload', ensureAuthenticated, (req, res) => {
   res.render('upload', { title: 'Upload Image', error: null, success: null });
 });
 
-// router.post('/edit/:id', ensureAuthenticated, async (req, res) => {
-//   console.log('POST Page Edit ID')
-//   try {
-//     const { title, content, category, template } = req.body;
-
-//     await Page.findByIdAndUpdate(req.params.id, { title, content, category, template });
-
-//     Log.postLog(`Page edited: ${title}`, 'Edit')
-//     res.redirect(`/page/${req.params.id}`);
-//   } catch (error) {
-//     Log.postLog(`Page edited: ${title}`, 'Error')
-//     res.status(500).send('Internal Server Error');
-//   }
-// });
-
 // Route to delete a page
 router.post('/pages/delete/:id', async (req, res) => {
   try {
@@ -152,15 +136,12 @@ router.post('/upload', ensureAuthenticated, upload.single('image'), async (req, 
   if (!req.file) {
     return res.render('upload', { title: 'Upload Image', error: 'No file uploaded', success: null });
   }
-
-  // Save image metadata to the database
   const newImage = new Image({filename: req.file.filename});
 
   try {
     await newImage.save();
     res.render('upload', { title: 'Upload Image', error: null, success: 'File uploaded successfully!' });
   } catch (error) {
-    console.error('Error saving image metadata:', error);
     res.render('upload', { title: 'Upload Image', error: 'Error saving image metadata', success: null });
   }
 });
@@ -168,7 +149,6 @@ router.post('/upload', ensureAuthenticated, upload.single('image'), async (req, 
 // Get gallery
 router.get('/gallery', ensureAuthenticated, async (req, res) => {
   try {
-    // Fetch all images and populate the category
     const files  = await Image.find().sort({ uploadDate: -1 }).populate('category');
     const images = filterByExtenstion(/\.(jpg|jpeg|png|gif|bmp|webp|svg)$/i, files)
     const pdfs   = filterByExtenstion(/\.(pdf)$/i, files)

@@ -65,7 +65,11 @@ mixin formButton(text, type = 'submit', extraClass = 'btn-primary', icon, id)
     else
       span= text
 
-mixin modalBuilder(type, size)
+mixin iframeModalButton(src, size)
+  button.btn.btn-success.pull-right(data-toggle='modal', data-target='#modal', data-src=`${src}` data-size=size data-type='frm')
+    i(class=`fas fa-plus`)
+
+mixin modalBuilder(size)
   div.modal.fade(id=`modal`, type=`${type}` tabindex='-1', role='dialog', aria-labelledby=`${type}ModalLabel`, aria-hidden='true')
     div.modal-dialog(class=`modal-${size}` role='document')
       div.modal-content

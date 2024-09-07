@@ -2,8 +2,7 @@ include partials/header
 
 h1 Template List
 
-button.btn.btn-success.pull-right(data-toggle='modal', data-target='#frmModal', data-src='/templates/add' data-size='lg')
-  i(class=`fas fa-plus`)
++iframeModalButton('/templates/add', 'lg')
 
 if templates.length
   ul.list-group

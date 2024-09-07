@@ -2,8 +2,7 @@ include partials/header
 
 h1 Game Systems
 
-button.btn.btn-success.pull-right(data-toggle='modal', data-target='#iframeModal', data-src='/game-systems/add' data-size='lg')
-  i(class=`fas fa-plus`)
++iframeModalButton('/game-systems/add', 'lg')
 
 if gameSystems.length
   ul.list-group

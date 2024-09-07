@@ -92,6 +92,10 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get('/', (req, res) => {
+  res.render('index');
+});
+
 app.use('/', pagesRouter);
 app.use('/', usersRouter);
 app.use('/', rolesRouter);
@@ -101,6 +105,15 @@ app.use('/', accountRouter);
 app.use('/', templateRouter);
 app.use('/', imagesRouter);
 app.use('/', gameSystemRouter);
+
+app.use((req, res, next) => {
+  res.status(404).render('404');
+});
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something went wrong!');
+});
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

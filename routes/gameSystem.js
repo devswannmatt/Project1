@@ -15,7 +15,7 @@ router.get('/game-systems/', async (req, res) => {
 
 // GET: Display form to create a new game system
 router.get('/game-systems/add', (req, res) => {
-  res.render('addGameSystem', { gameSystem: {} });
+  res.render('gamesystem', { gameSystem: {} });
 });
 
 // POST: Create a new game system
