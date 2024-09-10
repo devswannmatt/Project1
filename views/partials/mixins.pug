@@ -59,11 +59,18 @@ mixin formSelect(name, label, options, selectedValue = '', advanced = false)
           option(value=option.value selected=(option.value == selectedValue) ? 'selected' : '')= option.text
 
 mixin formButton(text, type = 'submit', extraClass = 'btn-primary', icon, id)
-  button.btn-sm(id=id type=type 'class'=extraClass data-dismiss=type)
+  button.btn-sm(id=id type=type 'class'=extraClass data-dismiss=`${type}` data-text=`${text}` )
     if icon
-      i(class=`fas fa-${icon}`)
+      i(class=`fas fa-${icon}` data-text=`${text}`)
     else
       span= text
+
+mixin simpleButton(label, text, type='primary', icon, title)
+  div(style='font-size: small;')=label
+    button.btn-sm(class=`btn-${type}` data-toggle='tooltip' title=`${title}`)
+      span=text
+      if icon
+        i(class=`fas fa-${icon}`)
 
 mixin iframeModalButton(src, size)
   button.btn.btn-success.pull-right(data-toggle='modal', data-target='#modal', data-src=`${src}` data-size=size data-type='frm')
@@ -89,7 +96,8 @@ mixin modalBuilder(size)
             span.modal-desc-text
               span#modal-body-desc
               div#modal-body-extra
-          iframe#frm-modal-content(style='width: 100%; min-height: 800px;', frameborder='0')
+          div(style='padding: 20px;')
+            iframe#frm-modal-content(style='width: 100%;', frameborder='0')
 
 mixin clearButton(field)
   button.btn.btn-sm.btn-outline-danger(type='button' onclick=`document.getElementById('${field}').value=''`)
@@ -100,8 +108,26 @@ mixin deleteButton(msg1, msg2, msg3)
     +formButton('Delete', 'submit', 'btn-danger pull-right', 'trash-alt', 'holdDeleteBtn', onsubmit=`floatingMessage("${msg1}", "${msg2}", "${msg3}")`)
 
 mixin contextMenu()
-  div#customContextMenu.context-menu
+  div#contextMenu.context-menu
+    table
+      tr
+        td
+          +simpleButton('','','clear','arrow-left','Go Back')
+        td
+          +simpleButton('','','clear','rotate-right','Reload')
+        td 
+          +simpleButton('','','clear','arrow-right','Go Forward')
+    hr
     ul
-      li: a(href='#') Edit Game System
-      li: a(href='#') Duplicate Game System
-      li: a(href='#') Delete Game System
+      a(href='./account')
+        li
+          i(class=`fas fa-fw fa-user`)
+          span(style='margin-left: 20px;')='Account'
+      a(href='./upload' data-toggle='modal', data-type='frm', data-target='#modal', data-src='/upload')
+        li
+          i(class=`fas fa-fw fa-upload`)
+          span(style='margin-left: 20px;')='Upload File'
+      a(href='#' data-toggle='modal', data-type='frm', data-target='#modal', data-src='/upload')
+        li
+          i(class=`fas fa-fw fa-bookmark`)
+          span(style='margin-left: 20px;')='Bookmark Page'

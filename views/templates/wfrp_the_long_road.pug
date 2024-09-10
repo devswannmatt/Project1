@@ -1,0 +1,24 @@
+extends ../page
+
+block content
+  .row
+    .col-lg-12
+      h4="Veronica Dapple"
+      .row 
+        .col-lg-1
+          img.img-thumbnail(src='/uploads/1725868476331.jpg')
+        .col-lg-4
+          p="This is a short descriptions"
+      .row 
+        .col-lg-12
+          tr
+            td 
+              +simpleButton('WS', '34', 'success', null, 'This is a test Tooltip')
+            td 
+              +simpleButton('BS', '34', 'primary', null, 'This is a test Tooltip')
+          hr
+  .row
+    .col-lg-1
+      img.img-thumbnail(src='/uploads/1725868476331.jpg')
+    .col-lg-5
+      p="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."

@@ -90,6 +90,14 @@ button, .btn {
   border-color: #1e7e34;
 }
 
+.btn-clear {
+  background-color: transparent;
+}
+
+.btn-clear:hover, .btn-clear:focus, .btn-clear:active {
+  background-color: #437699;
+}
+
 .navbar .navbar-expand-lg {
   background-color: #1e7e34 !important;
 }
@@ -107,12 +115,12 @@ button, .btn {
 }
 
 .navbar-nav .dropdown:hover > .nav-link {
-  background-color: #e9ecef; /* Optional: change background color on hover */
+  background-color: #e9ecef;
 }
 
 .dropdown-menu {
   display: none;
-  margin-top: 0; /* Adjusts the spacing of the dropdown */
+  margin-top: 0;
   transition: visibility 0.2s, opacity 0.2s linear;
 }
 
@@ -219,7 +227,7 @@ footer {
   display: none;
   position: absolute;
   z-index: 1000;
-  background-color: #ffffff;
+  background-color: #315f7d;
   border: 1px solid #cccccc;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
   padding: 10px;
@@ -233,11 +241,23 @@ footer {
 }
 
 .context-menu ul li {
-  padding: 8px 12px;
+  padding: 6px;
   cursor: pointer;
+  border-radius: 4px;
+}
+
+.context-menu a {
+  font-size: smaller;
+  color: white;
 }
 
 .context-menu ul li:hover {
-  background-color: #007bff;
+  background-color: #437699;
   color: white;
+  font-style: normal;
+}
+
+.context-menu ul li:hover a {
+  color: white;
+  text-decoration: none;
 }
