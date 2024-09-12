@@ -1,11 +1,12 @@
 include partials/header
 
-h1 Upload File
 form(action='/upload', method='POST', enctype='multipart/form-data')
   .form-group
-    label(for='image') Select image to upload
-    input.form-control(type='file', id='image', name='image', accept='image/*')
-  +formButton('Upload', 'submit', 'btn-success', 'save')
+    .custom-file-input-container
+      label(for='image') Upload File
+      input#image.form-control(type='file', name='image', accept='image/*' height='100px')
+      span#file-chosen
+  +formButton('Upload', 'submit', 'btn-success', 'upload')
 
 if error
   div.alert.alert-danger= error

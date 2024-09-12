@@ -43,7 +43,7 @@ router.post('/images/edit/:id', async (req, res) => {
 
     await image.save();
     req.flash('success_msg', 'Image updated successfully');
-    res.redirect('/gallery');
+    res.redirect('back');
   } catch (err) {
     console.error('Error editing image:', err);
     req.flash('error_msg', 'Error editing image');

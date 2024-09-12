@@ -10,7 +10,7 @@ nav.navbar.navbar-expand-lg.navbar-light
                     .dropdown-menu(aria-labelledby='navbarDropdown')
                         each page in categorizedPages[gameSystem.name]
                             a.dropdown-item(href=`/page/${page._id}`) #{page.title}
-            a.nav-link(href='/gallery') Gallery
+            a.nav-link(href='/gallery' data-context='gallery') Gallery
 
         ul.navbar-nav.ml-auto
             if user

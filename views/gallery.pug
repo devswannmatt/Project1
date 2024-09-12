@@ -9,7 +9,7 @@ if images.length
     each image in images
       .col-md-2
         a(href='#', data-type='img', data-toggle='modal', data-id=`${image._id}` data-target='#modal', data-image=`/uploads/${image.filename}`, data-name=image.name, data-description=image.description, data-uploaddate=image.uploadDate, data-owner=image.owner)
-          img(src=`/uploads/${image.filename}`, alt=image.name || 'Image', class='img-thumbnail', style='max-width: 100%; height: auto;')
+          img(src=`/uploads/${image.filename}`, data-context='image', data-_id=`${image._id}` alt=image.name || 'Image', class='img-thumbnail', style='max-width: 100%; height: auto;')
         p
           span=image.name || ''
           if image.category

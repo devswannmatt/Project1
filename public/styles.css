@@ -261,3 +261,43 @@ footer {
   color: white;
   text-decoration: none;
 }
+
+.context-menu li span {
+  margin-left: 20px;
+  color: white;
+}
+
+.context-menu li i {
+  color: white;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+/* Custom file input styling */
+.custom-file-input-container {
+  display: inline-block;
+  position: relative;
+  border: 1px;
+}
+
+.custom-file-input-container label {
+  display: inline-block;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.custom-file-input-container label:hover {
+  background-color: #0056b3;
+}
+
+/* Styling for chosen file */
+#file-chosen {
+  margin-left: 10px;
+  font-style: italic;
+  color: #6c757d;
+}

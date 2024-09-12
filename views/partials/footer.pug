@@ -71,30 +71,51 @@ script.
             }
 
             if (config.type === 'frm') {
-                modal.find('#frm-modal-content').show().attr('src', `${config.src}?modal=true`)
+                var iframe = modal.find('#frm-modal-content')
+                iframe.show().attr('src', `${config.src}?modal=true`)
+                iframe.on('load', function () {
+                    console.log('iframe loaded')
+                    var height = this.contentWindow.document.body.offsetHeight + 60
+                    this.style.height = `${height}px`;
+                })
                 if (config.size) modal.find('.modal-dialog').attr('class', `modal-${config.size}`)
                 modal.find('#modal-body-desc').hide().html(`${config.description || ''}`)
                 modal.find('#modal-edit-link').hide()
                 modal.find('.modal-desc-container').hide()
             } else {
-                modal.find('#frm-modal-content').hide()
+                modal.find('#frm-modal-content').hide().attr('src', '')
                 modal.find('#modal-edit-link').show().attr('href', `/images/edit/${config.id}`)
                 modal.find('.modal-desc-container').show()
             }
 
         })
 
-        var copyURL = document.getElementById('copyURL')
+        var copyURL = document.getElementById('clipboard-url')
         if (copyURL) {
             copyURL.addEventListener('click', function(event) {
-                console.log('event', event)
-                var button = $(event.target)
-                var config = button.data()
+                console.log(event)
+                var target = $(event.target)
+                var config = target.data()
+                console.log('target', target)
+                console.log('config', config)
+                
                 navigator.clipboard.writeText(config.text).then(function() {
-                    alert(`Copied URL: ${config.text}`);
+                    if (config.text == undefined) {
+                        alert(`Link not copied, text is not set on element`);
+                    } else {
+                        alert(`Copied URL: ${config.text}`);
+                    }
                 }).catch(function(error) {
                     console.error('Failed to copy text: ', error);
                 });
+            });
+        }
+
+        var fileUpload = document.getElementById('image')
+        if (fileUpload) {
+            fileUpload.addEventListener('change', function() {
+                const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
+                document.getElementById('file-chosen').textContent = fileName;
             });
         }
 
@@ -170,20 +191,40 @@ script.
     });
 
     document.addEventListener('DOMContentLoaded', function() {
-        const contextMenu = document.getElementById('contextMenu');
 
+        // ----
+
+        const contextMenu = document.getElementById('contextMenu');
+        var activeContext;
         document.addEventListener('contextmenu', function(event) {
-            console.log('contextmenu open')
             event.preventDefault();
+            const config = $(event.target).data()
+            console.log('config', config)
+            console.log('event.target', event.target)
+
             contextMenu.style.top     = `${event.pageY}px`;
             contextMenu.style.left    = `${event.pageX}px`;
             contextMenu.style.display = 'block';
+
+            if (config.context) {
+                var contextImageEdit = $('#context-image-edit')
+                contextImageEdit.data('src', `/images/edit/${config._id}`)
+                contextImageEdit.data('name', `${event.target.alt}`)
+
+                activeContext = $(`#context-${config.context}`)
+                
+                $('#clipboard-url').find('*').data('text', `${event.target.src}`)
+                $('#download-url').attr('href', `${event.target.src}`)
+                $('#maximise-url').attr('href', `${event.target.src}`)
+
+                $(activeContext).show()
+            }
         });
-        document.addEventListener('click', function() { contextMenu.style.display = 'none'; });
-        contextMenu.addEventListener('contextmenu', function(event) {
-            console.log('contextmenu click on')
-            event.preventDefault();
+        document.addEventListener('click', function() {
+            if (activeContext !== undefined) activeContext.hide()
+            contextMenu.style.display = 'none';
         });
+        contextMenu.addEventListener('contextmenu', (event) => { event.preventDefault(); });
 
         //-----
         var holdDeleteBtn = document.getElementById('holdDeleteBtn');
@@ -231,3 +272,7 @@ script.
             });
         }
     });
+
+    function pageReload()  { location.reload() }
+    function pageBack()    { history.back() }
+    function pageForward() { history.forward() }

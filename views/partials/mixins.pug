@@ -65,12 +65,12 @@ mixin formButton(text, type = 'submit', extraClass = 'btn-primary', icon, id)
     else
       span= text
 
-mixin simpleButton(label, text, type='primary', icon, title)
-  div(style='font-size: small;')=label
-    button.btn-sm(class=`btn-${type}` data-toggle='tooltip' title=`${title}`)
-      span=text
-      if icon
-        i(class=`fas fa-${icon}`)
+mixin simpleButton(config, onclick)
+  div(style='font-size: small;')=config.label ? config.label : ''
+    button.btn-sm(class=`btn-${config.type}` data-toggle='tooltip' title=`${config.title}` onclick=onclick)
+      span=config.text
+      if config.icon
+        i(class=`fas fa-${config.icon}`)
 
 mixin iframeModalButton(src, size)
   button.btn.btn-success.pull-right(data-toggle='modal', data-target='#modal', data-src=`${src}` data-size=size data-type='frm')
@@ -96,7 +96,7 @@ mixin modalBuilder(size)
             span.modal-desc-text
               span#modal-body-desc
               div#modal-body-extra
-          div(style='padding: 20px;')
+          div()
             iframe#frm-modal-content(style='width: 100%;', frameborder='0')
 
 mixin clearButton(field)
@@ -112,22 +112,40 @@ mixin contextMenu()
     table
       tr
         td
-          +simpleButton('','','clear','arrow-left','Go Back')
+          +simpleButton({ type:'clear', icon:'arrow-left', title:'Go Back' }, 'pageBack()')
         td
-          +simpleButton('','','clear','rotate-right','Reload')
+          +simpleButton({ type:'clear', icon:'rotate-right', title:'Reload' }, 'pageReload()')
         td 
-          +simpleButton('','','clear','arrow-right','Go Forward')
-    hr
+          +simpleButton({ type:'clear', icon:'arrow-right', title:'Go Forward' }, 'pageForward()')
     ul
       a(href='./account')
         li
           i(class=`fas fa-fw fa-user`)
-          span(style='margin-left: 20px;')='Account'
+          span='Account'
       a(href='./upload' data-toggle='modal', data-type='frm', data-target='#modal', data-src='/upload')
         li
           i(class=`fas fa-fw fa-upload`)
-          span(style='margin-left: 20px;')='Upload File'
-      a(href='#' data-toggle='modal', data-type='frm', data-target='#modal', data-src='/upload')
+          span='Upload File'
+      a(href='#')
         li
           i(class=`fas fa-fw fa-bookmark`)
-          span(style='margin-left: 20px;')='Bookmark Page'
+          span='Bookmark Page'
+    div#context-image(style='display: none;')
+      hr
+      ul
+        a#maximise-url(target="_blank")
+          li
+            i(class=`fas fa-fw fa-arrow-up-from-bracket`)
+            span='Open in New Tab'
+        a#context-image-edit(data-toggle='modal', data-type='frm', data-target='#modal', data-src='')
+          li
+            i(class=`fas fa-fw fa-edit`)
+            span='Edit Image'
+        a#download-url(download)
+          li
+            i(class=`fas fa-fw fa-download`)
+            span='Download Image'
+        a#clipboard-url
+          li
+            i(class=`fas fa-fw fa-link`)
+            span='Copy Link'
