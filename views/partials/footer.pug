@@ -1,5 +1,5 @@
 if (!isModal)
-    div#floating-frame
+    div#floating-frame(class='hidden')
         p#floating-frame-message1
         p#floating-frame-message2
         p#floating-frame-message3
@@ -96,8 +96,6 @@ script.
                 console.log(event)
                 var target = $(event.target)
                 var config = target.data()
-                console.log('target', target)
-                console.log('config', config)
                 
                 navigator.clipboard.writeText(config.text).then(function() {
                     if (config.text == undefined) {
@@ -108,14 +106,6 @@ script.
                 }).catch(function(error) {
                     console.error('Failed to copy text: ', error);
                 });
-            });
-        }
-
-        var fileUpload = document.getElementById('image')
-        if (fileUpload) {
-            fileUpload.addEventListener('change', function() {
-                const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
-                document.getElementById('file-chosen').textContent = fileName;
             });
         }
 
@@ -155,31 +145,19 @@ script.
         }
 
         function queueRenderPage(num) {
-            if (pageRendering) {
-                pageNumPending = num;
-            } else {
-                renderPage(num);
-            }
+            if (pageRendering) { pageNumPending = num } else { renderPage(num) }
         }
 
         function onPrevPage() {
-            if (pdfDoc.numPages == 1) return;
-            if (pageNum <= 1) {
-                pageNum = pdfDoc.numPages
-            } else {
-                pageNum--;
-            }
-            queueRenderPage(pageNum);
+            if (pdfDoc.numPages == 1) return
+            if (pageNum <= 1) { pageNum = pdfDoc.numPages } else { pageNum-- }
+            queueRenderPage(pageNum)
         }
 
         function onNextPage() {
-            if (pdfDoc.numPages == 1) return;
-            if (pageNum >= pdfDoc.numPages) {
-                pageNum = 1
-            } else {
-                pageNum++;
-            }
-            queueRenderPage(pageNum);
+            if (pdfDoc.numPages == 1) return
+            if (pageNum >= pdfDoc.numPages) { pageNum = 1 } else { pageNum++ }
+            queueRenderPage(pageNum)
         }
 
         var prev = document.getElementById('modal-pdf-prev')
@@ -190,89 +168,20 @@ script.
         $("#modal .modal-content").draggable({ handle: ".modal-header" });
     });
 
+    
     document.addEventListener('DOMContentLoaded', function() {
-
-        // ----
-
-        const contextMenu = document.getElementById('contextMenu');
-        var activeContext;
-        document.addEventListener('contextmenu', function(event) {
-            event.preventDefault();
-            const config = $(event.target).data()
-            console.log('config', config)
-            console.log('event.target', event.target)
-
-            contextMenu.style.top     = `${event.pageY}px`;
-            contextMenu.style.left    = `${event.pageX}px`;
-            contextMenu.style.display = 'block';
-
-            if (config.context) {
-                var contextImageEdit = $('#context-image-edit')
-                contextImageEdit.data('src', `/images/edit/${config._id}`)
-                contextImageEdit.data('name', `${event.target.alt}`)
-
-                activeContext = $(`#context-${config.context}`)
-                
-                $('#clipboard-url').find('*').data('text', `${event.target.src}`)
-                $('#download-url').attr('href', `${event.target.src}`)
-                $('#maximise-url').attr('href', `${event.target.src}`)
-
-                $(activeContext).show()
-            }
-        });
-        document.addEventListener('click', function() {
-            if (activeContext !== undefined) activeContext.hide()
-            contextMenu.style.display = 'none';
-        });
-        contextMenu.addEventListener('contextmenu', (event) => { event.preventDefault(); });
-
-        //-----
-        var holdDeleteBtn = document.getElementById('holdDeleteBtn');
-        var deleteForm    = document.getElementById('deleteForm');
-        var holdTimeout;
-
-        if (holdDeleteBtn) {
-            holdDeleteBtn.addEventListener('mousedown', function() {
-                holdTimeout = setTimeout(function() {
-                    if (confirm('Are you sure you want to delete this page?')) { deleteForm.submit(); }
-                }, 3000);
-            });
-
-            holdDeleteBtn.addEventListener('mouseup',    function() { clearTimeout(holdTimeout); });
-            holdDeleteBtn.addEventListener('mouseleave', function() { clearTimeout(holdTimeout); });
-        }
-
+        var activeContext = initContextMenu() 
+        initUploadForm()
+        initHoldDeleteButton()
         //-----
         var contentTextarea = document.getElementById('content');
         var contentPreview  = document.getElementById('contentPreview');
-
         if (contentTextarea) {
             contentTextarea.addEventListener('input', function() { contentPreview.innerHTML = contentTextarea.value; });
             contentPreview.innerHTML = contentTextarea.value;
         }
+    })
 
-        // Example JavaScript for updating progress bar (for AJAX upload)
-        var uploadForm = document.getElementById('uploadForm')
-        console.log('uploadForm', uploadForm)
-        if (uploadForm) {
-            uploadForm.addEventListener('submit', function(event) {
-                event.preventDefault();
-                const formData = new FormData(this);
-                const xhr = new XMLHttpRequest();
-                xhr.open('POST', '/upload', true);
-
-                xhr.upload.onprogress = function(e) {
-                    if (e.lengthComputable) {
-                        const percentComplete = (e.loaded / e.total) * 100;
-                        document.getElementById('uploadProgress').style.width = percentComplete + '%';
-                    }
-                };
-
-                xhr.send(formData);
-            });
-        }
-    });
-
-    function pageReload()  { location.reload() }
-    function pageBack()    { history.back() }
-    function pageForward() { history.forward() }
+include ../scripts/functions
+include ../scripts/contextMenu
+include ../scripts/uploadForm

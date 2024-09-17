@@ -1,0 +1,35 @@
+script.
+    function initContextMenu() {
+        const contextMenu = document.getElementById('contextMenu');
+        var activeContext
+        document.addEventListener('contextmenu', function(event) {
+            //- event.preventDefault();
+            const config = $(event.target).data()
+            console.log('config', config)
+            console.log('event.target', event.target)
+
+            contextMenu.style.top     = `${event.pageY}px`;
+            contextMenu.style.left    = `${event.pageX}px`;
+            contextMenu.style.display = 'block';
+
+            if (config.context) {
+                var contextImageEdit = $('#context-image-edit')
+                contextImageEdit.data('src', `/images/edit/${config._id}`)
+                contextImageEdit.data('name', `${event.target.alt}`)
+
+                activeContext = $(`#context-${config.context}`)
+                
+                $('#clipboard-url').find('*').data('text', `${event.target.src}`)
+                $('#download-url').attr('href', `${event.target.src}`)
+                $('#maximise-url').attr('href', `${event.target.src}`)
+
+                $(activeContext).show()
+            }
+        })
+        document.addEventListener('click', function() {
+            if (activeContext !== undefined) activeContext.hide()
+            contextMenu.style.display = 'none'
+        })
+        contextMenu.addEventListener('contextmenu', (event) => { event.preventDefault(); });
+        return activeContext
+    }

@@ -1,0 +1,38 @@
+script.
+    function pageReload()  { location.reload() }
+    function pageBack()    { history.back() }
+    function pageForward() { history.forward() }
+
+    function initHoldDeleteButton() {
+        var holdDeleteBtn = document.getElementById('hold-delete-button');
+        if (holdDeleteBtn) {
+            var editForm = document.getElementById('hold-delete-form');
+            var holdTimeout;3
+            holdDeleteBtn.addEventListener('mousedown', function(event) {
+                var speed = 500
+
+                $(holdDeleteBtn).css('transform', 'scale(1.20)')
+
+                holdTimeout = setTimeout(function() {
+                    $(holdDeleteBtn).css('transform', 'scale(1)')
+                    $('#hold-delete-confirm').show(200)
+
+                    setTimeout(function() {
+                        $('#hold-delete-confirm').hide(200)
+                    }, 5000)
+
+                    $('#hold-delete-confirm').on('click', () => {
+                        console.log('confirm clicked')
+                        editForm.submit();
+                    })
+                }, speed);
+            });
+
+            holdDeleteBtn.addEventListener('mouseup',    function(event) {
+                $(holdDeleteBtn).css('transform', 'scale(1)')
+                clearTimeout(holdTimeout); });
+            holdDeleteBtn.addEventListener('mouseleave', function(event) {
+                $(holdDeleteBtn).css('transform', 'scale(1)')
+                clearTimeout(holdTimeout); });
+        }
+    }

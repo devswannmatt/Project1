@@ -1,5 +1,5 @@
 //- Mixin for creating a form input
-mixin formInput(name, type, label, value = '', required = false, showClear = false)
+mixin formInput(name, type, label, value = '', required = false, showClear = false, desc = '')
   .form-group
     label(for=name) #{label}
     if showClear
@@ -10,6 +10,7 @@ mixin formInput(name, type, label, value = '', required = false, showClear = fal
           +clearButton(name)
     else
       input.form-control(type=type 'id'=name name=name value=value required=required)
+    small(class='form-text text-muted')=desc
 
 mixin multiSelect(name, labelText='', options=[], selectedOptions=[])
   .form-group
@@ -59,18 +60,19 @@ mixin formSelect(name, label, options, selectedValue = '', advanced = false)
           option(value=option.value selected=(option.value == selectedValue) ? 'selected' : '')= option.text
 
 mixin formButton(text, type = 'submit', extraClass = 'btn-primary', icon, id)
-  button.btn-sm(id=id type=type 'class'=extraClass data-dismiss=`${type}` data-text=`${text}` )
+  button.btn-sm(id=id type=type 'class'=extraClass data-dismiss=`${type}` data-text=`${text}` title=`${title}` )
     if icon
       i(class=`fas fa-${icon}` data-text=`${text}`)
     else
       span= text
 
-mixin simpleButton(config, onclick)
+mixin simpleButton(config, onclick, size = '')
   div(style='font-size: small;')=config.label ? config.label : ''
-    button.btn-sm(class=`btn-${config.type}` data-toggle='tooltip' title=`${config.title}` onclick=onclick)
-      span=config.text
+    button(id=config.id class=`btn-sm btn-${config.type} ${size}` type='button' data-toggle='tooltip' title=`${config.title}` onclick=onclick)
       if config.icon
-        i(class=`fas fa-${config.icon}`)
+        i(class=`fas fa-fw fa-${config.icon}`)
+      if config.text
+        div(style='padding-left: 4px; padding-right: 4px;')=config.text
 
 mixin iframeModalButton(src, size)
   button.btn.btn-success.pull-right(data-toggle='modal', data-target='#modal', data-src=`${src}` data-size=size data-type='frm')
@@ -122,7 +124,7 @@ mixin contextMenu()
         li
           i(class=`fas fa-fw fa-user`)
           span='Account'
-      a(href='./upload' data-toggle='modal', data-type='frm', data-target='#modal', data-src='/upload')
+      a(href='./upload' data-toggle='modal', data-type='frm', data-target='#modal', data-src='/upload' data-name='Upload File')
         li
           i(class=`fas fa-fw fa-upload`)
           span='Upload File'

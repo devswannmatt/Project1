@@ -11,10 +11,13 @@ body {
   padding: 20px;
   background-color: #ecf1f8;
   border-radius: 8px;
+  /* display: flex; */
+  /* justify-content: space-between; */
 }
 
 .pull-right {
   float: right;
+  /* margin-left: auto; */
 }
 
 h1, h2, h3 {
@@ -60,6 +63,10 @@ button, .btn {
   width: 38px;
   height: 38px;
   margin-left: 4px;
+}
+
+.wide {
+  min-width: 100px !important;
 }
 
 .btn-danger {
@@ -271,33 +278,17 @@ footer {
   color: white;
 }
 
-input[type="file"] {
+.hidden {
   display: none;
 }
 
-/* Custom file input styling */
-.custom-file-input-container {
-  display: inline-block;
-  position: relative;
-  border: 1px;
+#hold-delete-button {
+  transition: transform 1s;
 }
 
-.custom-file-input-container label {
-  display: inline-block;
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.custom-file-input-container label:hover {
-  background-color: #0056b3;
-}
-
-/* Styling for chosen file */
-#file-chosen {
-  margin-left: 10px;
-  font-style: italic;
-  color: #6c757d;
+.file-lg {
+  height: 100px;
+  padding: 10px;
+  background-color:#bbcdd1d0;
+  border-radius: 8px;
 }

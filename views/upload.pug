@@ -2,10 +2,8 @@ include partials/header
 
 form(action='/upload', method='POST', enctype='multipart/form-data')
   .form-group
-    .custom-file-input-container
-      label(for='image') Upload File
-      input#image.form-control(type='file', name='image', accept='image/*' height='100px')
-      span#file-chosen
+    label(for='image') Drop file here to upload
+    input.form-control-file(class='file-lg' type='file', name='image', accept='image/*')
   +formButton('Upload', 'submit', 'btn-success', 'upload')
 
 if error
