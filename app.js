@@ -7,6 +7,7 @@ const passport         = require('passport');
 const flash            = require('connect-flash');  // Import connect-flash
 const LocalStrategy    = require('passport-local').Strategy;
 const populateNavData  = require('./middleware/populateNavData');
+
 const pagesRouter      = require('./routes/pages');
 const usersRouter      = require('./routes/users');
 const rolesRouter      = require('./routes/roles');
@@ -16,6 +17,8 @@ const accountRouter    = require('./routes/account');
 const templateRouter   = require('./routes/templates');
 const imagesRouter     = require('./routes/images');
 const gameSystemRouter = require('./routes/gameSystem');
+
+const wfrpItems = require('./routes/wfrp/wfrpItems');
 
 const app = express();
 const port = 3000;
@@ -105,6 +108,7 @@ app.use('/', accountRouter);
 app.use('/', templateRouter);
 app.use('/', imagesRouter);
 app.use('/', gameSystemRouter);
+app.use('/', wfrpItems);
 
 app.use((req, res, next) => {
   res.status(404).render('404');
