@@ -1,10 +1,10 @@
 const express  = require('express');
 const router   = express.Router();
-const WFRPItem = require('../../models/wfrp/wfrpItem');
+const WFRPSources = require('../../models/wfrp/wfrpSources');
 
-router.get('/wfrp/items', async (req, res) => {
+router.get('/wfrp/sources', async (req, res) => {
   try {
-    const items = await WFRPItem.find().populate('sources.source')
+    const items = await WFRPSources.find();
     res.send(items);
   } catch (err) {
     console.error(err);

@@ -18,7 +18,8 @@ const templateRouter   = require('./routes/templates');
 const imagesRouter     = require('./routes/images');
 const gameSystemRouter = require('./routes/gameSystem');
 
-const wfrpItems = require('./routes/wfrp/wfrpItems');
+const wfrpItems   = require('./routes/wfrp/wfrpItems');
+const wfrpSources = require('./routes/wfrp/wfrpSources');
 
 const app = express();
 const port = 3000;
@@ -109,6 +110,7 @@ app.use('/', templateRouter);
 app.use('/', imagesRouter);
 app.use('/', gameSystemRouter);
 app.use('/', wfrpItems);
+app.use('/', wfrpSources);
 
 app.use((req, res, next) => {
   res.status(404).render('404');
