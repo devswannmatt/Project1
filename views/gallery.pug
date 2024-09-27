@@ -31,6 +31,6 @@ if pdfs.length
                   span.text-muted #{pdf.category.name}
               td 
                 a(href='#', data-type='pdf', data-toggle='modal', data-id=`${pdf._id}` data-target='#modal', data-pdf=`/uploads/${pdf.filename}`, data-name=pdf.name, data-description=pdf.description, data-uploaddate=pdf.uploadDate, data-owner=pdf.owner)
-                  span=pdf.name || ''
+                  span=pdf.name || `Missing Name`
 
 include partials/footer

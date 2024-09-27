@@ -11,7 +11,7 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // List of game systems to populate
 const gameSystems = [
-  { code: 'wh', name: 'Warhammer', description: 'Fantasy battles game' },
+  { code: 'wfrp', name: 'WFRP', description: 'Warhammer Fantasy Roleplay 4e' },
   { code: 'w40k', name: 'Warhammer 40,000', description: 'Sci-fi battles game' },
   { code: 'nec', name: 'Necromunda', description: 'Gang warfare in the underhive' },
   { code: 'mor', name: 'Mordheim', description: 'Fantasy skirmish game' },

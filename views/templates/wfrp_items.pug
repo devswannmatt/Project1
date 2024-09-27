@@ -1,0 +1,24 @@
+extends ../page
+
+block content
+  table.table-striped
+    tr
+      th='Name'
+      th='Description'
+      th='Price'
+      th='Enc'
+      th(colspan="2")='Source'
+    each item in wfrpItems
+      tr
+        td=item.name
+        td=item.desc
+        td=item.price
+        td=item.enc
+        each source in item.sources
+          td
+            span=`${source.source.name}`
+              each page in source.pages
+                if source.source.name == 'Up in Arms'
+                  a(href="#" data-type="pdf" data-toggle="modal" data-id="66f5e357ccb58423870ba213" data-target="#modal" data-pdf="/uploads/1727390551659.pdf" data-name="Up in Arms" data-description="" data-uploaddate="2024-09-26T22:42:31.702Z" data-owner=""  data-page=`${page}`)=` ${page}`
+                if source.source.name == 'WFRP Core Rulebook'
+                  a(href="#" data-type="pdf" data-toggle="modal" data-id="66f5db52ccb58423870b7111" data-target="#modal" data-pdf="/uploads/1727388498152.pdf" data-name="WFRP Core Rulebook" data-description="" data-uploaddate="2024-09-26T22:08:18.437Z" data-owner="" data-page=`${page}`)=` ${page}`

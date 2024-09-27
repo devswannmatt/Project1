@@ -59,6 +59,10 @@ script.
                 modal.find('#modal-pdf-viewer-canvas').show()
                 modal.find('#modal-download-link').show().attr('href', `${config.pdf}`)
                 pageNum = 1;
+                if (config.page !== undefined) {
+                    pageNum = config.page;
+                }
+                
                 pdfjsLib.getDocument(config.pdf).promise.then(function(pdfDoc_) {
                     pdfDoc = pdfDoc_;
                     document.getElementById('pdf-page-count').textContent = pdfDoc.numPages;
