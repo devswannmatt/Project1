@@ -9,7 +9,7 @@ nav.navbar.navbar-expand-lg.navbar-light
                     a#navbarDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')= gameSystem.name
                     .dropdown-menu(aria-labelledby='navbarDropdown')
                         each page in categorizedPages[gameSystem.name]
-                            a.dropdown-item(href=`/page/${page._id}`) #{page.title}
+                            a.dropdown-item(href=`/page/${page.url}`) #{page.title}
             a.nav-link(href='/gallery' data-context='gallery') Gallery
 
         ul.navbar-nav.ml-auto

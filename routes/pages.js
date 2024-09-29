@@ -11,8 +11,8 @@ console.log('Log', Log)
 
 // Set up Multer storage
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) { cb(null, 'uploads/'); },
-  filename: function (req, file, cb)    { cb(null, Date.now() + path.extname(file.originalname)); }
+  destination: function (req, file, cb) { cb(null, 'uploads/') },
+  filename:    function (req, file, cb) { cb(null, Date.now() + path.extname(file.originalname)) }
 });
 
 // Initialize upload middleware
@@ -47,6 +47,8 @@ router.get('/page/:id', async (req, res) => {
     var target = `missing`
     if (page.template && page.template.location) payload.template = page.template.location
     if (page.template && page.template.name)     target = `templates/${page.template.location}`
+    // if (page.query) target += `?${page.query}`
+    // console.log('target', target)
 
     res.render(target, payload);
   } catch (err) {
@@ -119,10 +121,10 @@ router.post('/pages/delete/:id', async (req, res) => {
 // Update an existing page
 router.post('/pages/edit/:id', ensureAuthenticated, async (req, res) => {
   console.log('Update')
-  const { title, content, category, template } = req.body;
+  const { title, content, category, template, query } = req.body;
 
   try {
-    await Page.findByIdAndUpdate(req.params.id, { title, content, category, template });
+    await Page.findByIdAndUpdate(req.params.id, { title, content, category, template, query });
     Log.postLog(`Page: ${title} (${req.params.id})`, 'Edit', true)
     res.redirect(`/page/${req.params.id}`);
   } catch (err) {

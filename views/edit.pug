@@ -7,6 +7,9 @@ form(action=`/pages/edit/${page._id}`, method='POST', onsubmit='floatingMessage(
         +formInput('title', 'text', 'Title', page ? page.title : '', true, true)
     tr
       td
+        +formInput('query', 'text', 'Query', page ? page.query : '', true, true)
+    tr
+      td
         +formSelect('category', 'Category', gameSystems.map(gs => ({ value: gs._id, text: gs.name })), page.category ? page.category._id.toString() : '', true)
     tr
       td

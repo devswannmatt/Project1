@@ -20,6 +20,9 @@ const PageSchema = new Schema({
     ref: 'Template',
     required: true
   },
+  query: {
+    type: String
+  },
   createdAt: {
     type: Date,
     default: Date.now

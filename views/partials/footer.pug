@@ -60,7 +60,7 @@ script.
                 modal.find('#modal-download-link').show().attr('href', `${config.pdf}`)
                 pageNum = 1;
                 if (config.page !== undefined) {
-                    pageNum = config.page;
+                    pageNum = config.page
                 }
                 
                 pdfjsLib.getDocument(config.pdf).promise.then(function(pdfDoc_) {
