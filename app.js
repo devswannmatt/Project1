@@ -1,37 +1,24 @@
-const express          = require('express');
-const session          = require('express-session');
-const path             = require('path');
-const bodyParser       = require('body-parser');
-const MongoStore       = require('connect-mongo');
-const passport         = require('passport');
-const flash            = require('connect-flash');
-const LocalStrategy    = require('passport-local').Strategy;
-
-const pagesRouter      = require('./routes/pages');
-const usersRouter      = require('./routes/users');
-const rolesRouter      = require('./routes/roles');
-const logsRouter       = require('./routes/logs');
-const authRouter       = require('./routes/auth');
-const accountRouter    = require('./routes/account');
-const templateRouter   = require('./routes/templates');
-const imagesRouter     = require('./routes/images');
-const gameSystemRouter = require('./routes/gameSystem');
-
-const wfrpItems        = require('./routes/wfrp/wfrpItems');
-const wfrpSources      = require('./routes/wfrp/wfrpSources');
-
-const populateData     = require('./middleware/populateData');
+const express       = require('express');
+const session       = require('express-session');
+const flash         = require('connect-flash');
+const path          = require('path');
+const bodyParser    = require('body-parser');
+const passport      = require('passport');
+const MongoStore    = require('connect-mongo');
+const LocalStrategy = require('passport-local').Strategy;
+const populateData  = require('./middleware/populateData');
 
 const app   = express()
 const port  = 3000
 const mongo = { secret: 'b77f0fb7aba13547f30493569980c924ab18111a5ce0ed09507c135330216e1647fde3ec4f2e351f26845ccac08c24cc25f36d482d1a198ff46a65e5021d8e9d', resave: false, saveUninitialized: false, store: MongoStore.create({ mongoUrl: 'mongodb://127.0.0.1:27017/config'})}
 
-const { Page, User, connectDB } = require('./models');
+const { Page, User, connectMongo } = require('./models');
 
-connectDB();
+connectMongo();
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static('uploads'));
@@ -54,34 +41,30 @@ passport.use(new LocalStrategy(async (username, password, done) => {
 }));
 
 passport.serializeUser((user, done) => done(null, user.id));
+passport.deserializeUser(async (id, done) => { try { done(null, await User.findById(id)) } catch (err) { done(err) } })
 
-passport.deserializeUser(async (id, done) => {
-  try {
-    done(null, await User.findById(id));
-  } catch (err) {
-    done(err);
-  }
-});
-
-// Middleware to fetch pages for navigation
 app.use(async (req, res, next) => {
   try {
-    res.locals.success_msg = req.flash('success_msg');
-    res.locals.error_msg   = req.flash('error_msg');
-    res.locals.error       = req.flash('error');
-    res.locals.user        = req.user || null;
-    res.locals.pages       = await Page.find();
+    res.locals.success = req.flash('success');
+    res.locals.error   = req.flash('error');
+    res.locals.user    = req.user || null;
+    res.locals.pages   = await Page.find();
+    console.log('res.locals', res.locals)
     next();
   } catch (error) {
     next(error);
   }
 });
 
-// Middleware to make user available in templates
 app.use((req, res, next) => {
   res.locals.user = req.user;
   next();
 });
+
+const { pagesRouter, usersRouter, rolesRouter, logsRouter, authRouter, accountRouter, templateRouter, imagesRouter, gameSystemRouter }  = require('./routes');
+
+const wfrpItems        = require('./routes/wfrp/wfrpItems');
+const wfrpSources      = require('./routes/wfrp/wfrpSources');
 
 app.get('/', (req, res) => { res.render('index'); });
 app.use('/', pagesRouter);
@@ -99,4 +82,7 @@ app.use('/', wfrpSources);
 app.use((req, res, next)      => { res.status(404).render('404') });
 app.use((err, req, res, next) => { res.status(500).send('Something went wrong!') });
 
-app.listen(port, () => { console.log(`The program booted up at http://localhost:${port}`) });
+app.listen(port, () => {
+  console.log(`[APP  ] Starting on Port ${port}...`)
+  console.log(`[APP  ] Started http://localhost:${port})`)
+});

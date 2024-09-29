@@ -1,3 +1,6 @@
+// const { GameSystem, Template, Page, File } = require('../models')
+// const { WFRPItem } = require('../models/wfrp')
+
 const GameSystem  = require('../models/gameSystem');
 const Template    = require('../models/template')
 const Page        = require('../models/page');
@@ -6,7 +9,6 @@ const File        = require('../models/image');
 
 async function populateData(req, res, next) {
   let query = getQueryParams(`${req.protocol}://${req.get('host')}${req.originalUrl}`, 'data')
-  console.log(query)
   try {
     const gameSystems = await GameSystem.find();
     
@@ -37,9 +39,7 @@ async function categorizedPages(gameSystems) {
   });
   
   Object.keys(categorizedPages).forEach((category) => {
-    console.log('category', category)
     categorizedPages[category].forEach((page) => {
-      console.log(page)
       if (page.query == undefined) { page.query = '' } else { page.query = `?${page.query}` }
       page.url = `${page._id}${page.query}`
     })

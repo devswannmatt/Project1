@@ -184,6 +184,9 @@ script.
             contentTextarea.addEventListener('input', function() { contentPreview.innerHTML = contentTextarea.value; });
             contentPreview.innerHTML = contentTextarea.value;
         }
+
+        setTimeout(() => { $('#login-response').hide(250) }, 4000);
+
     })
 
 include ../scripts/functions

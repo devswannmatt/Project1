@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Image = require('../models/image');
-const GameSystem = require('../models/gameSystem');
+const { GameSystem, Image } = require('../models')
 
 router.get('/images/edit/:id', async (req, res) => {
   try {
