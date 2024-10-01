@@ -2,14 +2,20 @@ const express  = require('express');
 const router   = express.Router();
 const passport = require('passport');
 const { User } = require('../models');
-const flash    = require('connect-flash');
 
-// Register page
-router.get('/register', (req, res) => {
-  res.render('register', { title: 'Register' });
+router.get('/register', (req, res) => res.render('register', { title: 'Register', error: res.locals.error, error: res.locals.success }));
+router.get('/login',    (req, res) => {
+  try {
+    console.log('res.locals.error', res.locals.error)
+    var error = ''
+    if (res.locals.error[0] !== undefined && res.locals.error[0].msg !== undefined) error = res.locals.error[0].msg
+    res.render('login', { title: 'Login', error: error })
+  } catch (error) {
+    res.send(error)
+  }
+
 });
 
-// Handle user registration
 router.post('/register', async (req, res) => {
   try {
     const { username, password, email } = req.body;
@@ -24,21 +30,23 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Login page
-router.get('/login', (req, res) => {
-  console.log(req.flash('error'))
-  console.log(res.locals.error)
-  res.render('login', { title: 'Login', error: res.locals.error });
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) return next(err)
+
+    if (!user) {
+      req.flash('error', { log: `User (${req.body.username}) login failure`, msg: `Username or password is incorrect, please try again...`});
+      return res.redirect('/login');
+    }
+
+    req.logIn(user, (err) => {
+      if (err) return next(err)
+      req.flash('success', `Welcome back, ${req.user.username}!`);
+      return res.redirect('/');
+    });
+  })(req, res, next)
 });
 
-// Handle login
-router.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
-  failureRedirect: '/login',
-  failureFlash: 'Username or Password incorrect, please try again...'
-}));
-
-// Logout route
 router.get('/logout', (req, res) => {
   req.logout(() => {
     req.flash('success', 'You have been logged out successfully.');

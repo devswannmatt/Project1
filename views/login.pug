@@ -1,19 +1,21 @@
 include partials/header
 
-h1 Login
-
-form(action='/login', method='POST')
-  .form-group
-    label(for='username') Username:
-    input.form-control(type='text', id='username', name='username', required)
-  .form-group
-    label(for='password') Password:
-    input.form-control(type='password', id='password', name='password', required)
-  .form-group
-    if error.length
-      each err in error
-        #login-response.danger=err
-  .form-group
-    +formButton('Login', 'submit', 'btn-success', 'right-to-bracket')
+.row
+  .col-md-4
+  .col-md-4
+    h4 Login
+    form(action='/login', method='POST')
+      .form-group
+        +formInput('username', 'text', 'Username', '', true)
+      .form-group
+        +formInput('password', 'password', 'Password', '', true)
+      .form-group
+        a(href='./register')='Register'
+        span=' | '
+        a(href='./')='Recover password'
+        +formButton('Login', 'submit', 'btn-success pull-right', 'right-to-bracket')(onclick='floatingMessage("Logging in...")')
+        hr
+        if error
+          #login-response.pull-right.danger(style='display: none;')=error
 
 include partials/footer

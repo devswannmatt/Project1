@@ -15,7 +15,9 @@ async function populateData(req, res, next) {
     res.locals.gameSystems      = gameSystems;
     res.locals.pageTemplates    = await Template.find();
     res.locals.categorizedPages = await categorizedPages(gameSystems);
+    res.locals.pages            = await Page.find();
     res.locals.isModal          = req.query.modal
+    res.locals.user             = req.user || null;
 
     switch (query.data) {
       case 'wfrp':

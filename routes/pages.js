@@ -7,15 +7,11 @@ const Image   = require('../models/image');
 const Log     = require('../models/log');
 const { ensureAuthenticated, ensureAdmin } = require('../middleware/auth');
 
-console.log('Log', Log)
-
-// Set up Multer storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) { cb(null, 'uploads/') },
   filename:    function (req, file, cb) { cb(null, Date.now() + path.extname(file.originalname)) }
 });
 
-// Initialize upload middleware
 const upload = multer({ storage: storage });
 
 router.get('/', async (req, res) => {
@@ -29,12 +25,10 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/add', ensureAuthenticated, ensureAdmin, (req, res) => {
-  console.log('Add')
   res.render('add', { title: 'Add Page' });
 });
 
 router.get('/page/:id', async (req, res) => {
-  console.log('')
   try {
     const page = await Page.findById(req.params.id).populate('template').populate('category');
     if (!page) {
@@ -47,8 +41,6 @@ router.get('/page/:id', async (req, res) => {
     var target = `missing`
     if (page.template && page.template.location) payload.template = page.template.location
     if (page.template && page.template.name)     target = `templates/${page.template.location}`
-    // if (page.query) target += `?${page.query}`
-    // console.log('target', target)
 
     res.render(target, payload);
   } catch (err) {
@@ -100,12 +92,10 @@ router.post('/add', ensureAuthenticated, ensureAdmin, async (req, res) => {
   }
 });
 
-// Get upload form
 router.get('/upload', ensureAuthenticated, (req, res) => {
   res.render('upload', { title: 'Upload Image', error: null, success: null });
 });
 
-// Route to delete a page
 router.post('/pages/delete/:id', async (req, res) => {
   try {
     await Page.findByIdAndDelete(req.params.id);
@@ -118,7 +108,6 @@ router.post('/pages/delete/:id', async (req, res) => {
   }
 });
 
-// Update an existing page
 router.post('/pages/edit/:id', ensureAuthenticated, async (req, res) => {
   console.log('Update')
   const { title, content, category, template, query } = req.body;
@@ -133,7 +122,6 @@ router.post('/pages/edit/:id', ensureAuthenticated, async (req, res) => {
   }
 });
 
-// Handle image upload
 router.post('/upload', ensureAuthenticated, upload.single('image'), async (req, res) => {
   if (!req.file) {
     return res.render('upload', { title: 'Upload Image', error: 'No file uploaded', success: null });
@@ -148,7 +136,6 @@ router.post('/upload', ensureAuthenticated, upload.single('image'), async (req, 
   }
 });
 
-// Get gallery
 router.get('/gallery', ensureAuthenticated, async (req, res) => {
   try {
     const files  = await Image.find().sort({ uploadDate: -1 }).populate('category');
