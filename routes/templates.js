@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { ensureAuthenticated } = require('../middleware/auth');
+const { ensureAuthenticated, ensureAdmin } = require('../middleware/auth');
 const Template = require('../models/template');
 const fs = require('fs');
 const path = require('path');
@@ -12,7 +12,7 @@ router.get('/templates/add', ensureAuthenticated, (req, res) => {
 });
 
 // Route to get the list of templates
-router.get('/templates', async (req, res) => {
+router.get('/templates', ensureAuthenticated, async (req, res) => {
   try {
     const templates = await Template.find();
     res.render('templateList', { templates });
@@ -23,7 +23,7 @@ router.get('/templates', async (req, res) => {
 });
 
 // Route to get the edit page for a specific template
-router.get('/templates/edit/:id', async (req, res) => {
+router.get('/templates/edit/:id', ensureAuthenticated, async (req, res) => {
   try {
     const template = await Template.findById(req.params.id);
     if (!template) {
@@ -37,7 +37,7 @@ router.get('/templates/edit/:id', async (req, res) => {
 });
 
 // POST route to create a new template
-router.post('/templates/add', async (req, res) => {
+router.post('/templates/add', ensureAuthenticated, async (req, res) => {
   try {
     const { name, description, location } = req.body;
 
@@ -59,7 +59,7 @@ router.post('/templates/add', async (req, res) => {
 });
 
 // POST route to edit an existing template
-router.post('/templates/edit/:id', async (req, res) => {
+router.post('/templates/edit/:id', ensureAuthenticated, async (req, res) => {
   try {
     const { name, description, location } = req.body;
     const templateId = req.params.id;
@@ -81,7 +81,7 @@ router.post('/templates/edit/:id', async (req, res) => {
 });
 
 // Delete a template by ID
-router.post('/templates/delete/:id', async (req, res) => {
+router.post('/templates/delete/:id', ensureAuthenticated, async (req, res) => {
   try {
     const templateId = req.params.id;
     await Template.findByIdAndDelete(templateId);

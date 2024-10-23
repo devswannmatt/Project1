@@ -1,0 +1,9 @@
+script.
+    var pdfjsLib       = window['pdfjs-dist/build/pdf'],
+        pdfDoc         = null,
+        pageNum        = 1,
+        pageRendering  = false,
+        pageNumPending = null,
+        canvas         = document.getElementById('modal-pdf-viewer-canvas'),
+        ctx            = canvas.getContext('2d');
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf.worker.min.js';

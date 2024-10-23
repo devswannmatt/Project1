@@ -33,6 +33,7 @@ router.post('/account', ensureAuthenticated, async (req, res) => {
     user.gameSystems = Array.isArray(gameSystems) ? gameSystems : [gameSystems];
     await user.save();
 
+    req.flash('success', { msg: 'Account information updated' })
     res.redirect('/account');
   } catch (error) {
     console.error(error);

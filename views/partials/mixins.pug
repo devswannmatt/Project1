@@ -151,3 +151,17 @@ mixin contextMenu()
           li
             i(class=`fas fa-fw fa-link`)
             span='Copy Link'
+
+mixin actionLog()
+  if (!isModal)
+    div#floating-frame
+      div(style='margin-bottom: 4px;')=`Action Log`
+        if error.length
+          span=` (`
+          span.danger.floating-frame-errors(data-errors=error.length)='Errors: 0'
+          span=`)`
+        i(class='fa-solid fa-up-right-and-down-left-from-center float-right') 
+      if error
+        div#floating-frame-log(style='display: none;')
+          each err in error
+            div.danger=err.msg

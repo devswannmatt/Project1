@@ -1,0 +1,54 @@
+script.
+    const initModals = () => {
+        $('.modal .modal-content').draggable({ handle: ".modal-header" });
+        $('.modal').on('show.bs.modal', (event) => {
+            const button = $(event.relatedTarget);
+            const modal  = $(event.currentTarget);
+            
+            const config = button.data();
+
+            // Update modal title
+            modal.find('.modal-title').text(config.name);
+
+            // Handle image type
+            const showImage = config.type === 'img';
+            modal.find('#modal-body-image').toggle(showImage).attr('src', showImage ? config.image : '');
+            modal.find('#modal-body-desc').html(config.description || '');
+            modal.find('#modal-body-extra').html(`Credit: ${config.owner} Uploaded: ${new Date(config.uploaddate).toLocaleDateString()}`);
+            modal.find('#modal-download-link').toggle(showImage).attr('href', showImage ? config.image : '');
+
+            // Handle PDF type
+            const showPdf = config.type === 'pdf';
+            modal.find('#modal-pdf-controls, #modal-pdf-viewer-canvas').toggle(showPdf);
+            modal.find('#modal-download-link').toggle(showPdf).attr('href', showPdf ? config.pdf : '');
+
+            if (showPdf) {
+                pageNum = config.page !== undefined ? config.page : 1;
+                pdfjsLib.getDocument(config.pdf).promise.then((pdfDoc_) => {
+                    pdfDoc = pdfDoc_;
+                    document.getElementById('pdf-page-count').textContent = pdfDoc.numPages;
+                    pdfRenderPage(pageNum);
+                });
+            }
+
+            // Handle iframe type (frm)
+            const showIframe = config.type === 'frm';
+            const iframe = modal.find('#frm-modal-content');
+            iframe.toggle(showIframe).attr('src', showIframe ? `${config.src}?modal=true` : '');
+            if (showIframe) {
+                iframe.on('load', function () {
+                    const height = this.contentWindow.document.body.offsetHeight + 60;
+                    this.style.height = `${height}px`;
+                });
+                modal.find('#modal-body-desc, .modal-desc-container, #modal-edit-link').hide();
+            } else {
+                modal.find('#frm-modal-content').hide().attr('src', '');
+                modal.find('#modal-edit-link').show().attr('href', `/images/edit/${config.id}`);
+                modal.find('.modal-desc-container').show();
+            }
+
+            if (!config.size) config.size = 'xl'
+
+            modal.find('.modal-dialog').attr('class', `modal-${config.size}`);
+        });
+    }

@@ -2,19 +2,23 @@ include partials/header
 
 .form-group
   .input-group
-    img(src=`/uploads/${image.filename}`, alt=image.name || 'Image', class='img-thumbnail', style='height:250px; margin-bottom: 10px;')
-    a(href=`/uploads/${image.filename}` download)
+    if file.extension != 'pdf'
+      img(src=`/uploads/${file.filename}`, alt=file.name || 'Image', class='img-thumbnail', style='height:250px; margin-bottom: 10px;')
+    if file.extension == 'pdf'
+      getPDF(file.filename, 1)
+      canvas#modal-pdf-viewer-canvas(style='width: 250px;')
+    a(href=`/uploads/${file.filename}` download)
       +formButton('Download Copy', '', 'btn-primary', 'download')
-    +formButton(`/uploads/${image.filename}`, '', 'btn-primary', 'link', 'clipboard-url')
+    +formButton(`/uploads/${file.filename}`, '', 'btn-primary', 'link', 'clipboard-url')
   
-  form(action=`/images/edit/${image._id}`, method='POST')
-    +formInput('name', 'text', 'Image Name', image.name,'','','This is the name of the image')
-    +formTextarea('description', 'Description', image.description)
-    +formInput('owner', 'text', 'Owner', image.owner)
-    +formSelect('category', 'Category', gameSystems.map(gs => ({ value: gs._id.toString(), text: gs.name })), image.category ? image.category.toString() : '')
+  form(action=`/images/edit/${file._id}`, method='POST')
+    +formInput('name', 'text', 'Image Name', file.name,'','','This is the name of the image')
+    +formTextarea('description', 'Description', file.description)
+    +formInput('owner', 'text', 'Owner', file.owner)
+    +formSelect('category', 'Category', gameSystems.map(gs => ({ value: gs._id.toString(), text: gs.name })), file.category ? file.category.toString() : '')
     +formButton('Save Changes', 'submit', 'btn-success float-right', 'save')
   
-  form(id='hold-delete-form' action=`/images/delete/${image._id}`, method='POST')
+  form(id='hold-delete-form' action=`/images/delete/${file._id}`, method='POST')
     +simpleButton({id: 'hold-delete-button',  title: 'Hold button to Delete!', type: 'danger float-right', icon: 'trash-alt'})
     +simpleButton({id: 'hold-delete-confirm', title: 'Confirm', type: 'danger float-right hidden', text: 'Confirm?', icon: 'check'}, '', 'wide')
 

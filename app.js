@@ -46,12 +46,12 @@ passport.deserializeUser(async (id, done) => { try { done(null, await User.findB
 app.use(populateData);
 app.use(populateLog);
 
-const { pagesRouter, usersRouter, rolesRouter, logsRouter, authRouter, accountRouter, templateRouter, imagesRouter, gameSystemRouter } = require('./routes');
+const { pagesRouter, usersRouter, rolesRouter, logsRouter, authRouter, accountRouter, templateRouter, imagesRouter, gameSystemRouter, warmasterRouter } = require('./routes');
 
 const wfrpItems   = require('./routes/wfrp/wfrpItems');
 const wfrpSources = require('./routes/wfrp/wfrpSources');
 
-app.get('/', (req, res) => { res.render('index'); });
+// app.get('/', (req, res) => { res.render('index'); });
 app.use('/', pagesRouter);
 app.use('/', usersRouter);
 app.use('/', rolesRouter);
@@ -63,6 +63,7 @@ app.use('/', imagesRouter);
 app.use('/', gameSystemRouter);
 app.use('/', wfrpItems);
 app.use('/', wfrpSources);
+app.use('/', warmasterRouter);
 
 app.use((req, res, next)      => { res.status(404).render('404') });
 app.use((err, req, res, next) => {

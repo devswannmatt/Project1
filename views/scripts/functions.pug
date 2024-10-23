@@ -1,9 +1,10 @@
 script.
-    function pageReload()  { location.reload() }
-    function pageBack()    { history.back() }
-    function pageForward() { history.forward() }
 
-    function initHoldDeleteButton() {
+    const pageReload  = () => location.reload()
+    const pageBack    = () => history.back()
+    const pageForward = () => history.forward()
+
+    const initHoldDeleteButton = () => {
         var holdDeleteBtn = document.getElementById('hold-delete-button');
         if (holdDeleteBtn) {
             var editForm = document.getElementById('hold-delete-form');

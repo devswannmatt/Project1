@@ -1,195 +1,27 @@
-if (!isModal)
-    div#floating-frame(class='hidden')
-        p#floating-frame-message1
-        p#floating-frame-message2
-        p#floating-frame-message3
-
-+modalBuilder('xl')
++actionLog()
++modalBuilder()
 +contextMenu()
 
 </div>
 
 script.
 
-    function floatingMessage(message1, message2, message3) {
-        const msg1 = $('#floating-frame-message1');
-        const msg2 = $('#floating-frame-message2');
-        const msg3 = $('#floating-frame-message3');
-        msg1.text(message1).fadeIn(1000, function() {
-            setTimeout(function() {
-                msg2.text(message2).fadeIn(1000, function() {
-                    setTimeout(function() {
-                        msg3.text(message3).fadeIn(1000, function() {
-                            setTimeout(function() {
-                                msg1.fadeOut(1000);
-                                msg2.fadeOut(1000);
-                                msg3.fadeOut(1000);
-                            }, 3000);
-                        });
-                    }, 1000);
-                });
-            }, 1000);
-        });
-    }
-
-    $(document).ready(function() {
-        $(function () { $('[data-toggle="tooltip"]').tooltip(); });
-
-        $('#modal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget)
-            var config = button.data()
-            var modal  = $(this)
-
-            console.log('config', config)
-
-            modal.find('.modal-title').text(config.name)
-
-            if (config.type === 'img') {
-                modal.find('#modal-body-image').show().attr('src', config.image)
-                modal.find('#modal-body-desc').html(`${config.description || ''}`)
-                modal.find('#modal-body-extra').html(`Credit: ${config.owner} Uploaded: ${new Date(config.uploaddate).toLocaleDateString()}`)
-                modal.find('#modal-download-link').show().attr('href', `${config.image}`)
-            } else {
-                modal.find('#modal-download-link').hide()
-                modal.find('#modal-body-image').hide()
-            }
-
-            if (config.type === 'pdf') {
-                modal.find('#modal-pdf-controls').show()
-                modal.find('#modal-pdf-viewer-canvas').show()
-                modal.find('#modal-download-link').show().attr('href', `${config.pdf}`)
-                pageNum = 1;
-                if (config.page !== undefined) {
-                    pageNum = config.page
-                }
-                
-                pdfjsLib.getDocument(config.pdf).promise.then(function(pdfDoc_) {
-                    pdfDoc = pdfDoc_;
-                    document.getElementById('pdf-page-count').textContent = pdfDoc.numPages;
-                    renderPage(pageNum);
-                });
-            } else {
-                modal.find('#modal-pdf-controls').hide()
-                modal.find('#modal-pdf-viewer-canvas').hide()
-                modal.find('#modal-download-link').hide()
-            }
-
-            if (config.type === 'frm') {
-                var iframe = modal.find('#frm-modal-content')
-                iframe.show().attr('src', `${config.src}?modal=true`)
-                iframe.on('load', function () {
-                    console.log('iframe loaded')
-                    var height = this.contentWindow.document.body.offsetHeight + 60
-                    this.style.height = `${height}px`;
-                })
-                if (config.size) modal.find('.modal-dialog').attr('class', `modal-${config.size}`)
-                modal.find('#modal-body-desc').hide().html(`${config.description || ''}`)
-                modal.find('#modal-edit-link').hide()
-                modal.find('.modal-desc-container').hide()
-            } else {
-                modal.find('#frm-modal-content').hide().attr('src', '')
-                modal.find('#modal-edit-link').show().attr('href', `/images/edit/${config.id}`)
-                modal.find('.modal-desc-container').show()
-            }
-
-        })
-
-        var copyURL = document.getElementById('clipboard-url')
-        if (copyURL) {
-            copyURL.addEventListener('click', function(event) {
-                console.log(event)
-                var target = $(event.target)
-                var config = target.data()
-                
-                navigator.clipboard.writeText(config.text).then(function() {
-                    if (config.text == undefined) {
-                        alert(`Link not copied, text is not set on element`);
-                    } else {
-                        alert(`Copied URL: ${config.text}`);
-                    }
-                }).catch(function(error) {
-                    console.error('Failed to copy text: ', error);
-                });
-            });
-        }
-
-        var pdfjsLib = window['pdfjs-dist/build/pdf'];
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf.worker.min.js';
-
-        var pdfDoc = null,
-            pageNum = 1,
-            pageRendering = false,
-            pageNumPending = null,
-            canvas = document.getElementById('modal-pdf-viewer-canvas'),
-            ctx = canvas.getContext('2d');
-
-        function renderPage(num) {
-            pageRendering = true;
-            pdfDoc.getPage(num).then(function(page) {
-                var scale = 1.5;
-                var viewport = page.getViewport({ scale: scale });
-
-                canvas.height = viewport.height;
-                canvas.width  = viewport.width;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                var renderContext = { canvasContext: ctx, viewport: viewport };
-                var renderTask    = page.render(renderContext);
-
-                renderTask.promise.then(function() {
-                pageRendering = false;
-                if (pageNumPending !== null) {
-                    renderPage(pageNumPending);
-                    pageNumPending = null;
-                }
-                });
-            });
-            document.getElementById('pdf-page-number').textContent = pageNum;
-            document.getElementById('pdf-page-count').textContent  = pdfDoc.numPages;
-        }
-
-        function queueRenderPage(num) {
-            if (pageRendering) { pageNumPending = num } else { renderPage(num) }
-        }
-
-        function onPrevPage() {
-            if (pdfDoc.numPages == 1) return
-            if (pageNum <= 1) { pageNum = pdfDoc.numPages } else { pageNum-- }
-            queueRenderPage(pageNum)
-        }
-
-        function onNextPage() {
-            if (pdfDoc.numPages == 1) return
-            if (pageNum >= pdfDoc.numPages) { pageNum = 1 } else { pageNum++ }
-            queueRenderPage(pageNum)
-        }
-
-        var prev = document.getElementById('modal-pdf-prev')
-        if (prev) prev.addEventListener('click', onPrevPage);
-        var next = document.getElementById('modal-pdf-next')
-        if (next) next.addEventListener('click', onNextPage);
-
-        $("#modal .modal-content").draggable({ handle: ".modal-header" });
-    });
-
-    
-    document.addEventListener('DOMContentLoaded', function() {
-        var activeContext = initContextMenu() 
+    $(function() {
+        var activeContext = initContextMenu()
+        initModals()
         initUploadForm()
         initHoldDeleteButton()
-        //-----
-        var contentTextarea = document.getElementById('content');
-        var contentPreview  = document.getElementById('contentPreview');
-        if (contentTextarea) {
-            contentTextarea.addEventListener('input', function() { contentPreview.innerHTML = contentTextarea.value; });
-            contentPreview.innerHTML = contentTextarea.value;
-        }
+        initTooltips()
+        initErrorResponse()
+        initCopyURL()
+        initHTMLPreview()
+        initErrorCounter()
+    });
 
-        $('#login-response').show(250)
-        setTimeout(() => { $('#login-response').hide(250) }, 4000);
-
-    })
-
+include ../scripts/variables
+include ../scripts/pdfs
+include ../scripts/modals
+include ../scripts/listeners
 include ../scripts/functions
 include ../scripts/contextMenu
 include ../scripts/uploadForm

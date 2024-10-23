@@ -12,13 +12,12 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
 // List of page templates to populate
 const pageTemplates = [
   { templateName: 'basic.pug' },
-  // Add more templates here as needed
 ];
 
 // Function to populate the database
 const populateTemplate = async () => {
   try {
-    await Template.deleteMany(); // Clear existing data
+    await Template.deleteMany();
     await Template.insertMany(pageTemplates);
     console.log('Page content templates populated successfully');
     mongoose.connection.close();

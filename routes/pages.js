@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.get('/', async (req, res) => {
+router.get('/', ensureAuthenticated, async (req, res) => {
   try {
     const pages = await Page.find();
     res.render('index', { title: 'Home', pages });
@@ -28,7 +28,7 @@ router.get('/add', ensureAuthenticated, ensureAdmin, (req, res) => {
   res.render('add', { title: 'Add Page' });
 });
 
-router.get('/page/:id', async (req, res) => {
+router.get('/page/:id', ensureAuthenticated, async (req, res) => {
   try {
     const page = await Page.findById(req.params.id).populate('template').populate('category');
     if (!page) {
@@ -140,9 +140,20 @@ router.get('/gallery', ensureAuthenticated, async (req, res) => {
   try {
     const files  = await Image.find().sort({ uploadDate: -1 }).populate('category');
     const images = filterByExtenstion(/\.(jpg|jpeg|png|gif|bmp|webp|svg)$/i, files)
+
+    res.render('gallery', { title: 'Gallery', images });
+  } catch (error) {
+    console.error('Error fetching images:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+router.get('/archive', ensureAuthenticated, async (req, res) => {
+  try {
+    const files  = await Image.find().sort({ uploadDate: -1 }).populate('category')
     const pdfs   = filterByExtenstion(/\.(pdf)$/i, files)
 
-    res.render('gallery', { title: 'Gallery', images, pdfs });
+    res.render('archive', { title: 'Archive', pdfs });
   } catch (error) {
     console.error('Error fetching images:', error);
     res.status(500).send('Internal Server Error');

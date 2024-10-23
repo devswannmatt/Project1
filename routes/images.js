@@ -1,23 +1,28 @@
 const express = require('express');
 const router  = express.Router();
 const Image   = require('../models/image')
-const GameSystem   = require('../models/gameSystem')
+const GameSystem = require('../models/gameSystem')
 // const { GameSystem, Image } = require('../models/index')
 
 router.get('/images/edit/:id', async (req, res) => {
   try {
-    const image = await Image.findById(req.params.id);
+    const file        = await Image.findById(req.params.id);
     const gameSystems = await GameSystem.find();
 
-    if (!image) {
+    console.log('file', file)
+
+    file.extension = file.filename.split('.').pop();
+    console.log('file.extension', file.extension)
+
+    if (!file) {
       req.flash('error_msg', 'Image not found');
       return res.redirect('/gallery');
     }
 
     res.render('editImage', { 
       title: 'Edit Image', 
-      image, 
-      gameSystems 
+      file,
+      gameSystems
     });
   } catch (err) {
     console.error('Error fetching image:', err);

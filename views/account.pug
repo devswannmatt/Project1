@@ -6,14 +6,7 @@ form(action='/account', method='POST' id='accountForm')
   +formInput('lastName', 'text', 'Last Name', user.lastName, true)
   +formInput('email', 'email', 'Email Address', user.email, true)
   +formInput('facebook', 'url', 'Facebook Profile URL', user.facebook, false)
-
-  // Using the multiSelect mixin for Game Systems
   +multiSelect('gameSystems', 'Game Systems', gameSystems.map(gs => gs.name), user.gameSystems)
-
-  button.btn.btn-primary(type='submit' id='saveButton')
-    i.fa.fa-save
-  span#loadingSpinner(style='display: none; margin-left: 10px;')
-    i.fa.fa-spinner.fa-spin
-
-
+  +formButton('Save Changes', 'submit', 'btn-success float-right', 'save')
+  
 include partials/footer

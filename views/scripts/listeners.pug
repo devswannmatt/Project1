@@ -1,0 +1,60 @@
+script.
+    const initTooltips      = () => $('[data-toggle="tooltip"]').tooltip();
+    const initErrorResponse = () => {
+        var floatingFrame = $('#floating-frame')
+        if ($('.floating-frame-errors').data('errors')) {
+            setTimeout(() => {
+                floatingFrame.addClass('floating-frame-hover');
+                setTimeout(() => { $('#floating-frame-log').show(250); }, 100)
+            }, 250)
+            setTimeout(() => {
+                floatingFrame.removeClass('floating-frame-hover');
+                $('#floating-frame-log').hide(250);
+            }, 2000)
+        }
+
+        floatingFrame.on('mouseenter', function() {
+            setTimeout(() => { $('#floating-frame-log').show(100); }, 100)
+        }).on('mouseleave', function() {
+            $('#floating-frame-log').hide(100)
+        });
+    }
+
+    const initCopyURL = () => {
+        var copyURL = document.getElementById('clipboard-url')
+        if (copyURL) {
+            copyURL.addEventListener('click', function(event) {
+                var config = $(event.target).data()
+                
+                navigator.clipboard.writeText(config.text).then(function() {
+                    if (config.text == undefined) {
+                        alert(`Link not copied, text is not set on element`);
+                    } else {
+                        alert(`Copied URL: ${config.text}`);
+                    }
+                }).catch(function(error) {
+                    console.error('Failed to copy text: ', error);
+                });
+            });
+        }
+    }
+    const initHTMLPreview = () => {
+        var $contentTextarea = $('#content');
+        var $contentPreview  = $('#contentPreview');
+
+        if ($contentTextarea.length) {
+            $contentTextarea.on('input', () => { $contentPreview.html($contentTextarea.val()) })
+            $contentPreview.html($contentTextarea.val());
+        }
+    }
+
+    const initErrorCounter = () => {
+        var errorFrame = $('.floating-frame-errors');
+        var maxErrors  = errorFrame.data('errors');
+        var delay = 200
+        for (let i = 0; i < maxErrors; i++) {
+            setTimeout(() => {
+                errorFrame.text(`Errors: ${(i + 1)}`);
+            }, delay * (i + 1));
+        }
+    };

@@ -2,11 +2,35 @@ script.
     function initContextMenu() {
         const contextMenu = document.getElementById('contextMenu');
         var activeContext
+        var devSwitch = false
+        
+        let developmentMode = false;
+
+      // Listen for keydown event
+        document.addEventListener('keydown', (e) => {
+            // Detect Ctrl + Alt + D
+            if (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'd') {
+                e.preventDefault();  // Prevent default behavior (optional)
+                
+                // Toggle development mode
+                developmentMode = !developmentMode;
+                if (developmentMode) {
+                    console.log('Development mode activated');
+                    alert('Development mode activated');
+                } else {
+                    console.log('Development mode deactivated');
+                    alert('Development mode deactivated');
+                }
+            }
+        })
+
         document.addEventListener('contextmenu', function(event) {
-            //- event.preventDefault();
+
             const config = $(event.target).data()
             console.log('config', config)
             console.log('event.target', event.target)
+            console.log('developmentMode', developmentMode)
+            if (developmentMode == false) event.preventDefault();
 
             contextMenu.style.top     = `${event.pageY}px`;
             contextMenu.style.left    = `${event.pageX}px`;

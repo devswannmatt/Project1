@@ -7,5 +7,6 @@ const accountRouter    = require('./account');
 const templateRouter   = require('./templates');
 const imagesRouter     = require('./images');
 const gameSystemRouter = require('./gameSystem');
+const warmasterRouter  = require('./warmaster/warmaster');
 
-module.exports = { pagesRouter, usersRouter, rolesRouter, logsRouter, authRouter, accountRouter, templateRouter, imagesRouter, gameSystemRouter };
+module.exports = { pagesRouter, usersRouter, rolesRouter, logsRouter, authRouter, accountRouter, templateRouter, imagesRouter, gameSystemRouter, warmasterRouter };

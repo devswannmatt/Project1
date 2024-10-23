@@ -1,17 +1,21 @@
 include partials/header
 
-h1 Register
-form(action='/register', method='POST')
-  div.form-group
-    label(for='username') Username:
-    input.form-control(type='text', id='username', name='username', required)
-  div.form-group
-    label(for='email') Email:
-    input.form-control(type='email', id='email', name='email', required)
-  div.form-group
-    label(for='password') Password:
-    input.form-control(type='password', id='password', name='password', required)
-  div.form-group
-    button.btn.btn-success(type='submit') Register
+.row
+  .col-md-4
+  .col-md-4
+    h4 Register
+    form(action='/register', method='POST')
+      div.form-group
+        +formInput('username', 'text', 'Username', '', true)
+      div.form-group
+        +formInput('password', 'password', 'Password', '', true)
+      div.form-group
+        +formInput('email', 'text', 'Email', '', true)
+      div.form-group
+        a(href='./login')='Login'
+        +formButton('Login', 'submit', 'btn-success pull-right', 'right-to-bracket')
+        hr
+        if error
+          div#login-response.danger.hidden(style='font-size: smaller;')=error
 
 include partials/footer

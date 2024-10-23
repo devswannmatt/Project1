@@ -1,11 +1,12 @@
 // const { GameSystem, Template, Page, File } = require('../models')
 // const { WFRPItem } = require('../models/wfrp')
 
-const GameSystem  = require('../models/gameSystem');
-const Template    = require('../models/template')
-const Page        = require('../models/page');
-const WFRPItem    = require('../models/wfrp/wfrpItem');
-const File        = require('../models/image');
+const GameSystem    = require('../models/gameSystem');
+const Template      = require('../models/template')
+const Page          = require('../models/page');
+const WFRPItem      = require('../models/wfrp/wfrpItem');
+const File          = require('../models/image');
+const WarmasterUnit = require('../models/warmaster/warmasterUnit');
 
 async function populateData(req, res, next) {
   let query = getQueryParams(`${req.protocol}://${req.get('host')}${req.originalUrl}`, 'data')
@@ -22,6 +23,8 @@ async function populateData(req, res, next) {
     switch (query.data) {
       case 'wfrp':
         res.locals.wfrpItems = await getWFRPData(query.data);
+      case 'warmaster':
+        res.locals.warmUnits = await getWarmasterUnits(query.data);
     }
 
     next();
@@ -48,6 +51,12 @@ async function categorizedPages(gameSystems) {
   })
 
   return categorizedPages
+}
+
+async function getWarmasterUnits() {
+  const WarmasterUnits = await WarmasterUnit.find().populate('specialRules').populate('type').populate('army');
+
+  return WarmasterUnits
 }
 
 async function getWFRPData() {

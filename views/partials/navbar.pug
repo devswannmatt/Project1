@@ -11,6 +11,7 @@ nav.navbar.navbar-expand-lg.navbar-light
                         each page in categorizedPages[gameSystem.name]
                             a.dropdown-item(href=`/page/${page.url}`) #{page.title}
             a.nav-link(href='/gallery' data-context='gallery') Gallery
+            a.nav-link(href='/archive' data-context='archive') Archive
 
         ul.navbar-nav.ml-auto
             if user
@@ -28,14 +29,9 @@ nav.navbar.navbar-expand-lg.navbar-light
                             a.dropdown-item(href='/templates') Templates
                             a.dropdown-item(href='/roles') Roles
                             a.dropdown-item(href='/users') Users
-                    li.nav-item
-                        a.nav-link(href='/account')
-                            i.fa.fa-user
-                            |  Account
-                    li.nav-item
-                        a.nav-link(href='/logout') Logout
-                else
-                    li.nav-item
-                        a.nav-link(href='/login') Login
-                    li.nav-item
-                        a.nav-link(href='/register') Register
+                li.nav-item
+                    a.nav-link(href='/account')
+                        i.fa.fa-user
+                        |  Account
+                li.nav-item
+                    a.nav-link(href='/logout') Logout

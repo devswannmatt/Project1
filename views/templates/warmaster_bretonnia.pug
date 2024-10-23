@@ -1,0 +1,37 @@
+extends ../page
+
+block content
+  if warmUnits
+    table.table-striped
+      tr
+        th='Name'
+        th='Type'
+        th='Move'
+        th='Attacks'
+        th='Hits'
+        th='Armour'
+        th='Command'
+        th='Size'
+        th='Points'
+        th='Min'
+        th='Max'
+        th='Rules'
+      each item in warmUnits
+        tr
+          td=item.name
+          td
+            span(class='keyword' data-toggle='tooltip' title=`${item.type.description}`)=item.type.name
+          td
+            span(class='keyword' data-toggle='tooltip' title=`Half Pace: ${item.type.movement / 2}cm`)=`${item.type.movement}cm`
+          td
+            span(class='keyword' data-toggle='tooltip' title=`${item.range} cm`)=item.attacks
+          td=item.hits ? `${item.hits}` : '-'
+          td=item.armour ? `${item.armour}+` : '-'
+          td=item.command ? `${item.command}` : '-'
+          td=item.size ? `${item.size}` : '-'
+          td=item.points
+          td=item.min ? `${item.min}` : '-'
+          td=item.max ? `${item.max}` : '-'
+          td
+            each rule in item.specialRules
+              span(class=`keyword ${rule.boon ? 'success' : 'danger'}`  data-toggle='tooltip' title=`${rule.description}`)=`${rule.name}`

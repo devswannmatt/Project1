@@ -3,7 +3,7 @@ body {
   background-color: #f8f9fa;
   margin: 0;
   padding: 0;
-  position: relative; /* Ensures the alert is positioned relative to the viewport */
+  position: relative;
 }
 
 .page-container {
@@ -11,18 +11,12 @@ body {
   padding: 20px;
   background-color: #ecf1f8;
   border-radius: 8px;
-  /* display: flex; */
-  /* justify-content: space-between; */
 }
 
-.pull-right {
-  float: right;
-  /* margin-left: auto; */
-}
+.pull-right { float: right; }
+.pull-left  { float: left;  }
 
-h1, h2, h3 {
-  color: #333;
-}
+h1, h2, h3 { color: #333; }
 
 .list-group-item {
   border: none;
@@ -186,16 +180,31 @@ footer {
 }
 
 #floating-frame {
+  opacity: 0.5;
   position: fixed;
-  bottom: 20px;
-  left: 20px;
-  width: 300px;
-  padding: 15px;
+  bottom: 5px;
+  left: 5px;
+  width: 140px;
+  padding: 5px;
   background-color: #f8f9fa;
   border: 1px solid #ddd;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   border-radius: 8px;
+  transition: opacity 1s;
+  transition: width 0.1s;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+#floating-frame:hover {
+  opacity: 1;
+  width: 300px;
+}
+
+.floating-frame-hover {
+  opacity: 1 !important;
+  width: 300px !important;
 }
 
 .img-thumbnail {
@@ -297,4 +306,26 @@ ul hr {
   margin: 5px;
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.keyword {
+  padding: 6px;
+  margin: 2px;
+  font-size: smaller;
+  border-radius: 4px;
+  background-color: rgb(222, 237, 241);
+}
+
+.keyword:hover {
+  cursor: pointer;
+}
+
+.table-striped td {
+  padding: 6px;
+  min-width: 60px;
+}
+.table-striped th {
+  padding: 4px;
+  font-size: 10px;
+  color: gray;
 }

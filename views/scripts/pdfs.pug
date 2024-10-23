@@ -1,0 +1,49 @@
+script.
+    const pdfRenderPage = (num) => {
+        pageRendering = true;
+        pdfDoc.getPage(num).then(function(page) {
+            var scale     = 1.5;
+            var viewport  = page.getViewport({ scale: scale });
+            var pdfCanvas = $('#modal-pdf-viewer-canvas')
+            
+            pdfCanvas.attr('height', viewport.height).attr('width', viewport.width);
+            ctx.clearRect(0, 0, viewport.width, viewport.height);
+
+            var renderContext = { canvasContext: ctx, viewport: viewport };
+            var renderTask    = page.render(renderContext);
+
+            renderTask.promise.then(function() {
+                pageRendering = false;
+                if (pageNumPending !== null) {
+                    pdfRenderPage(pageNumPending);
+                    pageNumPending = null;
+                }
+            });
+        });
+
+        $('#pdf-page-number').text(pageNum);
+        $('#pdf-page-count').text(pdfDoc.numPages);
+    }
+
+    const queueRenderPage = (num) => {
+        if (pageRendering) {
+            pageNumPending = num;
+        } else {
+            pdfRenderPage(num);
+        }
+    }
+
+    const onPrevPage = () => {
+        if (pdfDoc.numPages === 1) return;
+        pageNum = (pageNum <= 1) ? pdfDoc.numPages : pageNum - 1;
+        queueRenderPage(pageNum);
+    }
+
+    const onNextPage = () => {
+        if (pdfDoc.numPages === 1) return;
+        pageNum = (pageNum >= pdfDoc.numPages) ? 1 : pageNum + 1;
+        queueRenderPage(pageNum);
+    }
+
+    $('#modal-pdf-prev').on('click', onPrevPage);
+    $('#modal-pdf-next').on('click', onNextPage);

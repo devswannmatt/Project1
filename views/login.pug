@@ -13,9 +13,9 @@ include partials/header
         a(href='./register')='Register'
         span=' | '
         a(href='./')='Recover password'
-        +formButton('Login', 'submit', 'btn-success pull-right', 'right-to-bracket')(onclick='floatingMessage("Logging in...")')
+        +formButton('Login', 'submit', 'btn-success pull-right', 'right-to-bracket')
         hr
-        if error
-          #login-response.pull-right.danger(style='display: none;')=error
+        //- if error
+        //-   div#login-response.danger.hidden(style='font-size: smaller;')=error
 
 include partials/footer

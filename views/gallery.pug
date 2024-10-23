@@ -1,8 +1,5 @@
 include partials/header
 
-button.btn.btn-success.pull-right(data-toggle='modal', data-type='frm', data-target='#modal', data-src='/upload' data-size='lg')
-  i(class=`fas fa-plus`)
-
 h2 Gallery
 if images.length
   .row
@@ -14,23 +11,5 @@ if images.length
           span=image.name || ''
           if image.category
             span.text-muted  - #{image.category.name}
-
-h2 PDF
-if pdfs.length
-  .row
-    .col-md-6
-      p
-        table.table.table-striped
-          tr 
-            th Category
-            th Name
-          each pdf in pdfs
-            tr
-              td
-                if pdf.category
-                  span.text-muted #{pdf.category.name}
-              td 
-                a(href='#', data-type='pdf', data-toggle='modal', data-id=`${pdf._id}` data-target='#modal', data-pdf=`/uploads/${pdf.filename}`, data-name=pdf.name, data-description=pdf.description, data-uploaddate=pdf.uploadDate, data-owner=pdf.owner)
-                  span=pdf.name || `Missing Name`
 
 include partials/footer
