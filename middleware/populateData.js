@@ -21,10 +21,17 @@ async function populateData(req, res, next) {
     res.locals.user             = req.user || null;
 
     switch (query.data) {
-      case 'wfrp':
+      case 'wfrp': {
         res.locals.wfrpItems = await getWFRPData(query.data);
-      case 'warmaster':
+      }
+        
+      case 'warmaster': {
         res.locals.warmUnits = await getWarmasterUnits(query.data);
+        // res.locals.warmUnits.forEach((unit) => {
+        //   unit.tooltip = 'Access: ' + unit.type.access.map(obj => obj.name).join(', ')
+        //   if (unit.type.name.includes('(Flying)')) unit.tooltip += '<br /> Bypass: All' 
+        // })
+      }
     }
 
     next();
@@ -54,8 +61,7 @@ async function categorizedPages(gameSystems) {
 }
 
 async function getWarmasterUnits() {
-  const WarmasterUnits = await WarmasterUnit.find().populate('specialRules').populate('type').populate('army');
-
+  const WarmasterUnits = await WarmasterUnit.find().populate('specialRules').populate('type').populate('army')
   return WarmasterUnits
 }
 

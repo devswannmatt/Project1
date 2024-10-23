@@ -13,25 +13,28 @@ block content
         th='Command'
         th='Size'
         th='Points'
-        th='Min'
-        th='Max'
+        th='Min/Max'
         th='Rules'
-      each item in warmUnits
+      each unit in warmUnits
         tr
-          td=item.name
+          td=unit.name
           td
-            span(class='keyword' data-toggle='tooltip' title=`${item.type.description}`)=item.type.name
+            span(class='keyword' data-toggle='tooltip' title=`${unit.type.description}`)=unit.type.name
           td
-            span(class='keyword' data-toggle='tooltip' title=`Half Pace: ${item.type.movement / 2}cm`)=`${item.type.movement}cm`
+            span(class='keyword' data-toggle='tooltip' title=`${unit.tooltip}`)=`${unit.type.movement}cm`
           td
-            span(class='keyword' data-toggle='tooltip' title=`${item.range} cm`)=item.attacks
-          td=item.hits ? `${item.hits}` : '-'
-          td=item.armour ? `${item.armour}+` : '-'
-          td=item.command ? `${item.command}` : '-'
-          td=item.size ? `${item.size}` : '-'
-          td=item.points
-          td=item.min ? `${item.min}` : '-'
-          td=item.max ? `${item.max}` : '-'
+            span(class='keyword' data-toggle='tooltip' title=`${unit.range} cm`)=unit.attacks
           td
-            each rule in item.specialRules
-              span(class=`keyword ${rule.boon ? 'success' : 'danger'}`  data-toggle='tooltip' title=`${rule.description}`)=`${rule.name}`
+            span(class='')=unit.hits ? `${unit.hits}` : '-'
+          td
+            span(class='')=unit.armour ? `${unit.armour}+` : '-'
+          td
+            span(class='')=unit.command ? `${unit.command}` : '-'
+          td
+            span(class='')=unit.size ? `${unit.size}` : '-'
+          td
+            span(class='')=unit.points
+          td=`${unit.min ? `${unit.min}` : '-'}/${unit.max ? `${unit.max}` : '-'}`
+          td
+            each rule in unit.specialRules
+              span(class=`keyword ${rule.boon ? 'success' : 'danger'}` data-toggle='tooltip' title=`${rule.description}`)=`${rule.name}`

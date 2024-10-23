@@ -28,7 +28,7 @@ router.get('/api/warmaster/armies', async (req, res) => {
 
 router.get('/api/warmaster/unit_types', async (req, res) => {
   try {
-    const UnitTypes = await UnitType.find().populate('access')
+    const UnitTypes = await UnitType.find()
     res.send(UnitTypes);
   } catch (err) {
     console.error(err);
@@ -38,7 +38,7 @@ router.get('/api/warmaster/unit_types', async (req, res) => {
 
 router.get('/api/warmaster/units', async (req, res) => {
   try {
-    const WarmasterUnits = await WarmasterUnit.find().populate('specialRules').populate('type').populate('army').populate('type.access')
+    const WarmasterUnits = await WarmasterUnit.find().populate('specialRules').populate('type').populate('army')
     res.send(WarmasterUnits);
   } catch (err) {
     console.error(err);
@@ -48,7 +48,8 @@ router.get('/api/warmaster/units', async (req, res) => {
 
 router.get('/api/warmaster/terrain', async (req, res) => {
   try {
-    const TerrainTypes = await TerrainType.find()
+    const TerrainTypes = await TerrainType.find().populate('access.unitType');
+    
     res.send(TerrainTypes);
   } catch (err) {
     console.error(err);

@@ -13,11 +13,7 @@ const unitTypeSchema = new Schema({
   },
   description: {
     type: String
-  },
-  access: [{
-    type: Schema.Types.ObjectId, // Array of references to TerrainTypes
-    ref: 'TerrainType'
-  }]
+  }
 });
 
 // Create the UnitType model from the schema

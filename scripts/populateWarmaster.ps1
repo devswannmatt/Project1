@@ -7,6 +7,14 @@ if ($?) {
     exit
 }
 
+node populateUnitTypes.js
+if ($?) {
+    Write-Host "populateUnitTypes.js completed successfully"
+} else {
+    Write-Host "Error running populateUnitTypes.js" -ForegroundColor Red
+    exit
+}
+
 node populateTerrainTypes.js
 if ($?) {
     Write-Host "populateTerrainTypes.js completed successfully"
@@ -15,13 +23,6 @@ if ($?) {
     exit
 }
 
-node populateUnitTypes.js
-if ($?) {
-    Write-Host "populateUnitTypes.js completed successfully"
-} else {
-    Write-Host "Error running populateUnitTypes.js" -ForegroundColor Red
-    exit
-}
 
 node populateArmies.js
 if ($?) {

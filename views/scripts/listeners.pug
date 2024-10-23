@@ -1,5 +1,5 @@
 script.
-    const initTooltips      = () => $('[data-toggle="tooltip"]').tooltip();
+    const initTooltips      = () => $('[data-toggle="tooltip"]').tooltip({html:true});
     const initErrorResponse = () => {
         var floatingFrame = $('#floating-frame')
         if ($('.floating-frame-errors').data('errors')) {
