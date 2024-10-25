@@ -1,13 +1,15 @@
-const mongoose      = require('mongoose');
-const WarmasterUnit = require('../models/warmaster/warmasterUnit');
-const UnitType      = require('../models/warmaster/warmasterUnitType');
-const SpecialRule   = require('../models/warmaster/warmasterSpecialRule');
-const TerrainType   = require('../models/warmaster/warmasterTerrainType');
-const WarmasterArmy = require('../models/warmaster/warmasterArmy');
+const mongoose       = require('mongoose');
+const WarmasterUnit  = require('../models/warmaster/warmasterUnit');
+const UnitType       = require('../models/warmaster/warmasterUnitType');
+const SpecialRule    = require('../models/warmaster/warmasterSpecialRule');
+const TerrainType    = require('../models/warmaster/warmasterTerrainType');
+const WarmasterArmy  = require('../models/warmaster/warmasterArmy');
+const WarmasterMagic = require('../models/warmaster/warmasterMagic');
 
 const specialRulesData = require('./data/warmaster/specialRules')
 const unitTypesData    = require('./data/warmaster/unitTypes')
 const armiesData       = require('./data/warmaster/armies')
+const spellsData        = require('./data/warmaster/spells')
 const terrainTypesData = require('./data/warmaster/terrainTypes')
 const unitsData        = require('./data/warmaster/units')
 
@@ -17,17 +19,33 @@ mongoose.connect('mongodb://127.0.0.1:27017/config', { useNewUrlParser: true, us
 
 async function importAllWarmasterData() {
   try {
-    if (await populateSpecialRules()    === false) throw 'Special Rules Failed' 
-    if (await populateUnitTypes()       === false) throw 'Unit Types Failed'
-    if (await populateTerrainTypes()    === false) throw 'Terrain Types Failed'
-    if (await populateWarmasterArmies() === false) throw 'Armies Failed'
-    if (await populateWarmasterUnits()  === false) throw 'Units Failed'
+    if (await populateSpecialRules()               === false) throw 'Special Rules Failed' 
+    if (await populateUnitTypes()                  === false) throw 'Unit Types Failed'
+    if (await populateTerrainTypes()               === false) throw 'Terrain Types Failed'
+    if (await populateWarmasterArmies()            === false) throw 'Armies Failed'
+    if (await populateWarmasterMagic()             === false) throw 'Magic Failed'
+    if (await resetUnits()                         === false) throw 'Unit Reset Failed'
+    if (await populateWarmasterUnits('bretonnia')  === false) throw 'Bretonnia Units Failed'
+    if (await populateWarmasterUnits('orc')        === false) throw 'Orc Units Failed'
+    if (await populateWarmasterUnits('wood_elves') === false) throw 'Wood Elves Units Failed'
+    if (await populateWarmasterUnits('goblins')    === false) throw 'Goblin Units Failed'
 
     console.log('All collections imported.');
   } catch (error) {
     console.error('Error populating unit types:', error);
   } finally {
     mongoose.connection.close();
+  }
+}
+
+async function resetUnits() {
+  try {
+    await WarmasterUnit.deleteMany({});
+    console.log('All units cleared from the WarmasterUnit collection.');
+    return true
+  } catch (error) {
+    console.error('Error resetting units:', error);
+    return false
   }
 }
 
@@ -64,6 +82,20 @@ async function populateUnitTypes() {
     console.log('All unit types saved successfully');
   } catch (error) {
     console.error('Error populating unit types:', error);
+    return false
+  }
+}
+
+async function populateWarmasterMagic() {
+  try {
+    await WarmasterMagic.deleteMany({});
+    for (let spell of spellsData) {
+      await new WarmasterMagic(spell).save();
+      console.log(`Saved Warmaster Spell: ${spell.name}`);
+    }
+    console.log('All magic saved successfully');
+  } catch (error) {
+    console.error('Error populating Warmaster armies:', error);
     return false
   }
 }
@@ -109,20 +141,18 @@ async function populateTerrainTypes() {
   }
 }
 
-async function populateWarmasterUnits() {
+async function populateWarmasterUnits(armyName) {
   try {
-    await WarmasterUnit.deleteMany({});
-    console.log('All units cleared from the WarmasterUnit collection.');
-
-    for (let unitData of unitsData.bretonnia) {
+    for (let unitData of unitsData[`${armyName}`]) {
       const armyId = await getArmyIdByName(unitData.armyName);
       if (!armyId) {
         console.error(`Skipping unit ${unitData.unit} as army ${unitData.armyName} not found.`);
         continue;
       }
 
-      const unitType = await getOrCreateUnitType(unitData.type);
+      const unitType     = await getOrCreateUnitType(unitData.type);
       const specialRules = await getSpecialRules(unitData.special_rules);
+      const spells       = await getSpells(unitData.spells);
 
       const warmasterUnit = new WarmasterUnit({
         name: unitData.unit,
@@ -137,7 +167,9 @@ async function populateWarmasterUnits() {
         min: unitData.min_max.split('/')[0] === '-' ? null : parseInt(unitData.min_max.split('/')[0]),
         max: unitData.min_max.split('/')[1] === '-' ? null : parseInt(unitData.min_max.split('/')[1]),
         specialRules: specialRules,
-        army: armyId
+        army: armyId,
+        mounts: unitData.mounts,
+        spells: spells
       });
 
       await warmasterUnit.save();
@@ -183,15 +215,22 @@ async function getArmyIdByName(armyName) {
   }
 }
 
-async function getSpecialRules(specialRulesString) {
-  if (specialRulesString === "-") {
-    return [];
-  }
+async function getSpecialRules(string) {
+  if (string === "-") return [];
   
-  const ruleNames = specialRulesString.split(',').map(rule => rule.trim());
+  const ruleNames    = string.split(',').map(rule => rule.trim());
   const specialRules = await SpecialRule.find({ name: { $in: ruleNames } });
   
   return specialRules.map(rule => rule._id);
+}
+
+async function getSpells(string) {
+  if (!string) return [];
+  
+  const spellNames = string.split(',').map(spell => spell.trim());
+  const spells     = await WarmasterMagic.find({ name: { $in: spellNames } });
+  
+  return spells.map(spell => spell._id);
 }
 
 async function getOrCreateUnitType(unitTypeName) {

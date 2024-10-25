@@ -1,12 +1,14 @@
 // const { GameSystem, Template, Page, File } = require('../models')
 // const { WFRPItem } = require('../models/wfrp')
 
-const GameSystem    = require('../models/gameSystem');
-const Template      = require('../models/template')
-const Page          = require('../models/page');
-const WFRPItem      = require('../models/wfrp/wfrpItem');
-const File          = require('../models/image');
-const WarmasterUnit = require('../models/warmaster/warmasterUnit');
+const GameSystem       = require('../models/gameSystem');
+const Template         = require('../models/template')
+const Page             = require('../models/page');
+const WFRPItem         = require('../models/wfrp/wfrpItem');
+const File             = require('../models/image');
+const WarmasterUnit    = require('../models/warmaster/warmasterUnit');
+const WarmasterArmy    = require('../models/warmaster/warmasterArmy');
+const TerrainType      = require('../models/warmaster/warmasterTerrainType');
 
 async function populateData(req, res, next) {
   let query = getQueryParams(`${req.protocol}://${req.get('host')}${req.originalUrl}`, 'data')
@@ -26,11 +28,8 @@ async function populateData(req, res, next) {
       }
         
       case 'warmaster': {
-        res.locals.warmUnits = await getWarmasterUnits(query.data);
-        // res.locals.warmUnits.forEach((unit) => {
-        //   unit.tooltip = 'Access: ' + unit.type.access.map(obj => obj.name).join(', ')
-        //   if (unit.type.name.includes('(Flying)')) unit.tooltip += '<br /> Bypass: All' 
-        // })
+        res.locals.warmUnits   = await getWarmasterUnits(query.army);
+        res.locals.warmTerrain = await TerrainType.find().populate('access.unitType');
       }
     }
 
@@ -60,9 +59,23 @@ async function categorizedPages(gameSystems) {
   return categorizedPages
 }
 
-async function getWarmasterUnits() {
-  const WarmasterUnits = await WarmasterUnit.find().populate('specialRules').populate('type').populate('army')
-  return WarmasterUnits
+async function getWarmasterUnits(armyName) {
+  // Find the army by name to get its _id
+  const army = await WarmasterArmy.findOne({ name: armyName });
+  
+  if (!army) {
+    console.error(`Army with name "${armyName}" not found.`);
+    return [];
+  }
+
+  // Use the _id of the found army to query WarmasterUnit
+  const warmasterUnits = await WarmasterUnit.find({ army: army._id })
+    .populate('specialRules')
+    .populate('type')
+    .populate('army')
+    .populate('spells')
+
+  return warmasterUnits;
 }
 
 async function getWFRPData() {

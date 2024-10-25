@@ -37,3 +37,22 @@ script.
                 clearTimeout(holdTimeout); });
         }
     }
+
+    const highlightRowById = (types) => {
+        console.log(types)
+
+        $('.dynamicRow').addClass('darken');
+        if (types == 'Clear') {
+            $(`.dynamicRow`).removeClass('darken');
+            $(`.dynamicIcon`).hide();
+        } else {
+            $(`.dynamicIcon`).hide();
+            types.forEach((type) => {
+                console.log(type)
+                $(`.unitType${type.unitType.name}`).removeClass('darken');
+                if (type.cross)     $(`.cross${type.unitType.name}`).show();
+                if (type.defended)  $(`.defended${type.unitType.name}`).show();
+                if (type.fortified) $(`.fortified${type.unitType.name}`).show();
+            })
+        }
+    }

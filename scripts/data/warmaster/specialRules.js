@@ -1,7 +1,12 @@
 const specialRulesData = [
       {
         "rule": "Impetuous",
-        "description": "The unit always uses initiative to charge if possible and cannot be given orders instead. The unit will not use initiative to evade.",
+        "description": "The unit always uses initiative to charge if possible. The unit will not use initiative to evade.",
+        boon: false
+      },
+      {
+        "rule": "Hatred (Human)",
+        "description": "The unit always uses initiative to charge a Human unit if possible. Human units include all 'men' including, for example, Chaos Warriors and Marauders but not Dwarves or Elves.",
         boon: false
       },
       {
@@ -140,7 +145,123 @@ const specialRulesData = [
       {
         "rule": "Fortified",
         "description": "Attacks made against a unit in Fortified Ground have a base hit chance of 6+, this can be modified by other rules."
+      },
+      {
+        "rule": "Regenerate",
+        "description": "In each round of combat after whole stands have been removed this unit automatically regenerates one outstanding hit. If no hits are left over after removing whole stands then regeneration has no effect. Regenerated hits still count towards the combat result for the round.",
+        boon: true
+      },
+      {
+        "rule": "Stupid",
+        "description": "When issuing an order to this unit, or a Brigade that includes this unit, the ranged command penalty is doubled.",
+        boon: false
+      },
+      {
+        "rule": "Skirmishers",
+        "description": "This unit has a 360 degree line of sight for Evading, Shooting and, Stand and Shoot but not for Charging.",
+        boon: true
+      },
+      {
+        "rule": "Independent",
+        "description": "This unit can only be brigaded with itself.",
+        boon: false
+      },
+      {
+        "rule": "Wounded (Giant)",
+        "description": "If this unit has accumulated 5-7 hits by the end of the Shooting or Combat phase, and is no longer engaged in combat then it is deemed as been wounded. Use the Giant (Wounded) profile for the rest of the battle.",
+        boon: false
+      },
+      {
+        "rule": "Goes Wild (Giant)",
+        "description": "If an order fails while targetting this unit, then you must roll on the Giant Goes Wild Chart. Where Ignore a Blunder in this case. If the Giant is in a Brigade, then roll once for each Giant.",
+        boon: false
+      },
+      {
+        "rule": "Artillery (Stone Thrower)",
+        "description": "This unit uses all the rules for Stone Throwers.",
+        boon: true
+      },
+      {
+        "rule": "Artillery (Bolt Thrower)",
+        "description": "This unit uses all the rules for Stone Throwers.",
+        boon: true
+      },
+      {
+        "rule": "Detachment (Eternal Guard)",
+        "description": "This unit must be attached to a Eternal Guard unit, at which point it gains 5+ Armour and increases the size of that unit by 1. The loss of this unit is ignored for Command penalties and nevers cause the parent unit to become Irregular.",
+        boon: true
+      },
+      {
+        "rule": "Detachment (Glade Guard)",
+        "description": "This unit must be attached to a Glade Guard unit, at which point it increases the size of that unit by 1. The loss of this unit is ignored for Command penalties and never causes the parent unit to become Irregular.",
+        boon: true
+      },
+      {
+        "rule": "Forest Spirit",
+        "description": "This unit suffers a -1 Command penalty when being ordered by General or Noble.",
+        boon: false
+      },
+      {
+        "rule": "Aggressive",
+        "description": "This unit gets +1 Attack in the first round of every combat but only when fighting to the front.",
+        boon: true
+      },
+      {
+        "rule": "Woodland Folk",
+        "description": "This unit can enter woods as if it were Infantry, and it does not suffer the usual -1 Command penalty for doing so.",
+        boon: true
+      },
+      {
+        "rule": "Forest Ancient",
+        "description": "This unit has -1 Command when issuing orders to any unit without the Forest Spirit rule.",
+        boon: false
+      },
+      {
+        "rule": "Leader (Forest Spirit)",
+        "description": "This unit can only join Forest Spirit units.",
+        boon: false
+      },
+      {
+        "rule": "Restricted (Magic Items)",
+        "description": "This unit can not be given magic items.",
+        boon: false
+      },
+      {
+        "rule": "Ambush",
+        "description": "This unit can ambush by infiltrating onto the battlefield after the game begins. Issue an Infiltration order from any character, this order has unlimited range to a nominated spot which must be in dense terrain or on a table edge, excluding the enemy's edge. Distance and enemy proximity modifiers apply, but dense terrain penalties do not. If successful, place one stand on the spot with the rest around it, avoiding contact with enemy units. Orders can be issued by the same character within normal range after deployment. If infiltration fails, it can be retried in later turns.",
+        boon: true
+      },
+      {
+        "rule": "Optional (Squig Herd)",
+        "description": "Up to two of these units per 1000 points maybe exchanged for Squig Herd.",
+        boon: true
+      },
+      {
+        "rule": "Loner",
+        "description": "This unit can never be part of a Brigade, and cannot be joined by characters.",
+        boon: false 
+      },
+      {
+        "rule": "Worthless",
+        "description": "This unit gives no victory points when killed and does not contribute to the friendly break point.",
+        boon: false
+      },
+      {
+        "rule": "Slow",
+        "description": "This unit cannot Stand and Shoot",
+        boon: false
+      },
+      {
+        "rule": "Random Attacks (D6/D3)",
+        "description": "This unit makes D6 attacks, or D3 attacks when it is charged or retreating as a result of combat.",
+        boon: true
+      },
+      {
+        "rule": "Random Movement (1Dx10cm)",
+        "description": "Instead of using Orders or Initiative, this unit always moves a random 1D6 x 10cm per Command phase, this move can happen at any time but may not interupt a character giving orders.",
+        boon: true
       }
+
 ]
 
 module.exports = specialRulesData;

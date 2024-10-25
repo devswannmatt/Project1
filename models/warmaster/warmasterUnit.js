@@ -47,7 +47,14 @@ const warmasterUnitSchema = new Schema({
   specialRules: [{
     type: Schema.Types.ObjectId, // Array of references to SpecialRules model
     ref: 'SpecialRule'
-  }]
+  }],
+  mounts: {
+    type: String
+  },
+  spells: [{
+    type: Schema.Types.ObjectId, // Array of references to SpecialRules model
+    ref: 'WarmasterMagic'
+  }],
 });
 
 // Create the WarmasterUnit model from the schema

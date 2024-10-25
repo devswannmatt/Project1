@@ -7,6 +7,7 @@ const terrainTypeSchema = new Schema({
   description: { type: String, required: true },
   references:  { type: Number, required: true },
   sightRange:  { type: Number, required: true },
+  icon:        { type: String },
   access: [
     {
       unitType: { type: Schema.Types.ObjectId, ref: 'UnitType' },

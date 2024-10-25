@@ -81,6 +81,10 @@ button, .btn {
   color: #28a745;
 }
 
+.info {
+  color: #ca26b4;
+}
+
 .btn-success {
   background-color: #28a745;
   border-color: #28a745;
@@ -311,7 +315,6 @@ ul hr {
 .keyword {
   padding: 6px;
   margin: 2px;
-  font-size: smaller;
   border-radius: 4px;
   background-color: rgb(222, 237, 241);
 }
@@ -328,4 +331,20 @@ ul hr {
   padding: 4px;
   font-size: 10px;
   color: gray;
+}
+
+.smaller {
+  font-size: 10px;
+}
+
+.highlight {
+  background-color: yellow; /* or any color/style you prefer */
+}
+
+.darken {
+  filter: opacity(0.5)
+}
+
+.dynamicIcon {
+  display: none;
 }
