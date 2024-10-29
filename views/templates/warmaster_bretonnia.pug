@@ -2,70 +2,17 @@ extends ../page
 
 block content
   if warmTerrain
-    table
-      tr
-        each terrain in warmTerrain
-          if terrain.access.length
-            td
-              +simpleButton({ title: `<p>${terrain.name}</p><p>${terrain.description}</p>`, type: 'success', icon: terrain.icon }, `highlightRowById(${JSON.stringify(terrain.access)})`, terrain.name)
-        td
-          +simpleButton({ title: 'Clear Filter', type: 'danger', icon: 'cancel' }, 'highlightRowById("Clear")', 'Clear')
-
+    div.button-bar
+      table
+        tr
+          td
+            .keyword(data-toggle='tooltip' title=`${warmArmy.armyRule}`)='Army Rule'
+          each terrain in warmTerrain
+            if terrain.access.length
+              td
+                +simpleButton({ title: `<p>${terrain.name}</p><p>${terrain.description}</p>`, type: 'success', icon: terrain.icon }, undefined, terrain.name, `highlightRowById(${JSON.stringify(terrain.access)}, this)`)
+          td
+            +simpleButton({ title: 'Clear Filter', type: 'danger', icon: 'cancel' }, 'highlightRowById("Clear")', 'Clear')
+          
   if warmUnits
-    table.table-striped.smaller
-      tr
-        th
-        th='Name'
-        th='Type'
-        th='Move'
-        th='Attacks'
-        th='Hits'
-        th='Armour'
-        th='Command'
-        th='Size'
-        th='Points'
-        th='Min/Max'
-        th='Rules'
-      each unit in warmUnits
-        tr(class=`dynamicRow unitType${unit.type.name}`)
-          td
-            span.dynamicIcon(class=`cross${unit.type.name}`)
-              i(class='fas fa-fw fa-person-walking-dashed-line-arrow-right')
-            span.dynamicIcon(class=`defended${unit.type.name}`)
-              i(class='fas fa-fw fa-shield-halved')
-            span.dynamicIcon(class=`fortified${unit.type.name}`)
-              i(class='fas fa-fw fa-shield')
-          td
-            if unit.mounts
-              span(class='keyword' data-toggle='tooltip' title=`Mounts: ${unit.mounts}`)=unit.name
-            else 
-              span=unit.name
-          td
-            span(class='keyword' data-toggle='tooltip' title=`${unit.type.description}`)=unit.type.name
-          td
-            span(class='keyword' data-toggle='tooltip' title=`${unit.tooltip}`)=`${unit.type.movement}cm`
-          td
-            if unit.range
-              span(class='keyword' data-toggle='tooltip' title=`${unit.range} cm`)=unit.attacks
-            else 
-              span=unit.attacks
-          td
-            span(class='')=unit.hits ? `${unit.hits}` : '-'
-          td
-            span(class='')=unit.armour ? `${unit.armour}+` : '-'
-          td
-            span(class='')=unit.command ? `${unit.command}` : '-'
-          td
-            span(class='')=unit.size ? `${unit.size}` : '-'
-          td
-            span(class='')=unit.points
-          td=`${unit.min ? `${unit.min}` : '-'}/${unit.max ? `${unit.max}` : '-'}`
-          td
-            each rule in unit.specialRules
-              span(class=`keyword ${rule.boon ? 'success' : 'danger'}` data-toggle='tooltip' title=`${rule.description}`)=`${rule.name}`
-          if unit.spells.length
-            tr(class='dynamicRow')
-              td=''
-              td(colspan=11)
-                each spell in unit.spells
-                  span(class=`keyword info` data-toggle='tooltip' title=`<p>Target: ${spell.target}</p><p>${spell.description}</p><i>${spell.flavour}</i>`)=`${spell.name} [${spell.range}cm, ${spell.cast}+]`
+    +warmasterUnits({}, [ { name: 'Name' }, { name: 'Type' }, { name: 'Move / Traverse' }, { name: 'Attacks' }, { name: 'Hits' }, { name: 'Armour' }, { name: 'Command' }, { name: 'Size' }, { name: 'Points' }, { name: 'Min/Max' }, { name: 'Rules' } ], warmUnits)

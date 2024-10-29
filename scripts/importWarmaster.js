@@ -5,13 +5,15 @@ const SpecialRule    = require('../models/warmaster/warmasterSpecialRule');
 const TerrainType    = require('../models/warmaster/warmasterTerrainType');
 const WarmasterArmy  = require('../models/warmaster/warmasterArmy');
 const WarmasterMagic = require('../models/warmaster/warmasterMagic');
+const CoreRule       = require('../models/warmaster/warmasterCoreRule');
 
 const specialRulesData = require('./data/warmaster/specialRules')
 const unitTypesData    = require('./data/warmaster/unitTypes')
 const armiesData       = require('./data/warmaster/armies')
-const spellsData        = require('./data/warmaster/spells')
+const spellsData       = require('./data/warmaster/spells')
 const terrainTypesData = require('./data/warmaster/terrainTypes')
 const unitsData        = require('./data/warmaster/units')
+const coreRulesData    = require('./data/warmaster/coreRules')
 
 mongoose.connect('mongodb://127.0.0.1:27017/config', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
@@ -19,6 +21,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/config', { useNewUrlParser: true, us
 
 async function importAllWarmasterData() {
   try {
+    if (await populateCoreRules()                  === false) throw 'Core Rules Failed'
     if (await populateSpecialRules()               === false) throw 'Special Rules Failed' 
     if (await populateUnitTypes()                  === false) throw 'Unit Types Failed'
     if (await populateTerrainTypes()               === false) throw 'Terrain Types Failed'
@@ -48,6 +51,21 @@ async function resetUnits() {
     return false
   }
 }
+
+async function populateCoreRules() {
+  try {
+    await CoreRule.deleteMany({});
+    for (let core of coreRulesData) {
+      await new CoreRule(core).save();
+      console.log(`Saved Warmaster Core Rule: ${core.name}`);
+    }
+    console.log('Core rules successfully added to the Collection');
+  } catch (error) {
+    console.error('Error adding special rules:', error);
+    return false
+  }
+}
+
 
 async function populateSpecialRules() {
   try {

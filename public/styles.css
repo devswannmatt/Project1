@@ -59,6 +59,11 @@ button, .btn {
   margin-left: 4px;
 }
 
+.brand-logo {
+  height: 75px;
+  width: 75px;
+}
+
 .wide {
   min-width: 100px !important;
 }
@@ -103,24 +108,43 @@ button, .btn {
   background-color: #437699;
 }
 
-.navbar .navbar-expand-lg {
-  background-color: #1e7e34 !important;
+.navbar {
+  padding: 0px !important;
+  background-color: #437699;
 }
 
-.navbar-light .navbar-brand, .navbar-light .navbar-nav .nav-link {
-  color: #4682b4;
+.navbar-nav {
+  border-radius: 8px;
+  border: 1px #1e3c50;
 }
 
-.navbar-light .navbar-nav .nav-link:hover {
-  color: #315f7d;
+.navbar-brand-img:hover {
+  filter: brightness(0.9);
 }
 
-.navbar-nav .dropdown:hover > .dropdown-menu {
-  display: block;
+a.nav-link {
+  color: white !important;
+  background-color: #39698a;
+  border-right: 1px solid #2a5470;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+  text-shadow: -1px -1px 0 #2a5470, 1px -1px 0 #2a5470, -1px 1px 0 #2a5470, 1px 1px 0 #2a5470;
 }
 
-.navbar-nav .dropdown:hover > .nav-link {
-  background-color: #e9ecef;
+a.nav-link-start {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  border-right: 1px solid #2a5470;
+}
+
+a.nav-link-end {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+  border: 0px;
+}
+
+a.nav-link:hover  {
+  background-color: #2d5774;
 }
 
 .dropdown-menu {
@@ -314,13 +338,14 @@ ul hr {
 
 .keyword {
   padding: 6px;
-  margin: 2px;
-  border-radius: 4px;
+  border-radius: 6px;
+  margin-right: 2px;
   background-color: rgb(222, 237, 241);
 }
 
 .keyword:hover {
   cursor: pointer;
+  filter: brightness(0.9);
 }
 
 .table-striped td {
@@ -331,6 +356,10 @@ ul hr {
   padding: 4px;
   font-size: 10px;
   color: gray;
+}
+
+.cell{
+  padding: 6px;
 }
 
 .smaller {
@@ -345,6 +374,27 @@ ul hr {
   filter: opacity(0.5)
 }
 
-.dynamicIcon {
+.dynamic-icon {
   display: none;
+}
+
+.btn .focused {
+  border:#a71d2a;
+}
+
+.button-bar {
+  padding: 5px;
+  background:#d8dee6;
+}
+/* Make tooltip text align left and set width */
+.tooltip {
+  max-width: 400px; /* Set tooltip width */
+  text-align: left; /* Align text to the left */
+}
+
+/* Optional: Style tooltip arrow */
+.tooltip .tooltip-inner {
+  width: 100%; /* Make inner width match tooltip */
+  max-width: 400px;
+  text-align: left;
 }

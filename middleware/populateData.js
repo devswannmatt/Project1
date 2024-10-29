@@ -9,6 +9,7 @@ const File             = require('../models/image');
 const WarmasterUnit    = require('../models/warmaster/warmasterUnit');
 const WarmasterArmy    = require('../models/warmaster/warmasterArmy');
 const TerrainType      = require('../models/warmaster/warmasterTerrainType');
+const CoreRule         = require('../models/warmaster/warmasterCoreRule');
 
 async function populateData(req, res, next) {
   let query = getQueryParams(`${req.protocol}://${req.get('host')}${req.originalUrl}`, 'data')
@@ -24,12 +25,27 @@ async function populateData(req, res, next) {
 
     switch (query.data) {
       case 'wfrp': {
-        res.locals.wfrpItems = await getWFRPData(query.data);
+        res.locals.wfrpItems    = await getWFRPData(query.data);
       }
         
       case 'warmaster': {
-        res.locals.warmUnits   = await getWarmasterUnits(query.army);
-        res.locals.warmTerrain = await TerrainType.find().populate('access.unitType');
+        res.locals.warmCore = {
+          flying: {
+            data: await CoreRule.findOne({name: 'Flying'})
+          }
+        }
+        
+        res.locals.warmCore.flying.block = '<div style="text-align:left;"><ul>'
+        res.locals.warmCore.flying.data.lines.forEach((line) => {
+          res.locals.warmCore.flying.block += `<li><b>${line.name}:</b> ${line.text}</li>`
+        })
+        res.locals.warmCore.flying.block += '</ul></div>'
+
+        
+        res.locals.warmArmy     = await WarmasterArmy.findOne({ name: query.army });
+        if (!res.locals.warmArmy) console.error(`Army with name "${query.army}" not found.`);
+        res.locals.warmUnits    = await getWarmasterUnits(res.locals.warmArmy, query.format);
+        res.locals.warmTerrain  = await TerrainType.find().populate('access.unitType');
       }
     }
 
@@ -59,21 +75,19 @@ async function categorizedPages(gameSystems) {
   return categorizedPages
 }
 
-async function getWarmasterUnits(armyName) {
+async function getWarmasterUnits(army, format) {
   // Find the army by name to get its _id
-  const army = await WarmasterArmy.findOne({ name: armyName });
-  
-  if (!army) {
-    console.error(`Army with name "${armyName}" not found.`);
-    return [];
-  }
 
   // Use the _id of the found army to query WarmasterUnit
   const warmasterUnits = await WarmasterUnit.find({ army: army._id })
     .populate('specialRules')
     .populate('type')
-    .populate('army')
+    .populate('army', 'name')
     .populate('spells')
+
+  // format
+
+
 
   return warmasterUnits;
 }

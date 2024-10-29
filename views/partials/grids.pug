@@ -1,0 +1,50 @@
+mixin warmasterUnits(config, cols, rows)
+  table.table-striped.smaller(style="width: 100%")
+      tr
+        each col in cols
+          th=col.name
+      each row in rows
+        tr(class=`dynamic-row unitType${row.type.name}`)
+          td
+            if row.mounts
+              span.keyword(data-toggle='tooltip' title=`Mounts: ${row.mounts}`)=row.name
+            else 
+              span.cell=row.name
+          td
+            span.keyword(data-toggle='tooltip' title=`${row.type.description} <br /> <br /> ${row.type.name.includes('Flying')  ? warmCore.flying.block : '' }`)=row.type.name
+          td
+            span.cell
+              +fCm(row.type.movement)
+            span.cell.dynamic-icon(class=`cross${row.type.name}` data-toggle='tooltip' title=`Unit can traverse this terrain type`)
+              i(class='fas fa-person-walking-dashed-line-arrow-right')
+          td
+            if row.range
+              span.keyword(data-toggle='tooltip' title=`${row.range} cm`)=row.attacks
+            else 
+              span.cell=row.attacks
+          td
+            span.cell=row.hits ? `${row.hits}` : '-'
+            span.cell.dynamic-icon(class=`defended${row.type.name}` data-toggle='tooltip' title=`Unit is defended when in or behind this terrain type`)
+              i(class='fas fa-shield-halved')
+            span.cell.dynamic-icon(class=`fortified${row.type.name}` data-toggle='tooltip' title=`Unit is fortified when in or behind this terrain type`)
+              i(class='fas fa-shield')
+          td
+            span.cell
+              +fSave(row.armour)
+          td
+            span.cell=row.command ? `${row.command}` : '-'
+          td
+            span.cell=row.size ? `${row.size}` : '-'
+          td
+            +fCell(row.points)
+          td
+            span.cell=`${row.min ? `${row.min}` : '-'}/${row.max ? `${row.max}` : '-'}`
+          td
+            each rule in row.specialRules
+              span(class=`keyword ${rule.boon ? 'success' : 'danger'}` data-toggle='tooltip' title=`${rule.description}`)=`${rule.name}`
+          if row.spells.length
+            tr(class='dynamicRow')
+              td=''
+              td(colspan=11)
+                each spell in row.spells
+                  span(class=`keyword info` data-toggle='tooltip' title=`<p>Target: ${spell.target}</p><p>${spell.description}</p><i>${spell.flavour}</i>`)=`${spell.name} [${spell.range}cm, ${spell.cast}+]`

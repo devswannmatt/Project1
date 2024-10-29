@@ -1,24 +1,26 @@
 nav.navbar.navbar-expand-lg.navbar-light
-    a.navbar-brand(href='/') Hobby Hangout
+    a.navbar-brand(href='/')
+        img.navbar-brand-img(class='brand-logo' src='/uploads/hh.png' title='Hobby Hangout')
     button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarNav', aria-controls='navbarNav', aria-expanded='false', aria-label='Toggle navigation')
         span.navbar-toggler-icon
     .collapse.navbar-collapse#navbarNav
-        ul.navbar-nav.mr-auto
-            each gameSystem in gameSystems
-                li.nav-item.dropdown
-                    a#navbarDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')= gameSystem.name
-                    .dropdown-menu(aria-labelledby='navbarDropdown')
-                        each page in categorizedPages[gameSystem.name]
-                            a.dropdown-item(href=`/page/${page.url}`) #{page.title}
-            a.nav-link(href='/gallery' data-context='gallery') Gallery
-            a.nav-link(href='/archive' data-context='archive') Archive
+        div.navbar-deep
+            ul.navbar-nav.mr-auto
+                each gameSystem, index in gameSystems
+                    li.nav-item.dropdown
+                        a#navbarDropdown.nav-link.dropdown-toggle(class=`${index == 0 ? 'nav-link-start' : ''}`, href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')=`${gameSystem.name} `
+                        .dropdown-menu(aria-labelledby='navbarDropdown')
+                            each page in categorizedPages[gameSystem.name]
+                                a.dropdown-item(href=`/page/${page.url}`) #{page.title}
+                a.nav-link(href='/gallery' data-context='gallery') Gallery
+                a.nav-link.nav-link-end(href='/archive' data-context='archive') Archive
 
         ul.navbar-nav.ml-auto
             if user
                 if user.role === 'admin'
                     li.nav-item.dropdown
-                        a#navbarDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-                            | System
+                        a#navbarDropdown.nav-link.nav-link-start.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+                            i.fa.fa-fw.fa-gear
                         .dropdown-menu(aria-labelledby='navbarDropdown')
                             a.dropdown-item(href='/logs') Logs
                             hr
@@ -31,7 +33,7 @@ nav.navbar.navbar-expand-lg.navbar-light
                             a.dropdown-item(href='/users') Users
                 li.nav-item
                     a.nav-link(href='/account')
-                        i.fa.fa-user
-                        |  Account
+                        i.fa.fa-fw.fa-user
                 li.nav-item
-                    a.nav-link(href='/logout') Logout
+                    a.nav-link(href='/logout')
+                        i.fa.fa-fw.fa-right-from-bracket

@@ -135,18 +135,6 @@ const specialRulesData = [
         boon: true
       },
       {
-        "rule": "Open",
-        "description": "Attacks made against a unit in Open Ground have a base hit chance of 4+, this can be modified by other rules."
-      },
-      {
-        "rule": "Defended",
-        "description": "Attacks made against a unit in Defended Ground have a base hit chance of 5+, this can be modified by other rules."
-      },
-      {
-        "rule": "Fortified",
-        "description": "Attacks made against a unit in Fortified Ground have a base hit chance of 6+, this can be modified by other rules."
-      },
-      {
         "rule": "Regenerate",
         "description": "In each round of combat after whole stands have been removed this unit automatically regenerates one outstanding hit. If no hits are left over after removing whole stands then regeneration has no effect. Regenerated hits still count towards the combat result for the round.",
         boon: true

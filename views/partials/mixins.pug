@@ -66,9 +66,9 @@ mixin formButton(text, type = 'submit', extraClass = 'btn-primary', icon, id)
     else
       span= text
 
-mixin simpleButton(config, onclick, size = '')
+mixin simpleButton(config, onclick, size = '', onmouseover)
   div(style='font-size: small;')=config.label ? config.label : ''
-    button(id=config.id class=`btn-sm btn-${config.type} ${size}` type='button' data-toggle='tooltip' title=`${config.title}` onclick=onclick)
+    button(id=config.id class=`btn-sm btn-${config.type} ${size}` type='button' data-toggle='tooltip' title=`${config.title}` onclick=onclick onmouseover=onmouseover)
       if config.icon
         i(class=`fas fa-fw fa-${config.icon}`)
       if config.text
