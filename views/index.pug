@@ -4,6 +4,9 @@ h1 Pages
 ul
   each page in pages
     li
-      a(href=`/page/${page._id}`)= page.title
+      - let url = `${page._id}`
+      if page.query
+        - url = `${page._id}?${page.query}`
+      a(href=`/page/${url}`)=page.title
 
 include partials/footer
