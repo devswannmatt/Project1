@@ -19,7 +19,7 @@ router.get('/game-systems/add', (req, res) => {
 });
 
 // POST: Create a new game system
-router.post('/add', async (req, res) => {
+router.post('/game-systems/add', async (req, res) => {
   try {
     const { name, code, description } = req.body;
     const gameSystem = new GameSystem({ name, code, description });
