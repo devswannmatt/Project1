@@ -35,13 +35,12 @@ async function populateData(req, res, next) {
           }
         }
         
-        res.locals.warmCore.flying.block = '<div style="text-align:left;"><ul>'
+        res.locals.warmCore.flying.block = '<div>'
         res.locals.warmCore.flying.data.lines.forEach((line) => {
-          res.locals.warmCore.flying.block += `<li><b>${line.name}:</b> ${line.text}</li>`
+          res.locals.warmCore.flying.block += `<p><b>${line.name}:</b> ${line.text}</p>`
         })
-        res.locals.warmCore.flying.block += '</ul></div>'
+        res.locals.warmCore.flying.block += '</div>'
 
-        
         res.locals.warmArmy     = await WarmasterArmy.findOne({ name: query.army });
         if (!res.locals.warmArmy) console.error(`Army with name "${query.army}" not found.`);
         res.locals.warmUnits    = await getWarmasterUnits(res.locals.warmArmy, query.format);
@@ -80,14 +79,16 @@ async function getWarmasterUnits(army, format) {
 
   // Use the _id of the found army to query WarmasterUnit
   const warmasterUnits = await WarmasterUnit.find({ army: army._id })
-    .populate('specialRules')
+    .populate({
+      path: 'specialRules',
+      populate: {
+        path: 'chart'
+      }
+    })
     .populate('type')
     .populate('army', 'name')
     .populate('spells')
-
-  // format
-
-
+    // .populate('charts')
 
   return warmasterUnits;
 }

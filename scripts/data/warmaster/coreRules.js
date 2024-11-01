@@ -43,7 +43,7 @@ const coreRules = [
     ]
   },
   {
-    name: "Giant Goes Wild",
+    name: "Goes Wild (Giant)",
     type: "chart",
     roll: "D6",
     lines: [
@@ -53,6 +53,19 @@ const coreRules = [
       { roll: "4", name: "Go for a Walk", text: "The Giant moves straight forward at full pace in the direction he is facing in. If he reaches an enemy unit he will attack as normal. If he reaches a friendly unit he will walk straight through and out the other side if there is room and he has sufficient move. If he reaches a friendly unit and does not have sufficient move or enough room to walk all the way through then he halts on contact. A friendly unit that is walked through or contacted in this way instantly becomes confused as a result." },
       { roll: "5", name: "Attack!", text: "The Giant moves towards the nearest enemy unit that he can see as fast as he can. If he reaches the foe he will attack as normal. If friends are in the way he will walk through them causing confusion as described above. If there is no visible enemy the Giant does nothing this Command phase." },
       { roll: "6", name: "Charge!", text: "The Giant gives a mighty bellow and rushes straight at the nearest enemy unit that he can see. Move the Giant at double his normal full pace move. If he reaches an enemy unit, he fights by jumping up and down on the foe, furiously doubling his Attacks value in the first round of combat. If there is no visible enemy the Giant does nothing this Command phase." }
+    ]
+  },
+  {
+    name: "Steam Tank",
+    type: "chart",
+    roll: "D6",
+    lines: [
+      { roll: "1", name: "Destroyed", text: "The Steam Tank grinds to a halt rupturing steam and noxious gasses. Remove the Steam Tank as a casualty." },
+      { roll: "2", name: "Broken Down", text: "The Steam Tank‘s drive has broken. It does not move further this turn and cannot move in future turns. Should it be obliged to move for any reason it is destroyed. Otherwise, the Steam Tank can continue to shoot and fight as normal." },
+      { roll: "3", name: "Stuck", text: "The Steam tank does not move further this turn. It cannot shoot this turn. Otherwise it is unaffected and can move in future turns as normal." },
+      { roll: "4", name: "Commander Slain", text: "The Steam Tank does not move further this turn. It can move in future turns but suffers a command penalty of -1 for the remainder of the game. The Steam Tank can shoot as normal." },
+      { roll: "5", name: "Momentary Halt", text: "The Steam Tank cannot move further this turn but is otherwise unaffected." },
+      { roll: "6", name: "Steam Overload", text: "The Steam Tank cannot move further this turn but can shoot with double the usual number of Attacks (6) to represent steam being uncontrollably diverted into weaponry." }
     ]
   }
 ]

@@ -55,6 +55,10 @@ const warmasterUnitSchema = new Schema({
     type: Schema.Types.ObjectId, // Array of references to SpecialRules model
     ref: 'WarmasterMagic'
   }],
+  charts: [{
+    type: Schema.Types.ObjectId, // Array of references to SpecialRules model
+    ref: 'Rule'
+  }],
 });
 
 // Create the WarmasterUnit model from the schema

@@ -22,6 +22,8 @@ mixin warmasterUnits(config, cols, rows)
               span.keyword(data-toggle='tooltip' title=`${row.range} cm`)=row.attacks
             else 
               span.cell=row.attacks
+            if row.type.name.includes('Monster') || row.type.name.includes('Chariot')
+              i(class='fas fa-bolt' data-toggle='tooltip' title=`<b>Impact:</b> This unit receives +1 Attack when Charging.`)
           td
             span.cell=row.hits ? `${row.hits}` : '-'
             span.cell.dynamic-icon(class=`defended${row.type.name}` data-toggle='tooltip' title=`Unit is defended when in or behind this terrain type`)
@@ -40,11 +42,14 @@ mixin warmasterUnits(config, cols, rows)
           td
             span.cell=`${row.min ? `${row.min}` : '-'}/${row.max ? `${row.max}` : '-'}`
           td
-            each rule in row.specialRules
-              span(class=`keyword ${rule.boon ? 'success' : 'danger'}` data-toggle='tooltip' title=`${rule.description}`)=`${rule.name}`
+            +renderSpecialRules(row.specialRules)
           if row.spells.length
             tr(class='dynamicRow')
               td=''
               td(colspan=11)
                 each spell in row.spells
-                  span(class=`keyword info` data-toggle='tooltip' title=`<p>Target: ${spell.target}</p><p>${spell.description}</p><i>${spell.flavour}</i>`)=`${spell.name} [${spell.range}cm, ${spell.cast}+]`
+                  span(class=`keyword info` data-toggle='tooltip' title=`<p>Target: ${spell.target}</p><p>Line of Sight: ${spell.los}</p><p>${spell.description}</p><i>${spell.flavour}</i>`)=`${spell.name} [${spell.range}cm, ${spell.cast}+`
+                    if spell.los
+                      span=', '
+                      span(class=`fas fa-fw fa-eye`)
+                    span=']'

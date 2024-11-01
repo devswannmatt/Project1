@@ -165,3 +165,41 @@ mixin actionLog()
         div#floating-frame-log(style='display: none;')
           each err in error
             div.danger=err.msg
+
+//- Navbar Mixins
+mixin navbarLinkItem(href, text, iconClass, linkClass)
+    a(class=`nav-link ${linkClass || ''}` href=href)
+        if iconClass
+            i(class=iconClass)
+        | #{text}
+
+mixin dropdown(icon, linkClass, dropdownItems)
+    li.nav-item.dropdown
+        a(class=`nav-link dropdown-toggle ${linkClass || ''}` href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+          i.fa.fa-fw(class=`fa-${icon}`)
+        .dropdown-menu(aria-labelledby='navbarDropdown')
+            each item in dropdownItems
+                a.dropdown-item(href=item.href)= item.text
+
+mixin dropdownWithSubmenu(title, index, menuItems)
+    - linkClass = index ? '' : 'nav-link-start'
+    li.nav-item.dropdown
+        a(class=`nav-link dropdown-toggle ${linkClass || ''}` href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')= title
+        .dropdown-menu(aria-labelledby='navbarDropdown')
+            each menuItem in menuItems
+                a.dropdown-item(href=`/page/${menuItem.url}`)= menuItem.title
+                if menuItem.subItems
+                    .dropdown-submenu
+                        .dropdown-menu
+                            each subItem in menuItem.subItems
+                                a.dropdown-item(href=subItem.href)= subItem.text
+
+//- Define the mixin for rendering special rules
+mixin renderSpecialRules(specialRules)
+  each rule in specialRules
+    - let tooltipChart = ''
+    if rule.chart
+      - tooltipChart = `<div class='tooltip-chart'><p>${rule.chart.name} (${rule.chart.roll})</p>${rule.chart.lines.map(line => `${line.roll} - <b>${line.name}</b>: ${line.text}`).join('<p></p>')}</div>`
+    - const tooltipHeader  = `<div class='tooltip-head'><p>${rule.name}</p></div>`
+    - const tooltipContent = `<div class='tooltip-body'>${tooltipHeader}<p>${rule.description}</p>${tooltipChart}</div>`
+    span(class=`keyword ${rule.boon ? 'success' : 'danger'}` data-toggle='tooltip' title=tooltipContent)=`${rule.name}`

@@ -7,10 +7,11 @@ body {
 }
 
 .page-container {
-  margin: 10px;
-  padding: 20px;
-  background-color: #ecf1f8;
-  border-radius: 8px;
+  margin-left:auto;
+  margin-right: auto;
+  max-width: 1400px;
+  padding: 5px;
+  background-color: #dfeaf8;
 }
 
 .pull-right { float: right; }
@@ -49,8 +50,8 @@ button, .btn {
   margin: 0 5px;
   padding: 0.5rem;
   font-size: 1rem;
-  border-radius: 0.25rem;
   color: white;
+  transition: background-color 0.4s ease;
 }
 
 .btn-sm {
@@ -90,9 +91,19 @@ button, .btn {
   color: #ca26b4;
 }
 
+.btn-gold {
+  background-color: #e9c80e;
+  border-color: #c0aa2a;
+}
+
+.btn-gold:hover, .btn-gold:focus, .btn-gold:active {
+  background-color: #c0aa2a;
+  border-color: #ac9722;
+}
+
 .btn-success {
   background-color: #28a745;
-  border-color: #28a745;
+  border-color: #238a3b;
 }
 
 .btn-success:hover, .btn-success:focus, .btn-success:active {
@@ -118,6 +129,10 @@ button, .btn {
   border: 1px #1e3c50;
 }
 
+.navbar-brand-img {
+  transition: filter 0.4s ease;
+}
+
 .navbar-brand-img:hover {
   filter: brightness(0.9);
 }
@@ -128,6 +143,7 @@ a.nav-link {
   border-right: 1px solid #2a5470;
   padding-left: 20px !important;
   padding-right: 20px !important;
+  transition: background-color 0.4s ease;
   text-shadow: -1px -1px 0 #2a5470, 1px -1px 0 #2a5470, -1px 1px 0 #2a5470, 1px 1px 0 #2a5470;
 }
 
@@ -147,6 +163,17 @@ a.nav-link:hover  {
   background-color: #2d5774;
 }
 
+.dropdown-menu {
+  background-color: #39698a !important;
+}
+
+.dropdown-item {
+  color: white !important;
+}
+
+.dropdown-item:hover {
+  background-color: #2d5774 !important;
+}
 .dropdown-menu {
   display: none;
   margin-top: 0;
@@ -336,11 +363,37 @@ ul hr {
   margin-right: 10px;
 }
 
+.breadcrumbs {
+  font-size: 11px;
+  color: rgb(214, 233, 255) !important;
+  padding: 4px;
+  margin-top: -24px;
+  margin-left: 110px;
+  position:relative;
+  z-index:2;
+}
+
+.breadcrumbs a {
+  color: rgb(214, 233, 255) !important;
+}
+
+.server-status {
+  color: rgb(214, 233, 255);
+  font-size: 12px;
+  position: fixed;
+  top: 2px;
+  right: 2px;
+  border-radius: 8px;
+  z-index: 1000;
+}
+
 .keyword {
   padding: 6px;
-  border-radius: 6px;
-  margin-right: 2px;
-  background-color: rgb(222, 237, 241);
+  border-radius: 4px;
+  margin-right: 4px;
+  background-color: #daf0ff;
+  border-style: solid !important;
+  border: 1px #1e3c50 !important;
 }
 
 .keyword:hover {
@@ -349,12 +402,12 @@ ul hr {
 }
 
 .table-striped td {
-  padding: 6px;
+  padding: 10px;
   min-width: 60px;
 }
 .table-striped th {
-  padding: 4px;
-  font-size: 10px;
+  padding: 10px;
+  font-size: 11px;
   color: gray;
 }
 
@@ -363,7 +416,7 @@ ul hr {
 }
 
 .smaller {
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .highlight {
@@ -384,17 +437,78 @@ ul hr {
 
 .button-bar {
   padding: 5px;
-  background:#d8dee6;
-}
-/* Make tooltip text align left and set width */
-.tooltip {
-  max-width: 400px; /* Set tooltip width */
-  text-align: left; /* Align text to the left */
+  background:#437699;
+  border-radius: 8px;
 }
 
-/* Optional: Style tooltip arrow */
-.tooltip .tooltip-inner {
-  width: 100%; /* Make inner width match tooltip */
+.tooltip {
   max-width: 400px;
   text-align: left;
+}
+
+.tooltip .tooltip-inner {
+  width: 100%;
+  max-width: 400px;
+  text-align: left;
+}
+
+.rotate-on-hover {
+  transition: transform 0s ease;
+}
+
+.rotate-on-hover:hover {
+  animation: spin 3s linear infinite;
+}
+
+.divider {
+  border-right: 1px solid #80bae0;
+  padding-right: 4px;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Position the submenu to appear to the right of the main menu */
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu .dropdown-menu {
+  top: 0;
+  left: 100%; /* Align submenu to the right */
+  margin-top: -1px;
+  display: none; /* Hide submenu by default */
+}
+
+/* Show submenu only when hovering over the parent item */
+.dropdown-submenu:hover .dropdown-menu {
+  display: block;
+}
+
+.tooltip-inner {
+  background-color:#2a5470 !important;
+
+}
+
+.tooltip-head {
+  font-size: larger;
+}
+
+.tooltip-body {
+  border-radius: 4px;
+  padding: 8px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.tooltip-chart {
+  border-radius: 4px;
+  background: #1e3c50;
+  padding: 8px;
 }

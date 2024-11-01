@@ -1,7 +1,7 @@
 const spellsData = [
   {
     name: "Shield of Combat",
-    cast: 4, range: 0, target: "Unit (Joined)", duration: "End of Next Turn (Enemy)",
+    cast: 4, range: 0, target: "Unit (Joined)", duration: "End of Next Turn (Enemy)", los: false,
     flavour: "The enemy's blows are magically deflected by unseen forces and cause no harm.",
     description: "The unit can re-roll failed armour rolls from melee attacks only.",
   },
@@ -44,13 +44,7 @@ const spellsData = [
   {
     name: "Fury of the Forest",
     cast: 6, range: 60, target: "Unit (Enemy)", duration: "Instant", los: true,
-    flavour: "The Spell Weaver's voice sings out across the battlefield directing troops above the tumult of combat with the magical Call of the Hunt.",
-    description: "Unengaged units are not driven back by this spell (the assault comes form the ground beneath their feet). Engaged units carry over any hits scored into the first round of combat; any hits scored count as having been struck in the combat itself.",
-  },
-  {
-    name: "Fury of the Forest",
-    cast: 6, range: 60, target: "Unit (Enemy)", duration: "Instant", los: true,
-    flavour: "The Spell Weaver's voice sings out across the battlefield directing troops above the tumult of combat with the magical Call of the Hunt.",
+    flavour: "Roots and vines burst from the ground, dragging unwitting foes to their doom!",
     description: "Unengaged units are not driven back by this spell (the assault comes form the ground beneath their feet). Engaged units carry over any hits scored into the first round of combat; any hits scored count as having been struck in the combat itself.",
   },
   {

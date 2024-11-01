@@ -12,7 +12,8 @@ const specialRuleSchema = new Schema({
   },
   boon: {
     type: Boolean
-  }
+  },
+  chart: { type: Schema.Types.ObjectId, ref: 'Rule' }
 });
   
 // Create the SpecialRule model from the schema

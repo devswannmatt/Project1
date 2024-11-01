@@ -1,10 +1,8 @@
 include partials/header
 
 if user && user.role === 'admin'
-  button.btn.btn-primary.pull-right(data-type='frm' data-toggle='modal', data-target='#modal', data-src=`/pages/edit/${page._id}` data-size='xl', data-name=`${page.title}`)
+  button.btn.btn-primary.btn-sm.pull-right(data-type='frm' data-toggle='modal', data-target='#modal', data-src=`/pages/edit/${page._id}` data-size='xl', data-name=`${page.title}`)
     i(class=`fas fa-edit`)
-
-span.text-muted #{page.category.name} / #{page.title}
 
 div.content
   != page.content

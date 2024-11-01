@@ -1,39 +1,41 @@
+//- Main Navbar Structure
 nav.navbar.navbar-expand-lg.navbar-light
+    span.server-status='API Online...'
     a.navbar-brand(href='/')
         img.navbar-brand-img(class='brand-logo' src='/uploads/hh.png' title='Hobby Hangout')
+    
     button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarNav', aria-controls='navbarNav', aria-expanded='false', aria-label='Toggle navigation')
         span.navbar-toggler-icon
-    .collapse.navbar-collapse#navbarNav
+    
+    div.collapse.navbar-collapse#navbarNav
         div.navbar-deep
             ul.navbar-nav.mr-auto
                 each gameSystem, index in gameSystems
-                    li.nav-item.dropdown
-                        a#navbarDropdown.nav-link.dropdown-toggle(class=`${index == 0 ? 'nav-link-start' : ''}`, href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')=`${gameSystem.name} `
-                        .dropdown-menu(aria-labelledby='navbarDropdown')
-                            each page in categorizedPages[gameSystem.name]
-                                a.dropdown-item(href=`/page/${page.url}`) #{page.title}
-                a.nav-link(href='/gallery' data-context='gallery') Gallery
-                a.nav-link.nav-link-end(href='/archive' data-context='archive') Archive
+                    +dropdownWithSubmenu(gameSystem.name, index, categorizedPages[gameSystem.name])
+                
+                +navbarLinkItem('/gallery', 'Gallery', null, 'nav-link')
+                +navbarLinkItem('/archive', 'Archive', null, 'nav-link nav-link-end')
 
         ul.navbar-nav.ml-auto
             if user
                 if user.role === 'admin'
-                    li.nav-item.dropdown
-                        a#navbarDropdown.nav-link.nav-link-start.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-                            i.fa.fa-fw.fa-gear
-                        .dropdown-menu(aria-labelledby='navbarDropdown')
-                            a.dropdown-item(href='/logs') Logs
-                            hr
-                            a.dropdown-item(href='/add') Add Page
-                            a.dropdown-item(href='/upload') Upload File
-                            hr
-                            a.dropdown-item(href='/game-systems') Game Systems
-                            a.dropdown-item(href='/templates') Templates
-                            a.dropdown-item(href='/roles') Roles
-                            a.dropdown-item(href='/users') Users
-                li.nav-item
-                    a.nav-link(href='/account')
-                        i.fa.fa-fw.fa-user
-                li.nav-item
-                    a.nav-link(href='/logout')
-                        i.fa.fa-fw.fa-right-from-bracket
+                    +dropdown('gear', 'nav-link-start', [
+                        { href: '/logs', text: 'Logs' },
+                        { href: '/add', text: 'Add Page' },
+                        { href: '/upload', text: 'Upload File' },
+                        { href: '/game-systems', text: 'Game Systems' },
+                        { href: '/templates', text: 'Templates' },
+                        { href: '/roles', text: 'Roles' },
+                        { href: '/users', text: 'Users' }
+                    ])
+                        
+                +navbarLinkItem('/account', '', 'fa fa-fw fa-user')
+                +navbarLinkItem('/logout', '', 'fa fa-fw fa-right-from-bracket')
+
+if page
+    span.breadcrumbs.pull-left
+        a(href='#')= page.category.name
+        span= ` / ${page.title}`
+
+if user
+    span.breadcrumbs.pull-right=`${user.firstName} ${user.lastName} (${user.username})`

@@ -5,8 +5,8 @@ block content
     div.button-bar
       table
         tr
-          td
-            .keyword(data-toggle='tooltip' title=`${warmArmy.armyRule}`)='Army Rule'
+          td.divider
+            +simpleButton({ title: `${warmArmy.armyRule}`, type: 'gold', icon: 'star' }, undefined)
           each terrain in warmTerrain
             if terrain.access.length
               td

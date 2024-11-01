@@ -52,10 +52,16 @@ router.get('/api/warmaster/unit_types', async (req, res) => {
 router.get('/api/warmaster/units', async (req, res) => {
   try {
     const WarmasterUnits = await WarmasterUnit.find()
-      .populate('specialRules')
+      .populate({
+        path: 'specialRules',
+        populate: {
+          path: 'chart'
+        }
+      })
       .populate('type')
       .populate('army', 'name')
       .populate('spells')
+      // .populate('charts')
     res.send(WarmasterUnits);
   } catch (err) {
     console.error(err);

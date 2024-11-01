@@ -32,6 +32,7 @@ async function importAllWarmasterData() {
     if (await populateWarmasterUnits('orc')        === false) throw 'Orc Units Failed'
     if (await populateWarmasterUnits('wood_elves') === false) throw 'Wood Elves Units Failed'
     if (await populateWarmasterUnits('goblins')    === false) throw 'Goblin Units Failed'
+    if (await populateWarmasterUnits('empire')     === false) throw 'Empire Units Failed'
 
     console.log('All collections imported.');
   } catch (error) {
@@ -66,17 +67,24 @@ async function populateCoreRules() {
   }
 }
 
-
 async function populateSpecialRules() {
   try {
     await SpecialRule.deleteMany({});
+    
     const specialRules = specialRulesData.map(rule => ({
       name: rule.rule,
       description: rule.description,
-      boon: rule.boon
+      boon: rule.boon,
+      chart: rule.chart
     }));
-    await SpecialRule.insertMany(specialRules);
-    console.log('Special rules successfully added to the Collection');
+
+    for (let special of specialRules) {
+      if (special.chart) special.chart = await getCharts(special.chart)
+      await new SpecialRule(special).save();
+      console.log(`Saved Warmaster Special Rule: ${special.name}`);
+    }
+    // await SpecialRule.insertMany(specialRules);
+    // console.log('Special rules successfully added to the Collection');
   } catch (error) {
     console.error('Error adding special rules:', error);
     return false
@@ -171,6 +179,7 @@ async function populateWarmasterUnits(armyName) {
       const unitType     = await getOrCreateUnitType(unitData.type);
       const specialRules = await getSpecialRules(unitData.special_rules);
       const spells       = await getSpells(unitData.spells);
+      // const charts       = await getCharts(unitData.charts);
 
       const warmasterUnit = new WarmasterUnit({
         name: unitData.unit,
@@ -249,6 +258,15 @@ async function getSpells(string) {
   const spells     = await WarmasterMagic.find({ name: { $in: spellNames } });
   
   return spells.map(spell => spell._id);
+}
+
+async function getCharts(string) {
+  if (!string) return [];
+  
+  const chartNames = string.split(',').map(chart => chart.trim());
+  const charts     = await CoreRule.find({ name: { $in: chartNames } });
+  
+  return charts.map(chart => chart._id);
 }
 
 async function getOrCreateUnitType(unitTypeName) {
