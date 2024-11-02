@@ -64,7 +64,7 @@ mixin formButton(text, type = 'submit', extraClass = 'btn-primary', icon, id)
     if icon
       i(class=`fas fa-${icon}` data-text=`${text}`)
     else
-      span= text
+      span=text
 
 mixin simpleButton(config, onclick, size = '', onmouseover)
   div(style='font-size: small;')=config.label ? config.label : ''
@@ -202,4 +202,4 @@ mixin renderSpecialRules(specialRules)
       - tooltipChart = `<div class='tooltip-chart'><p>${rule.chart.name} (${rule.chart.roll})</p>${rule.chart.lines.map(line => `${line.roll} - <b>${line.name}</b>: ${line.text}`).join('<p></p>')}</div>`
     - const tooltipHeader  = `<div class='tooltip-head'><p>${rule.name}</p></div>`
     - const tooltipContent = `<div class='tooltip-body'>${tooltipHeader}<p>${rule.description}</p>${tooltipChart}</div>`
-    span(class=`keyword ${rule.boon ? 'success' : 'danger'}` data-toggle='tooltip' title=tooltipContent)=`${rule.name}`
+    div.keyword(class=`${rule.boon ? 'success' : 'danger'}` data-toggle='tooltip' title=tooltipContent)=`${rule.name}`

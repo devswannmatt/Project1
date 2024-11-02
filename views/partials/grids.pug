@@ -7,11 +7,11 @@ mixin warmasterUnits(config, cols, rows)
         tr(class=`dynamic-row unitType${row.type.name}`)
           td
             if row.mounts
-              span.keyword(data-toggle='tooltip' title=`Mounts: ${row.mounts}`)=row.name
+              div.keyword(data-toggle='tooltip' title=`Mounts: ${row.mounts}`)=row.name
             else 
               span.cell=row.name
           td
-            span.keyword(data-toggle='tooltip' title=`${row.type.description} <br /> <br /> ${row.type.name.includes('Flying')  ? warmCore.flying.block : '' }`)=row.type.name
+            div.keyword(data-toggle='tooltip' title=`${row.type.description} <br /> <br /> ${row.type.name.includes('Flying')  ? warmCore.flying.block : '' }`)=row.type.name
           td
             span.cell
               +fCm(row.type.movement)
@@ -19,7 +19,7 @@ mixin warmasterUnits(config, cols, rows)
               i(class='fas fa-person-walking-dashed-line-arrow-right')
           td
             if row.range
-              span.keyword(data-toggle='tooltip' title=`${row.range} cm`)=row.attacks
+              div.keyword(data-toggle='tooltip' title=`${row.range} cm`)=row.attacks
             else 
               span.cell=row.attacks
             if row.type.name.includes('Monster') || row.type.name.includes('Chariot')
@@ -48,7 +48,7 @@ mixin warmasterUnits(config, cols, rows)
               td=''
               td(colspan=11)
                 each spell in row.spells
-                  span(class=`keyword info` data-toggle='tooltip' title=`<p>Target: ${spell.target}</p><p>Line of Sight: ${spell.los}</p><p>${spell.description}</p><i>${spell.flavour}</i>`)=`${spell.name} [${spell.range}cm, ${spell.cast}+`
+                  div.keyword(class=`info` data-toggle='tooltip' title=`<p>Target: ${spell.target}</p><p>Line of Sight: ${spell.los}</p><p>${spell.description}</p><i>${spell.flavour}</i>`)=`${spell.name} [${spell.range}cm, ${spell.cast}+`
                     if spell.los
                       span=', '
                       span(class=`fas fa-fw fa-eye`)
