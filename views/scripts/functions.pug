@@ -37,18 +37,18 @@ script.
     }
 
     const highlightRowById = (types, button) => {
-        console.log(types)
-        console.log(button)
-
+        let setButton = $(button)
+        console.log(setButton)
+        $('.dynamic-btn-highlight').removeClass('dynamic-btn-highlight');
         $('.dynamic-row').addClass('darken');
+        $(`.dynamic-icon`).hide();
         if (types == 'Clear') {
+            $('.dynamic-active-filter').text('')
             $(`.dynamic-row`).removeClass('darken');
-            $(`.dynamic-icon`).hide();
         } else {
-            $(this).addClass('focused')
-            $(`.dynamic-icon`).hide();
+            setButton.addClass('dynamic-btn-highlight');
+            $('.dynamic-active-filter').text(`Active: ${setButton.data('name')}`)
             types.forEach((type) => {
-                console.log(type)
                 $(`.unitType${type.unitType.name}`).removeClass('darken');
                 if (type.cross)     $(`.cross${type.unitType.name}`).show();
                 if (type.defended)  $(`.defended${type.unitType.name}`).show();

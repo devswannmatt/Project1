@@ -68,7 +68,7 @@ mixin formButton(text, type = 'submit', extraClass = 'btn-primary', icon, id)
 
 mixin simpleButton(config, onclick, size = '', onmouseover)
   div(style='font-size: small;')=config.label ? config.label : ''
-    button(id=config.id class=`btn-sm btn-${config.type} ${size}` type='button' data-toggle='tooltip' title=`${config.title}` onclick=onclick onmouseover=onmouseover)
+    button(id=config.id class=`btn-sm btn-${config.type} ${size}` type='button' data-toggle='tooltip' data-name=config.name || '' title=`${config.title}` onclick=onclick onmouseover=onmouseover)
       if config.icon
         i(class=`fas fa-fw fa-${config.icon}`)
       if config.text
@@ -193,13 +193,3 @@ mixin dropdownWithSubmenu(title, index, menuItems)
                         .dropdown-menu
                             each subItem in menuItem.subItems
                                 a.dropdown-item(href=subItem.href)= subItem.text
-
-//- Define the mixin for rendering special rules
-mixin renderSpecialRules(specialRules)
-  each rule in specialRules
-    - let tooltipChart = ''
-    if rule.chart
-      - tooltipChart = `<div class='tooltip-chart'><p>${rule.chart.name} (${rule.chart.roll})</p>${rule.chart.lines.map(line => `${line.roll} - <b>${line.name}</b>: ${line.text}`).join('<p></p>')}</div>`
-    - const tooltipHeader  = `<div class='tooltip-head'><p>${rule.name}</p></div>`
-    - const tooltipContent = `<div class='tooltip-body'>${tooltipHeader}<p>${rule.description}</p>${tooltipChart}</div>`
-    div.keyword(class=`${rule.boon ? 'success' : 'danger'}` data-toggle='tooltip' title=tooltipContent)=`${rule.name}`

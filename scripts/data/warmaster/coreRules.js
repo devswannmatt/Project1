@@ -67,6 +67,16 @@ const coreRules = [
       { roll: "5", name: "Momentary Halt", text: "The Steam Tank cannot move further this turn but is otherwise unaffected." },
       { roll: "6", name: "Steam Overload", text: "The Steam Tank cannot move further this turn but can shoot with double the usual number of Attacks (6) to represent steam being uncontrollably diverted into weaponry." }
     ]
+  },
+  {
+    name: "Command",
+    type: "chart",
+    roll: "-",
+    lines: [
+      { name: "0 to 20cm",  text: "No Command penalty, also the maximum range for Wizards." },
+      { name: "21 to 40cm",  text: "-1 Command penalty" },
+      { name: "42 to 60cm+", text: "-2 Command penalty, also the maximum range for Heroes. Extra -1 for every full 20cm." }
+    ]
   }
 ]
 

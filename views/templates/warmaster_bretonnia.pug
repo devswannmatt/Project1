@@ -10,9 +10,23 @@ block content
           each terrain in warmTerrain
             if terrain.access.length
               td
-                +simpleButton({ title: `<p>${terrain.name}</p><p>${terrain.description}</p>`, type: 'success', icon: terrain.icon }, undefined, terrain.name, `highlightRowById(${JSON.stringify(terrain.access)}, this)`)
-          td
+                +simpleButton({ title: `<p>${terrain.name}</p><p>${terrain.description}</p>`, type: 'info', icon: terrain.icon, name: terrain.name }, undefined, terrain.name, `highlightRowById(${JSON.stringify(terrain.access)}, this)`)
+          td.divider
             +simpleButton({ title: 'Clear Filter', type: 'danger', icon: 'cancel' }, 'highlightRowById("Clear")', 'Clear')
+          td
+            span(class='dynamic-active-filter')
           
   if warmUnits
-    +warmasterUnits({}, [ { name: 'Name' }, { name: 'Type' }, { name: 'Move' }, { name: 'Attacks' }, { name: 'Hits' }, { name: 'Armour' }, { name: 'Command' }, { name: 'Size' }, { name: 'Points' }, { name: 'Min/Max' }, { name: 'Rules' } ], warmUnits)
+    +warmasterUnits({}, [
+      { name: 'Name',    format: 'string' },
+      { name: 'Type',    format: 'string' },
+      { name: 'Move',    format: 'number' },
+      { name: 'Attacks', format: 'number' },
+      { name: 'Hits',    format: 'number' },
+      { name: 'Armour',  format: 'number' },
+      { name: 'Command', format: 'number' },
+      { name: 'Size',    format: 'number' },
+      { name: 'Points',  format: 'number' },
+      { name: 'Min/Max', format: 'center' },
+      { name: 'Rules',   format: 'string' }
+    ], warmUnits)

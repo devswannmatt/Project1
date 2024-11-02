@@ -6,6 +6,18 @@ body {
   position: relative;
 }
 
+.danger {
+  color: #dc3545;
+}
+
+.success {
+  color: #28a745;
+}
+
+.info {
+  color: #ca26b4;
+}
+
 .page-container {
   margin-left:auto;
   margin-right: auto;
@@ -60,6 +72,32 @@ button, .btn {
   margin-left: 4px;
 }
 
+.dynamic-btn-highlight {
+  border-style: solid;
+  border-color: #dc3545;
+  animation: pulse-btn-highlight 1s infinite ease-in-out;
+}
+
+@keyframes pulse-btn-highlight {
+  0% {
+    border-color: #6da6e4;
+    border-width: 4px;
+  }
+  50% {
+    border-color: #80bdff;
+    border-width: 0px;
+  }
+  100% {
+    border-color: #80bdff;
+    border-width: 4px;
+  }
+}
+
+.dynamic-active-filter {
+  padding: 6px;
+  color: white;
+}
+
 .brand-logo {
   height: 75px;
   width: 75px;
@@ -77,18 +115,6 @@ button, .btn {
 .btn-danger:hover, .btn-danger:focus, .btn-danger:active {
   background-color: #a71d2a;
   border-color: #a71d2a;
-}
-
-.danger {
-  color: #dc3545;
-}
-
-.success {
-  color: #28a745;
-}
-
-.info {
-  color: #ca26b4;
 }
 
 .btn-gold {
@@ -403,8 +429,9 @@ ul hr {
 }
 
 .table-striped td {
-  padding: 10px;
-  min-width: 60px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  min-width: 50px;
 }
 .table-striped th {
   padding: 10px;
@@ -413,7 +440,7 @@ ul hr {
 }
 
 .cell{
-  padding: 6px;
+  padding: 4px;
 }
 
 .smaller {
@@ -432,6 +459,10 @@ ul hr {
   display: none;
 }
 
+.grid-icon {
+  color: #437699;
+}
+
 .btn .focused {
   border:#a71d2a;
 }
@@ -440,17 +471,6 @@ ul hr {
   padding: 5px;
   background:#437699;
   border-radius: 8px;
-}
-
-.tooltip {
-  max-width: 400px;
-  text-align: left;
-}
-
-.tooltip .tooltip-inner {
-  width: 100%;
-  max-width: 400px;
-  text-align: left;
 }
 
 .rotate-on-hover {
@@ -492,24 +512,78 @@ ul hr {
   display: block;
 }
 
-.tooltip-inner {
-  background-color:#2a5470 !important;
+.tooltip {
+  max-width: 400px;
+  text-align: left;
+}
 
+/* .tooltip .tooltip-inner {
+  width: 100%;
+  max-width: 400px;
+  text-align: left;
+} */
+
+
+.tooltip .tooltip-inner {
+  width: 100%;
+  background-color:#2a5470 !important;
+  max-width: 400px;
+  text-align: left;
 }
 
 .tooltip-head {
   font-size: larger;
+  margin-bottom: 4px;
 }
 
 .tooltip-body {
   border-radius: 4px;
-  padding: 8px;
-  margin-top: 4px;
-  margin-bottom: 4px;
 }
 
 .tooltip-chart {
   border-radius: 4px;
   background: #1e3c50;
   padding: 8px;
+}
+
+.spacer {
+  padding: 2px;
+}
+
+.number {
+  text-align: center;
+}
+
+.string {
+  text-align: left;
+}
+
+.center {
+  text-align: center;
+}
+
+@keyframes pulse-red {
+  0% {
+    border-style: solid;
+    border-width: 5px;
+    /* background-color: white; */
+  }
+  50% {
+    border-style: solid;
+    border-width: 2px;
+    /* background-color: #ca9393; */
+  }
+  100% {
+    border-style: solid;
+    border-width: 5px;
+    /* background-color: white; */
+  }
+}
+
+.btn-pulse-red {
+  animation: pulse-red 2s infinite ease-in-out;
+}
+
+.align-center {
+  text-align: center;
 }

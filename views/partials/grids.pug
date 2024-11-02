@@ -1,55 +1,56 @@
 mixin warmasterUnits(config, cols, rows)
   table.table-striped.smaller(style="width: 100%")
-      tr
-        each col in cols
-          th=col.name
-      each row in rows
-        tr(class=`dynamic-row unitType${row.type.name}`)
+    tr
+      each col in cols
+        th(class=col.format)=col.name
+
+    each row in rows
+      if row.type.name == 'General'
+        tr
+          td.spacer(colspan=cols.length)
+      
+      tr(class=`dynamic-row unitType${row.type.name}`)
+        +fCell(cols[0].format, row.name, { tooltip: row.mounts ? `<b>Mounts:</b> ${row.mounts}` : '' })
+
+        +fCell(cols[1].format, row.type.name, { tooltip: `<p>${row.type.description}</p> ${row.type.name.includes('Flying') ? warmCore.flying.block : ''}` })
+        
+        +fCell(cols[2].format, `${row.type.movement}cm`, { type: 'Cross', name: row.type.name })
+
+        +fCell(cols[3].format, row.attacks, { type: 'Impact', name: row.type.name, tooltip: row.range ? `<b>Range:</b> ${row.range}cm`: '' })
+
+        +fCell(cols[4].format, row.hits, { type: 'Defense', name: row.type.name })
+
+        +fCell(cols[5].format, row.armour ? `${row.armour}+` : '' )
+
+        +fCell(cols[6].format, row.command)
+
+        +fCell(cols[7].format, row.size)
+
+        +fCell(cols[8].format, row.points)
+
+        +fCell(cols[9].format, `${row.min || '-'} / ${row.max || '-'}`)
+
+        td
+          +renderSpecialRules(row.specialRules)
+
+      // Spell Information for Units with Spells
+      if row.spells.length
+        tr.dynamicRow
           td
-            if row.mounts
-              div.keyword(data-toggle='tooltip' title=`Mounts: ${row.mounts}`)=row.name
-            else 
-              span.cell=row.name
-          td
-            div.keyword(data-toggle='tooltip' title=`${row.type.description} <br /> <br /> ${row.type.name.includes('Flying')  ? warmCore.flying.block : '' }`)=row.type.name
-          td
-            span.cell
-              +fCm(row.type.movement)
-            span.cell.dynamic-icon(class=`cross${row.type.name}` data-toggle='tooltip' title=`Unit can traverse this terrain type`)
-              i(class='fas fa-person-walking-dashed-line-arrow-right')
-          td
-            if row.range
-              div.keyword(data-toggle='tooltip' title=`${row.range} cm`)=row.attacks
-            else 
-              span.cell=row.attacks
-            if row.type.name.includes('Monster') || row.type.name.includes('Chariot')
-              i(class='fas fa-bolt' data-toggle='tooltip' title=`<b>Impact:</b> This unit receives +1 Attack when Charging.`)
-          td
-            span.cell=row.hits ? `${row.hits}` : '-'
-            span.cell.dynamic-icon(class=`defended${row.type.name}` data-toggle='tooltip' title=`Unit is defended when in or behind this terrain type`)
-              i(class='fas fa-shield-halved')
-            span.cell.dynamic-icon(class=`fortified${row.type.name}` data-toggle='tooltip' title=`Unit is fortified when in or behind this terrain type`)
-              i(class='fas fa-shield')
-          td
-            span.cell
-              +fSave(row.armour)
-          td
-            span.cell=row.command ? `${row.command}` : '-'
-          td
-            span.cell=row.size ? `${row.size}` : '-'
-          td
-            +fCell(row.points)
-          td
-            span.cell=`${row.min ? `${row.min}` : '-'}/${row.max ? `${row.max}` : '-'}`
-          td
-            +renderSpecialRules(row.specialRules)
-          if row.spells.length
-            tr(class='dynamicRow')
-              td=''
-              td(colspan=11)
-                each spell in row.spells
-                  div.keyword(class=`info` data-toggle='tooltip' title=`<p>Target: ${spell.target}</p><p>Line of Sight: ${spell.los}</p><p>${spell.description}</p><i>${spell.flavour}</i>`)=`${spell.name} [${spell.range}cm, ${spell.cast}+`
-                    if spell.los
-                      span=', '
-                      span(class=`fas fa-fw fa-eye`)
-                    span=']'
+          td(colspan=cols.length - 1)
+            each spell in row.spells
+              div.keyword(class='info' data-toggle='tooltip' title=`<p><b>Target:</b> ${spell.target}</p><p><b>Line of Sight:</b> ${spell.los}</p><p><b>Description:</b> ${spell.description}</p><p class="align-center"><i>"${spell.flavour}"</i></p>`)= `${spell.name} [${spell.range}cm, ${spell.cast}+`
+                if spell.los
+                  span=', '
+                  span(class='fas fa-fw fa-eye')
+                span= ']'
+
+//- Define the mixin for rendering special rules
+mixin renderSpecialRules(specialRules)
+  each rule in specialRules
+    - let tooltipChart = ''
+    if rule.chart
+      - tooltipChart = `<div class='tooltip-chart'><p>${rule.chart.name} (${rule.chart.roll})</p>${rule.chart.lines.map(line => `${line.roll || '' } <b>${line.name}</b>: ${line.text}`).join('<p></p>')}</div>`
+    - const tooltipHeader  = `<div class='tooltip-head'><b>${rule.name}</b> <span class='smaller pull-right'>${rule.boon ? 'Positive' : 'Negative'}</span></div>`
+    - const tooltipContent = `<div class='tooltip-body'>${tooltipHeader}<p>${rule.description}</p>${tooltipChart}</div>`
+    div.keyword(class=`${rule.boon ? 'success' : 'danger'}` data-toggle='tooltip' title=tooltipContent)=`${rule.name}`

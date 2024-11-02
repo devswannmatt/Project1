@@ -107,17 +107,20 @@ const specialRulesData = [
   {
     "rule": "Command (Unlimited)",
     "description": "The character is able to issue orders to any friendly unit on the battlefield. If this order fails, no more orders maybe issued by any characters.",
-    boon: true
+    boon: true,
+    chart: "Command"
   },
   {
     "rule": "Command (60cm)",
     "description": "The character is able to issue orders to any friendly unit within 60cm. If this order fails, then this character may issue no further orders. ",
-    boon: true
+    boon: true,
+    chart: "Command"
   },
   {
     "rule": "Command (20cm)",
     "description": "The character is able to issue orders to any friendly unit within 20cm. If this order fails, then this character may issue no further orders.",
-    boon: true
+    boon: true,
+    chart: "Command"
   },
   {
     "rule": "Character",
@@ -172,7 +175,7 @@ const specialRulesData = [
   },
   {
     "rule": "Artillery (Bolt Thrower)",
-    "description": "This unit uses all the rules for Stone Throwers.",
+    "description": "This unit uses all the rules for Bolt Throwers.",
     boon: true
   },
   {
@@ -276,6 +279,11 @@ const specialRulesData = [
     boon: true,
     chart: "Steam Tank"
   },
+  {
+    "rule": "Skewer",
+    "description": "Pierces units, TBA",
+    boon: true
+  }
 ]
 
 module.exports = specialRulesData;

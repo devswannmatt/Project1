@@ -1,8 +1,21 @@
-mixin fCell(value)
-    span.cell=value
-
-mixin fSave(value)
-    span=value ? `${value}+` : '-'
-
-mixin fCm(value)
-    span=`${value}cm`
+mixin fCell(format, value, extra)
+    td(class=`${format}`)
+        if extra
+            if extra.type == 'Cross'
+                span.cell.grid-icon.dynamic-icon(class=`cross${extra.name}` data-toggle='tooltip' title='<b>Cross:</b> This unit may cross this terrain type')
+                    i(class=`fas fa-person-walking-dashed-line-arrow-right`)
+            if extra.type == 'Defense'
+                span.cell.grid-icon.dynamic-icon(class=`defended${extra.name}` data-toggle='tooltip' title='<b>Defended:</b> This unit is hit on a natural 5+')
+                    i(class=`fas fa-shield-halved`)
+                span.cell.grid-icon.dynamic-icon(class=`fortified${extra.name}` data-toggle='tooltip' title='<b>Fortified:</b> This unit is hit on a natural 6+')
+                    i(class=`fas fa-shield`)
+            if extra.type == 'Impact'
+                if extra.name.includes('Monster') || extra.name.includes('Chariot')
+                    span.cell.grid-icon(data-toggle='tooltip' title='<b>Impact:</b> +1 Attack when Charging.')
+                        i(class=`fas fa-bolt`)
+            if extra.tooltip
+                span.cell.keyword(data-toggle='tooltip' title=extra.tooltip)=value || '-'
+            else
+                span.cell=value || '-'
+        else
+            span.cell=value || '-'
