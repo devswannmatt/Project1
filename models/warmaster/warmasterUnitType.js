@@ -13,7 +13,11 @@ const unitTypeSchema = new Schema({
   },
   description: {
     type: String
-  }
+  },
+  coreRules: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Rule'
+  }]
 });
 
 // Create the UnitType model from the schema

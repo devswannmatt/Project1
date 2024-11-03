@@ -41,7 +41,7 @@ router.get('/api/warmaster/spells', async (req, res) => {
 
 router.get('/api/warmaster/unit_types', async (req, res) => {
   try {
-    const UnitTypes = await UnitType.find()
+    const UnitTypes = await UnitType.find().populate('coreRules')
     res.send(UnitTypes);
   } catch (err) {
     console.error(err);

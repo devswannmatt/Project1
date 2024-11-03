@@ -83,8 +83,6 @@ async function populateSpecialRules() {
       await new SpecialRule(special).save();
       console.log(`Saved Warmaster Special Rule: ${special.name}`);
     }
-    // await SpecialRule.insertMany(specialRules);
-    // console.log('Special rules successfully added to the Collection');
   } catch (error) {
     console.error('Error adding special rules:', error);
     return false
@@ -100,6 +98,7 @@ async function populateUnitTypes() {
         movement: unitTypeData.movement,
         description: unitTypeData.description
       })
+      if (unitTypeData.coreRules) newUnitType.coreRules = await getCoreRules(unitTypeData.coreRules);
 
       await newUnitType.save()
       console.log(`Saved UnitType: ${unitTypeData.name}`)
@@ -249,6 +248,15 @@ async function getSpecialRules(string) {
   const specialRules = await SpecialRule.find({ name: { $in: ruleNames } });
   
   return specialRules.map(rule => rule._id);
+}
+
+async function getCoreRules(string) {
+  if (string === "-") return [];
+  
+  const ruleNames = string.split(',').map(rule => rule.trim());
+  const coreRules = await CoreRule.find({ name: { $in: ruleNames } });
+  
+  return coreRules.map(rule => rule._id);
 }
 
 async function getSpells(string) {

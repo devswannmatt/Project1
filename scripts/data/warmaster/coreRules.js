@@ -22,6 +22,14 @@ const coreRules = [
     ]
   },
   {
+    name: "Infantry Support",
+    type: "rule",
+    lines: [
+      { name: "Supporting Charge", text: "If this unit is in a Brigade with another Infantry unit, and it is touching the back edge of that infantry unit when it charges then this unit can move with that unit." },
+      { name: "Support", text: "Each adjacent, unengaged Infantry stand gives friendly combats +1 Combat Resolution." }
+    ]
+  },
+  {
     name: "Flying",
     type: "rule",
     lines: [

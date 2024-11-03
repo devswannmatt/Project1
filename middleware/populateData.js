@@ -29,18 +29,6 @@ async function populateData(req, res, next) {
       }
         
       case 'warmaster': {
-        res.locals.warmCore = {
-          flying: {
-            data: await CoreRule.findOne({name: 'Flying'})
-          }
-        }
-        
-        res.locals.warmCore.flying.block = '<div>'
-        res.locals.warmCore.flying.data.lines.forEach((line) => {
-          res.locals.warmCore.flying.block += `<p><b>${line.name}:</b> ${line.text}</p>`
-        })
-        res.locals.warmCore.flying.block += '</div>'
-
         res.locals.warmArmy     = await WarmasterArmy.findOne({ name: query.army });
         if (!res.locals.warmArmy) console.error(`Army with name "${query.army}" not found.`);
         res.locals.warmUnits    = await getWarmasterUnits(res.locals.warmArmy, query.format);
@@ -85,7 +73,12 @@ async function getWarmasterUnits(army, format) {
         path: 'chart'
       }
     })
-    .populate('type')
+    .populate({
+      path: 'type',
+      populate: {
+        path: 'coreRules'
+      }
+    })
     .populate('army', 'name')
     .populate('spells')
     // .populate('charts')
