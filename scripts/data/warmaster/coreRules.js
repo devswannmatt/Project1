@@ -25,8 +25,18 @@ const coreRules = [
     name: "Infantry Support",
     type: "rule",
     lines: [
-      { name: "Supporting Charge", text: "If this unit is in a Brigade with another Infantry unit, and it is touching the back edge of that infantry unit when it charges then this unit can move with that unit." },
-      { name: "Support", text: "Each adjacent, unengaged Infantry stand gives friendly combats +1 Combat Resolution." }
+      { name: "Support", text: "If an unengaged Infantry stand is to the rear or flank of another friendly Infantry unit, then it is considered to be supporting that Infantry unit." },
+      { name: "Charge",  text: "If a unit charges while it has Infantry in support, then the supporting unit may follow in to Combat. This is done by moving the supporting unit as if it had declared a charge of its own on the unit it is supporting." },
+      { name: "Combat",  text: "If a unit is supporting while the supported unit is in combat, then the supporting unit is considered part of that engagement and must abide by that engagements Combat Resolution. If the supported unit is fighting to its front then it receives +1 Combat Resolution per supporting stand." },
+      { name: "Linked",  text: "If a supporting unit is touching two separate engagements, then the whole Combat is worked out as a single engagement." },
+    ]
+  },
+  {
+    name: "Ranged",
+    type: "rule",
+    lines: [
+      { roll: "Hits x D6", name: "Drive Back", text: "At the end of the shooting phase, for each hit sustained, an enemy unit is Driven Back D6cm." },
+      { name: "Confusion", text: "Ranged Attacks cause confusion in their target if any Drive Back dice rolls a natural 6, or if the unit would be driven back in to an enemy unit, or terrain it cannot traverse." }
     ]
   },
   {
@@ -64,7 +74,7 @@ const coreRules = [
     ]
   },
   {
-    name: "Steam Tank",
+    name: "Steam Tank (Blunder)",
     type: "chart",
     roll: "D6",
     lines: [
@@ -84,6 +94,25 @@ const coreRules = [
       { name: "0 to 20cm",  text: "No Command penalty, also the maximum range for Wizards." },
       { name: "21 to 40cm",  text: "-1 Command penalty" },
       { name: "42 to 60cm+", text: "-2 Command penalty, also the maximum range for Heroes. Extra -1 for every full 20cm." }
+    ]
+  },
+  {
+    name: "Helblaster (Misfire)",
+    type: "chart",
+    roll: "Number of 1's",
+    lines: [
+      { roll: "1,2", name: "Fizzle",  text: "Despite scary noises the weapon is still functional. Work out the attacks as usual." },
+      { roll: "3",   name: "Misfire", text: "The gun fails to go off - no shots at all hit this turn. Disregard all hits this turn." },
+      { roll: "4+",  name: "Kaboom!", text: "The weapon explodes destroying itself and mortally surprising its crew. The Helblaster stand is removed as a casualty. No hits are struck against the enemy unless the exploding Helblaster is shooting at a charging foe, in which case 6 hits are automatically inflicted. Make Armour saves as for ordinary Helblaster hits." },
+    ]
+  },
+  {
+    name: "Bolt Thrower",
+    type: "chart",
+    roll: "Ranged Attack",
+    lines: [
+      { roll: "-", name: "Armour (Sundering)",  text: "Ignore enemy armour saves." },
+      { roll: "-", name: "Skewer", text: "A unit with this rule, when it shoots, rolls two attacks against it's initial target and a single attack against another adjacent stand (friend or foe) within range and along the same line as the original target." }
     ]
   }
 ]

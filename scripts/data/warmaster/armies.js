@@ -1,6 +1,6 @@
 const armiesData = [
     { name: "Empire", pageNumber: 6 },
-    { name: "Tomb Kings", pageNumber: 9 },
+    { name: "Tomb Kings", pageNumber: 9, rule: "Undead units never act on initiative. An Undead unit only moves in the Command phase if given orders (except Carrion who can also home back as noted below). Undead units are unaffected by the -1 Command penalty for enemy within 20cm. Undead units are unaffected by the -1 Combat penalty for fighting terrifying troops. Undead units are unaffected by the Confusion rule - they cannot become confused for any reason." },
     { name: "Chaos", pageNumber: 12 },
     { name: "Orcs", pageNumber: 15 },
     { name: "High Elves", pageNumber: 18 },
@@ -11,7 +11,7 @@ const armiesData = [
     { name: "Kislev", pageNumber: 33 },
     { name: "Dark Elves", pageNumber: 36 },
     { name: "Daemons", pageNumber: 39 },
-    { name: "Vampire Counts", pageNumber: 42 },
+    { name: "Vampire Counts", pageNumber: 42, rule: "Undead units never act on initiative. An Undead unit only moves in the Command phase if given orders (except Carrion who can also home back as noted below). Undead units are unaffected by the -1 Command penalty for enemy within 20cm. Undead units are unaffected by the -1 Combat penalty for fighting terrifying troops. Undead units are unaffected by the Confusion rule - they cannot become confused for any reason." },
     { name: "Araby", pageNumber: 45 },
     { name: "Dogs of War", pageNumber: 48 },
     { name: "Ogre Kingdoms", pageNumber: 52 },

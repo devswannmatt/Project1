@@ -33,6 +33,8 @@ async function importAllWarmasterData() {
     if (await populateWarmasterUnits('wood_elves') === false) throw 'Wood Elves Units Failed'
     if (await populateWarmasterUnits('goblins')    === false) throw 'Goblin Units Failed'
     if (await populateWarmasterUnits('empire')     === false) throw 'Empire Units Failed'
+    if (await populateWarmasterUnits('chaos')      === false) throw 'Chaos Units Failed'
+    if (await populateWarmasterUnits('tombKings')  === false) throw 'Tomb Kings Units Failed'
 
     console.log('All collections imported.');
   } catch (error) {

@@ -254,19 +254,20 @@ const specialRulesData = [
     boon: false
   },
   {
-    "rule": "Random Attacks (D6/D3)",
+    "rule": "Attacks (D6/D3)",
     "description": "This unit makes D6 attacks, or D3 attacks when it is charged or retreating as a result of combat.",
     boon: true
   },
   {
-    "rule": "Random Movement (1Dx10cm)",
+    "rule": "Movement (1Dx10cm)",
     "description": "Instead of using Orders or Initiative, this unit always moves a random 1D6 x 10cm per Command phase, this move can happen at any time but may not interupt a character giving orders.",
     boon: true
   },
   {
-    "rule": "Helblaster",
-    "description": "This unit has variable attacks based on range. At 0 - 10cm (8), 11 - 20cm (4), 21 - 30cm (2).",
-    boon: true
+    "rule": "Attacks (Helblaster)",
+    "description": "This unit has variable attacks based on range; 8 Attacks at 0 - 10cm, 4 at Attacks 11cm - 20cm, 2 Attacks at 21 - 30cm (2).",
+    boon: true,
+    chart: "Helblaster (Misfire)"
   },
   {
     "rule": "Heavy",
@@ -274,15 +275,16 @@ const specialRulesData = [
     boon: true
   },
   {
-    "rule": "Chart (Steam Tank)",
+    "rule": "Orders (Steam Tank)",
     "description": "Instead of rolling on the standard Blunder chart, roll on the Steam Tank Malfunction Chart.",
     boon: true,
-    chart: "Steam Tank"
+    chart: "Steam Tank (Blunder)"
   },
   {
-    "rule": "Skewer",
+    "rule": "Attacks (Bolt Thrower)",
     "description": "Pierces units, TBA",
-    boon: true
+    boon: true,
+    chart: "Bolt Thrower"
   }
 ]
 

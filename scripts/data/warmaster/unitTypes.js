@@ -1,6 +1,7 @@
 // Unit types with descriptions to populate
 const unitTypesData = [
     { name: 'Infantry',             description: 'Basic foot soldiers, forming the core of many armies.', movement: 20, coreRules: 'Infantry Support' },
+    { name: 'Infantry (Ranged)',    description: 'Basic foot soldiers, forming the core of many armies.', movement: 20, coreRules: 'Ranged, Infantry Support' },
     { name: 'Cavalry',              description: 'Mounted units, often faster and with more impact on charges.', movement: 30 },
     { name: 'Chariot',              description: 'Mounted units, often faster and with more impact on charges.', movement: 30 },
     { name: 'Artillery',            description: 'Long-range units with powerful but slow attacks, often requiring support.', movement: 10 },
