@@ -133,12 +133,12 @@ const armyData = {
     { "armyName": "Skaven", "unit": "Rat Swarms", "type": "Infantry", "attacks": 2, "range": 0, "hits": 3, "armour": 0, "command": 0, "size": 3, "points": 25, "min_max": "2/-", "special_rules": "Immune (Drive-back), Swarm, Restricted (Magic Items)" },
     { "armyName": "Skaven", "unit": "Gutter Runners", "type": "Infantry", "attacks": "3/1", "range": 0, "hits": 3, "armour": 6, "command": 0, "size": 3, "points": 60, "min_max": "-/2", "special_rules": "Skirmishers, Ambush" },
     { "armyName": "Skaven", "unit": "Rat Ogres", "type": "Infantry", "attacks": 4, "range": 0, "hits": 4, "armour": 5, "command": 0, "size": 3, "points": 110, "min_max": "-/2", "special_rules": "-" },
-    { "armyName": "Skaven", "unit": "Warp Lightning Cannon", "type": "Artillery", "attacks": "1/3", "range": 40, "hits": 2, "armour": 0, "command": 0, "size": 2, "points": 60, "min_max": "-/1", "special_rules": "Mobile, Misfire, Attacks (Warp Lightning Cannon)" },
-    { "armyName": "Skaven", "unit": "Doom Wheel", "type": "Machine", "attacks": 5, "range": 0, "hits": 4, "armour": 4, "command": 0, "size": 1, "points": 125, "min_max": "-/1", "special_rules": "Impact (D6+1), Mobile, Terror" },
+    { "armyName": "Skaven", "unit": "Warp Lightning Cannon", "type": "Artillery (Mobile)", "attacks": "1/3", "range": 40, "hits": 2, "armour": 0, "command": 0, "size": 2, "points": 60, "min_max": "-/1", "special_rules": "Mobile, Misfire, Attacks (Warp Lightning Cannon)" },
+    { "armyName": "Skaven", "unit": "Doom Wheel", "type": "Machine (Mobile)", "attacks": 5, "range": 0, "hits": 4, "armour": 4, "command": 0, "size": 1, "points": 125, "min_max": "-/1", "special_rules": "Impact (D6+1), Mobile, Terror" },
     { "armyName": "Skaven", "unit": "Grey Seer", "type": "General", "attacks": "+1", "range": 0, "hits": 0, "armour": 0, "command": 9, "size": 1, "points": 130, "min_max": "1/1", "special_rules": "Wizard,Character, Command (20cm), Immune (Attacks)", "spells": "Wither, Warp Lightning, Death Frenzy, Plague" },
     { "armyName": "Skaven", "unit": "Hero", "type": "Hero", "attacks": "+1", "range": 0, "hits": 0, "armour": 0, "command": 8, "size": 1, "points": 70, "min_max": "-/2", "special_rules": "Character, Command (20cm), Immune (Attacks)" },
     { "armyName": "Skaven", "unit": "Warlock", "type": "Wizard", "attacks": "+0", "range": 0, "hits": 0, "armour": 0, "command": 6, "size": 1, "points": 30, "min_max": "-/1", "special_rules": "Character, Command (20cm), Immune (Attacks)", "spells": "Wither, Warp Lightning, Death Frenzy, Plague" },
-    { "armyName": "Skaven", "unit": "Screaming Bell", "type": "Machine", "attacks": 0, "range": 0, "hits": 4, "armour": 4, "command": 0, "size": 1, "points": 125, "min_max": "-/1", "special_rules": "Mobile, Screaming Bell, Movement (Infantry), Immune (Drive-backs)" }
+    { "armyName": "Skaven", "unit": "Screaming Bell", "type": "Machine (Pushed)", "attacks": 0, "range": 0, "hits": 4, "armour": 4, "command": 0, "size": 1, "points": 125, "min_max": "-/1", "special_rules": "Mobile, Screaming Bell, Movement (Infantry), Immune (Drive-backs)" }
   ]
 };
 module.exports = armyData;
