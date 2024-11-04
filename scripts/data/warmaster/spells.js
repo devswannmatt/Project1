@@ -269,7 +269,7 @@ const spellsData = [
     range: 30,
     target: "Units (Friendly, Within Range)",
     duration: "Next Combat Phase",
-    flavour: "A radiant light shines upon the Mage’s companions, filling them with magical vigour.",
+    flavour: "A radiant light shines upon the Mage's companions, filling them with magical vigour.",
     description: "Every friendly unit and joined character within range gains +1 Attack for the next combat phase. These attacks can be assigned to different stands in each combat round."
   },
   {
@@ -287,7 +287,7 @@ const spellsData = [
     range: 30,
     target: "Unit (Enemy, Visible)",
     duration: "Instant",
-    flavour: "A hail of fiery arrows flies from the Mage’s fingertips and strikes an enemy unit.",
+    flavour: "A hail of fiery arrows flies from the Mage's fingertips and strikes an enemy unit.",
     description: "Three shooting attacks that ignore armor. The Mage must see the target, which cannot be in combat. The target can be driven back as with ordinary shooting."
   },
   {
@@ -323,8 +323,44 @@ const spellsData = [
     range: 30,
     target: "Unit (Friendly, Engaged)",
     duration: "Next Combat Phase",
-    flavour: "The power of the Old Ones turns aside the enemy’s blows.",
-    description: "Improves the unit’s Armor value by 1 (up to a maximum of 4+) for the next combat phase. Has no effect if the unit’s armor is already 4+."
+    flavour: "The power of the Old Ones turns aside the enemy's blows.",
+    description: "Improves the unit's Armor value by 1 (up to a maximum of 4+) for the next combat phase. Has no effect if the unit's armor is already 4+."
+  },
+  {
+    name: "Wither",
+    cast: 4,
+    range: 30,
+    target: "Unit (Enemy, Engaged)",
+    duration: "Next Combat Phase",
+    flavour: "Chanting a vile curse, the caster inflicts a wasting, shrinking sickness on the enemy.",
+    description: "Each stand in the target unit, including joined characters, deducts -1 from its Attacks value for the next combat phase. The Wizard does not need to see the target."
+  },
+  {
+    name: "Warp Lightning",
+    cast: 5,
+    range: 30,
+    target: "Unit (Enemy, Visible)",
+    duration: "Instant",
+    flavour: "An arc of pure warp energy strikes the foe, melting flesh and twisting bones.",
+    description: "Three shooting attacks that ignore armor. The Wizard must see the target, which cannot be in combat. The target can be driven back as with ordinary shooting."
+  },
+  {
+    name: "Death Frenzy",
+    cast: 5,
+    range: 30,
+    target: "Unit (Friendly, Engaged)",
+    duration: "Next Combat Phase",
+    flavour: "The Skaven screams a blasphemous litany to the Horned Rat, driving the Skaven masses into a frenzy.",
+    description: "Grants bonus attacks for the next combat phase by rolling D6s up to the number of stands in the unit. Each roll adds attacks, but if a roll matches any previous roll, the attacks instead hit the target unit in the first round of combat only."
+  },
+  {
+    name: "Plague",
+    cast: 6,
+    range: 30,
+    target: "Unit (Enemy, Unengaged)",
+    duration: "Instant",
+    flavour: "A swirling cloud of virulence envelops the enemy, causing eruptions of pustules and sores.",
+    description: "Deals six attacks to an unengaged enemy unit within range. The unit cannot be driven back by Plague as the effect erupts from within."
   }
 ];
 

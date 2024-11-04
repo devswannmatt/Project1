@@ -5,7 +5,7 @@ const armiesData = [
     { name: "Orcs", pageNumber: 15 },
     { name: "High Elves", pageNumber: 18 },
     { name: "Dwarfs", pageNumber: 21 },
-    { name: "Skaven", pageNumber: 24 },
+    { name: "Skaven", pageNumber: 24, rule: "Skaven Brigades are not limited to four units and any Skaven unit may pursue any enemy unit, regardless of type. All Skaven characters have a Command range of 20cm." },
     { name: "Lizardmen", pageNumber: 27 },
     { name: "Bretonnia", pageNumber: 30, rule:'Feudal Society: The Bretonnian army is essentially an army of Knights. The Knights’ contribution to the battle counts more than any other unit. To represent this, the Bretonnian army calculates when it must withdraw in a different way than other armies. Instead of counting all of its units at the start of the game, count only the number of units of Knights, Grail Knights, and Pegasus Knights. Once the army has lost half or more of its units of Knights, Grail Knights, and Pegasus Knights, it must withdraw.' },
     { name: "Kislev", pageNumber: 33 },

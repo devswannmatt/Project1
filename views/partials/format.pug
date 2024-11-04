@@ -16,6 +16,6 @@ mixin fCell(format, value, extra)
             if extra.tooltip
                 span.cell.keyword(data-toggle='tooltip' title=extra.tooltip)=value || '-'
             else
-                span.cell=value || '-'
+                span=value || '-'
         else
-            span.cell=value || '-'
+            span=value || '-'

@@ -21,22 +21,14 @@ mixin warmasterUnits(config, cols, rows)
           - tooltip += `</div>`
 
         +fCell(cols[1].format, row.type.name, { tooltip: tooltip })
-        
         +fCell(cols[2].format, `${row.type.movement}cm`, { type: 'Cross', name: row.type.name })
-
         +fCell(cols[3].format, row.attacks, { type: 'Impact', name: row.type.name, tooltip: row.range ? `<b>Range:</b> ${row.range}cm`: '' })
-
         +fCell(cols[4].format, row.hits, { type: 'Defense', name: row.type.name })
-
         +fCell(cols[5].format, row.armour ? `${row.armour}+` : '' )
-
         +fCell(cols[6].format, row.command)
-
         +fCell(cols[7].format, row.size)
-
         +fCell(cols[8].format, row.points)
-
-        +fCell(cols[9].format, `${row.min || '-'} / ${row.max || '-'}`)
+        +fCell(cols[9].format, `${row.min || '-'}/${row.max || '-'}`)
 
         td
           +renderSpecialRules(row.specialRules)

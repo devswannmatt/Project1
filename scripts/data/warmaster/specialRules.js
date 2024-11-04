@@ -20,6 +20,11 @@ const specialRulesData = [
     boon: true
   },
   {
+    "rule": "Impact (D6+1)",
+    "description": "The unit gains +D6+1 Attack when charging enemies in the open.",
+    boon: true
+  },
+  {
     "rule": "Fly",
     "description": "The unit has the ability to fly, giving it greater movement flexibility and the ability to ignore terrain.",
     boon: true
@@ -90,8 +95,8 @@ const specialRulesData = [
     boon: true
   },
   {
-    "rule": "Immune (Push-back)",
-    "description": "The unit is immune to push-back from ranged attacks.",
+    "rule": "Immune (Drive-back)",
+    "description": "The unit is immune to Drive-back from ranged attacks.",
     boon: true
   },
   {
@@ -285,6 +290,36 @@ const specialRulesData = [
     "description": "Pierces units, TBA",
     boon: true,
     chart: "Bolt Thrower"
+  },
+  {
+    "rule": "Swarm",
+    "description": "This unit cannot be supported but it can support other friendly Infantry.",
+    boon: false
+  },
+  {
+    "rule": "Mobile",
+    "description": "This Artillery unit has movement of 20cm and a half-pace of 10cm.",
+    boon: true
+  },
+  {
+    "rule": "Attacks (Warp Lightning Cannon)",
+    "description": "When making a shooting attack, a roll of double 1 will cause this unit to become confused.",
+    boon: true
+  },
+  {
+    "rule": "Wizard",
+    "description": "This unit may use magic in the same way as a Wizard.",
+    boon: true
+  },
+  {
+    "rule": "Movement (Infantry)",
+    "description": "This unit can only move in the Command phase if it forms a brigade with one or more infantry units. It cannot use its initiative to move.",
+    boon: false
+  },
+  {
+    "rule": "Screaming Bell",
+    "description": "In combat it is automatically destroyed if forced to retreat but will pursue, advance and fall back so long as it is touching a Skaven infantry unit at the start and end of its move: otherwise it cannot pursue, advance or fall back as it is unable to move of its own accord. All Skaven units touching the Screaming Bell are unaffected by the usual penalty for Terror whilst they remain so. In addition, any Skaven Hero or Warlock within 30cm of the Screaming Bell adds +1 to their Command value. Any enemy character within 30cm of the Screaming Bell deducts -1 from their Command value. A Skaven army can only ever include a maximum of 1 Screaming Bell no matter how large.",
+    boon: false
   }
 ]
 

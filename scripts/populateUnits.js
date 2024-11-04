@@ -68,7 +68,7 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
           "size": 3,
           "points": 0,
           "min_max": "-/-",
-          "special_rules": "Impetuous, Immune (Terror), Immune (Confusion), Immune (Push-back), Weak Charge"
+          "special_rules": "Impetuous, Immune (Terror), Immune (Confusion), Immune (Drive-back), Weak Charge"
       },
       {
         "armyName": "Bretonnia",

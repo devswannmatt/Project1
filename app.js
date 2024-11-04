@@ -6,6 +6,7 @@ const bodyParser    = require('body-parser');
 const passport      = require('passport');
 const MongoStore    = require('connect-mongo');
 const LocalStrategy = require('passport-local').Strategy;
+const populateFunctions = require('./middleware/functions');
 const populateData  = require('./middleware/populateData');
 const populateLog   = require('./middleware/populateLog')
 
@@ -43,6 +44,7 @@ passport.use(new LocalStrategy(async (username, password, done) => {
 passport.serializeUser((user, done) => done(null, user.id));
 passport.deserializeUser(async (id, done) => { try { done(null, await User.findById(id)) } catch (err) { done(err) } })
 
+app.use(populateFunctions);
 app.use(populateData);
 app.use(populateLog);
 
