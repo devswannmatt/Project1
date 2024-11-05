@@ -385,9 +385,9 @@ const spellsData = [
     range: 30,
     target: "Unit (Enemy, Unengaged)",
     duration: "Instant",
-    los: true,
+    los: false,
     flavour: "A swirling cloud of virulence envelops the enemy, causing eruptions of pustules and sores.",
-    description: "Deals six attacks to an unengaged enemy unit within range. The unit cannot be driven back by Plague as the effect erupts from within."
+    description: "Deals six attacks to an unengaged enemy unit within range. This attack does not cause Drive-backs."
   }
 ];
 

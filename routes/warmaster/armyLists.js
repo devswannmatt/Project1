@@ -1,6 +1,12 @@
-const ArmyList = require('./models/armyList'); // Import the ArmyList model
-const WarmasterUnit = require('./models/warmasterUnit'); // Import WarmasterUnit
-const User = require('./models/user'); // Import User model
+const express       = require('express');
+const router        = express.Router();
+const ArmyList      = require('./models/armyList');
+const WarmasterUnit = require('./models/warmasterUnit');
+const User          = require('./models/user');
+
+async function createTestArmy() {
+
+}
 
 async function createArmyList(userId, armyData) {
   try {
@@ -28,3 +34,5 @@ async function createArmyList(userId, armyData) {
     console.error('Error creating Army List:', error);
   }
 }
+
+module.exports = router;

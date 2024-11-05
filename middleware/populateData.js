@@ -30,7 +30,7 @@ async function populateData(req, res, next) {
         await loadWarmasterData(res.locals, army, format);
         break;
       default:
-        console.warn(`No data loader found for type: "${data}"`);
+        if (data) console.warn(`No data loader found for type: "${data}"`);
         break;
     }
 

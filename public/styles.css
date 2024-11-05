@@ -69,7 +69,8 @@ button, .btn {
 .btn-sm {
   width: 38px;
   height: 38px;
-  margin-left: 4px;
+  margin-left: 2px;
+  margin-right: 2px;
 }
 
 .dynamic-btn-highlight {
@@ -586,4 +587,8 @@ ul hr {
 
 .align-center {
   text-align: center;
+}
+
+.inline {
+  display: inline-block;
 }

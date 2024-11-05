@@ -2,11 +2,11 @@ include partials/header
 
 h1 Account Management
 form(action='/account', method='POST' id='accountForm')
-  +formInput('firstName', 'text', 'First Name', user.firstName, true)
-  +formInput('lastName', 'text', 'Last Name', user.lastName, true)
-  +formInput('email', 'email', 'Email Address', user.email, true)
-  +formInput('facebook', 'url', 'Facebook Profile URL', user.facebook, false)
-  +multiSelect('gameSystems', 'Game Systems', gameSystems.map(gs => gs.name), user.gameSystems)
+  +formInput('firstName', 'text', 'First Name', user.firstName, true, true)
+  +formInput('lastName', 'text', 'Last Name', user.lastName, true, true)
+  +formInput('email', 'email', 'Email Address', user.email, true, true)
+  +formInput('facebook', 'url', 'Facebook Profile URL', user.facebook, false, true)
+  +multiSelect('gameSystems', 'Game Systems', gameSystems.map(gs => gs.name), user.gameSystems, true)
   +formButton('Save Changes', 'submit', 'btn-success float-right', 'save')
   
 include partials/footer

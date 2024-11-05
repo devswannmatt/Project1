@@ -4,6 +4,48 @@ script.
     const pageBack    = () => history.back()
     const pageForward = () => history.forward()
 
+    const changeUnitCount = (target, mod = 1) => {
+        console.log(target);
+
+        let counter = $(`#unit-count-${target}`);
+        let points  = $(`#unit-points-${target}`);
+
+        let unitCount = Number(counter.data('unitcount')) || 0;
+        let unitCost  = Number(points.data('unitcost'))   || 0;
+
+        let count = unitCount + mod;
+        let value = unitCost * count;
+
+        if (count < 0) return
+        let totalCounter = $('#unit-count-total');
+        let currentTotal = Number(totalCounter.text()) || 0;
+
+        let total = currentTotal + (mod * unitCost);
+        if (total >= 0) totalCounter.text(total);
+
+        if (count <= 0) {
+            counter.text('').data('unitcount', 0);
+            points.text('').data('unitpoints', 0);
+            $(`.quick-list-row-${target}`).removeClass('quick-list-row-set');
+            $(`.quick-list-row-${target}`).addClass('quick-list-row');
+        } else {
+            counter.html(`(${count})`).data('unitcount', count);
+            points.html(`(${value})`).data('unitpoints', value);
+            $(`.quick-list-row-${target}`).addClass('quick-list-row-set');
+            $(`.quick-list-row-${target}`).removeClass('quick-list-row');
+        }
+    };
+
+    const toggleQuickList = () => {
+        console.log('showQuickList()')
+        $('.quick-list').toggle()
+    }
+
+    const toggleQuickListUnits = () => {
+        console.log('toggleQuickListUnits()')
+        $('.quick-list-row').toggle()
+    }
+
     const initHoldDeleteButton = () => {
         var holdDeleteBtn = document.getElementById('hold-delete-button');
         if (holdDeleteBtn) {

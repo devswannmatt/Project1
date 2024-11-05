@@ -13,9 +13,12 @@ block content
                 +simpleButton({ title: `<p>${terrain.name}</p><p>${terrain.description}</p>`, type: 'info', icon: terrain.icon, name: terrain.name }, undefined, terrain.name, `highlightRowById(${JSON.stringify(terrain.access)}, this)`)
           td.divider
             +simpleButton({ title: 'Clear Filter', type: 'danger', icon: 'cancel' }, 'highlightRowById("Clear")', 'Clear')
-          td
+          td.divider
             span(class='dynamic-active-filter')
-          
+          td
+            +simpleButton({ id:'unit-count-total', title: 'Toggle Add and Remove Unit', type: 'info', icon: 'rectangle-list' }, 'toggleQuickList()', '')
+          td
+            +simpleButton({ title: 'Toggle Selected Units', type: 'info', icon: 'eye-low-vision' }, 'toggleQuickListUnits()', '')
   if warmUnits
     +warmasterUnits({}, [
       { name: 'Name',    format: 'string' },
@@ -28,5 +31,6 @@ block content
       { name: 'Size',    format: 'number' },
       { name: 'Points',  format: 'number' },
       { name: 'Min/Max', format: 'center' },
-      { name: 'Rules',   format: 'string' }
+      { name: 'Rules',   format: 'string' },
+      { name: ' ',       format: 'string' }
     ], warmUnits)

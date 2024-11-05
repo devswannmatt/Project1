@@ -17,5 +17,17 @@ mixin fCell(format, value, extra)
                 span.cell.keyword(data-toggle='tooltip' title=extra.tooltip)=value || '-'
             else
                 span=value || '-'
+                if extra.type == 'Points'
+                    div(id=`unit-points-${extra.id}` class='inline' style='margin-left: 4px;' data-unitcost=value data-unitpoints=0)
+                if extra.type == 'Count'
+                    div(id=`unit-count-${extra.id}`  class='inline' style='margin-left: 4px;' data-unitcount=0)
         else
             span=value || '-'
+
+mixin fButt(format,icon,name)
+    td(class=`${format}`)
+        div(class='quick-list' style='display: none;')
+            button(id=`unit-plus-${name}` class=`btn-sm btn-info btn-minus inline` type='button' onclick=`changeUnitCount('${name}',-1)`)
+                i(class=`fas fa-fw fa-minus`)
+            button(id=`unit-minus-${name}` class=`btn-sm btn-info btn-success inline` type='button' onclick=`changeUnitCount('${name}')`)
+                i(class=`fas fa-fw fa-plus`)
