@@ -21,16 +21,16 @@ block content
             +simpleButton({ title: 'Toggle Selected Units', type: 'info', icon: 'eye-low-vision' }, 'toggleQuickListUnits()', '')
   if warmUnits
     +warmasterUnits({}, [
-      { name: 'Name',    format: 'string' },
-      { name: 'Type',    format: 'string' },
-      { name: 'Move',    format: 'number' },
-      { name: 'Attacks', format: 'number' },
-      { name: 'Hits',    format: 'number' },
-      { name: 'Armour',  format: 'number' },
-      { name: 'Command', format: 'number' },
-      { name: 'Size',    format: 'number' },
-      { name: 'Points',  format: 'number' },
-      { name: 'Min/Max', format: 'center' },
-      { name: 'Rules',   format: 'string' },
-      { name: ' ',       format: 'string' }
+      { name: 'Name',    format: 'string', context: 'warmaster' },
+      { name: 'Type',    format: 'string', context: 'warmaster' },
+      { name: 'Move',    format: 'number', context: 'warmaster' },
+      { name: 'Attacks', format: 'number', context: 'warmaster' },
+      { name: 'Hits',    format: 'number', context: 'warmaster' },
+      { name: 'Armour',  format: 'number', context: 'warmaster' },
+      { name: 'Command', format: 'number', context: 'warmaster' },
+      { name: 'Size',    format: 'number', context: 'warmaster' },
+      { name: 'Points',  format: 'number', context: 'warmaster' },
+      { name: 'Min/Max', format: 'center', context: 'warmaster' },
+      { name: 'Rules',   format: 'string', context: 'warmaster' },
+      { name: ' ',       format: 'string', context: 'warmaster' }
     ], warmUnits)

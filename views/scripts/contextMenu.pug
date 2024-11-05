@@ -6,13 +6,10 @@ script.
         
         let developmentMode = false;
 
-      // Listen for keydown event
         document.addEventListener('keydown', (e) => {
-            // Detect Ctrl + Alt + D
             if (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'd') {
-                e.preventDefault();  // Prevent default behavior (optional)
+                e.preventDefault(); 
                 
-                // Toggle development mode
                 developmentMode = !developmentMode;
                 if (developmentMode) {
                     console.log('Development mode activated');
@@ -25,11 +22,9 @@ script.
         })
 
         document.addEventListener('contextmenu', function(event) {
-
             const config = $(event.target).data()
             console.log('config', config)
             console.log('event.target', event.target)
-            console.log('developmentMode', developmentMode)
             if (developmentMode == false) event.preventDefault();
 
             contextMenu.style.top     = `${event.pageY}px`;
@@ -47,7 +42,11 @@ script.
                 $('#download-url').attr('href', `${event.target.src}`)
                 $('#maximise-url').attr('href', `${event.target.src}`)
 
+                contextData = config
                 $(activeContext).show()
+            } else {
+                $(activeContext).hide()
+                activeContext = ''
             }
         })
         document.addEventListener('click', function() {

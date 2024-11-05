@@ -12,7 +12,7 @@ mixin warmasterUnits(config, cols, rows)
       tr(class=`quick-list-row-${row._id} quick-list-row dynamic-row unitType${row.type.name}`)
         each col, i in cols
           if i == 0
-            +fCell(col.format, row.name, { tooltip: row.mounts ? `<b>Mounts:</b> ${row.mounts}` : '' })
+            +fCell(col.format, row.name, { tooltip: row.mounts ? `<b>Mounts:</b> ${row.mounts}` : '', context: col.context, key: row._id })
           if i == 1
             - var tooltip = `<p>${row.type.description}</p>`
             each rule in row.type.coreRules
@@ -21,25 +21,25 @@ mixin warmasterUnits(config, cols, rows)
                 each line in rule.lines
                   - tooltip += `<p style="font-size:larger;"><b>${line.name}:</b> ${line.text}</p>`
               - tooltip += `</div>`
-            +fCell(col.format, row.type.name, { tooltip: tooltip })
+            +fCell(col.format, row.type.name, { tooltip: tooltip, context: col.context, key: row._id })
           if i == 2
-            +fCell(col.format, `${row.type.movement}cm`, { type: 'Cross', name: row.type.name })
+            +fCell(col.format, `${row.type.movement}cm`, { type: 'Cross', name: row.type.name, context: col.context, key: row._id })
           if i == 3
-            +fCell(col.format, row.attacks, { type: 'Impact', name: row.type.name, tooltip: row.range ? `<b>Range:</b> ${row.range}cm`: '' })
+            +fCell(col.format, row.attacks, { type: 'Impact', name: row.type.name, tooltip: row.range ? `<b>Range:</b> ${row.range}cm`: '', context: col.context, key: row._id })
           if i == 4
-            +fCell(col.format, row.hits, { type: 'Defense', name: row.type.name })
+            +fCell(col.format, row.hits, { type: 'Defense', name: row.type.name, context: col.context, key: row._id })
           if i == 5
-            +fCell(col.format, row.armour ? `${row.armour}+` : '' )
+            +fCell(col.format, row.armour ? `${row.armour}+` : '', { context: col.context, key: row._id } )
           if i == 6
-            +fCell(col.format, row.command)
+            +fCell(col.format, row.command, { context: col.context, key: row._id })
           if i == 7
-            +fCell(col.format, row.size)
+            +fCell(col.format, row.size, { context: col.context, key: row._id })
           if i == 8
-            +fCell(col.format, row.points, { type: 'Points', id: row._id })
+            +fCell(col.format, row.points, { type: 'Points', id: row._id, context: col.context, key: row._id })
           if i == 9
-            +fCell(col.format, `${row.min || '-'}/${row.max || '-'}`, { type: 'Count', id: row._id })
+            +fCell(col.format, `${row.min || '-'}/${row.max || '-'}`, { type: 'Count', id: row._id, context: col.context, key: row._id })
           if i == 10
-            +renderSpecialRules(row.specialRules)
+            +renderSpecialRules(row.specialRules, col.context, row._id)
           if i == 11
             +fButt(col.format, 'plus', row._id, row.points)
 
@@ -56,12 +56,12 @@ mixin warmasterUnits(config, cols, rows)
                 span= ']'
 
 //- Define the mixin for rendering special rules
-mixin renderSpecialRules(specialRules)
-  td
+mixin renderSpecialRules(specialRules, context, key)
+  td(data-context=context data-key=key)
     each rule in specialRules
       - let tooltipChart = ''
       if rule.chart
         - tooltipChart = `<div class='tooltip-chart'><p>${rule.chart.name} (${rule.chart.roll})</p>${rule.chart.lines.map(line => `${line.roll || '' } <b>${line.name}</b>: ${line.text}`).join('<p></p>')}</div>`
       - const tooltipHeader  = `<div class='tooltip-head'><b>${rule.name}</b> <span class='smaller pull-right'>${rule.boon ? 'Positive' : 'Negative'}</span></div>`
       - const tooltipContent = `<div class='tooltip-body'>${tooltipHeader}<p>${rule.description}</p>${tooltipChart}</div>`
-      div.keyword(class=`${rule.boon ? 'success' : 'danger'}` data-toggle='tooltip' title=tooltipContent)=`${rule.name}`
+      div.keyword(class=`${rule.boon ? 'success' : 'danger'}` data-toggle='tooltip' title=tooltipContent data-context=context)=`${rule.name}`

@@ -1,11 +1,17 @@
 script.
 
+    var contextData = {}
+
     const pageReload  = () => location.reload()
     const pageBack    = () => history.back()
     const pageForward = () => history.forward()
 
-    const changeUnitCount = (target, mod = 1) => {
-        console.log(target);
+    const changeUnitCount = (parent, mod = 1) => {
+        console.log('changeUnitCount contextData', contextData);
+        //- let target = $(parent).data()
+        //- console.log('changeUnitCount', target);
+        let target = contextData.key
+        console.log('changeUnitCount', target);
 
         let counter = $(`#unit-count-${target}`);
         let points  = $(`#unit-points-${target}`);
