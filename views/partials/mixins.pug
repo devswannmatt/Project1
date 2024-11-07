@@ -158,41 +158,42 @@ mixin dropdownWithSubmenu(title, index, menuItems)
                                 a.dropdown-item(href=subItem.href)= subItem.text
 
 // Context Menu
-mixin simpleMenuItem(href, icon, label, options = {})
-  a(href=href, data-toggle=options.toggle, data-type=options.type, data-target=options.target, data-src=options.src, target=options.target, download=options.download, onclick=options.onclick)
-    li
-      i(class=`fas fa-fw fa-${icon}`)
-      span= label
-
 mixin contextMenu()
   div#contextMenu.context-menu
+    +contextBasic()
     +contextMenuSection('context-warmaster', [
-      { href: '#', icon: 'plus',  label: 'Add Unit',    options: { onclick: 'changeUnitCount(event.target)'} },
-      { href: '#', icon: 'minus', label: 'Remove Unit', options: { onclick: 'changeUnitCount(event.target,-1)'} }
-    ], 'display: none;')
-    hr
-    table
-      tr
-        td
-          +simpleButton({ type: 'clear', icon: 'arrow-left', title: 'Go Back' }, 'pageBack()')
-        td
-          +simpleButton({ type: 'clear', icon: 'rotate-right', title: 'Reload' }, 'pageReload()')
-        td
-          +simpleButton({ type: 'clear', icon: 'arrow-right', title: 'Go Forward' }, 'pageForward()')
-    ul
-      +simpleMenuItem('./account', 'user', 'Account')
-      +simpleMenuItem('./upload', 'upload', 'Upload File', { toggle: 'modal', type: 'frm', target: '#modal', src: '/upload', name: 'Upload File' })
-      +simpleMenuItem('#', 'bookmark', 'Bookmark Page')
-    
+      { href: '#', icon: 'plus',  options: { onclick: 'changeUnitCount(event.target)' } },
+      { href: '#', icon: 'minus', options: { onclick: 'changeUnitCount(event.target,-1)'} }
+    ], 'display: none; margin-top: 20px;')
     +contextMenuSection('context-image', [
-      { href: '#', icon: 'arrow-up-from-bracket', label: 'Open in New Tab', options: { target: '_blank' } },
-      { href: '#', icon: 'edit', label: 'Edit Image', options: { toggle: 'modal', type: 'frm', target: '#modal', src: '' } },
-      { href: '#', icon: 'download', label: 'Download Image', options: { download: true } },
-      { href: '#', icon: 'link', label: 'Copy Link' }
-    ], 'display: none;')
+      { href: '#', icon: 'arrow-up-from-bracket', label: 'Open in New Tab', options: { onclick: 'setImageDetails(this)', target: '_blank' } },
+      { href: '#', icon: 'edit',                  label: 'Edit Image',      options: { onclick: 'setImageDetails(this)', target: '#modal', toggle: 'modal', type: 'frm',  src: '' } },
+      { href: '#', icon: 'download',              label: 'Download Image',  options: { onclick: 'setImageDetails(this)', download: true } }
+    ], 'display: none; margin-top: 20px;')
+
+mixin contextBasic()
+  table
+    tr
+      td
+        +simpleButton({ type: 'clear', icon: 'arrow-left', title: 'Go Back' }, 'pageBack()')
+      td
+        +simpleButton({ type: 'clear', icon: 'rotate-right', title: 'Reload' }, 'pageReload()')
+      td
+        +simpleButton({ type: 'clear', icon: 'arrow-right', title: 'Go Forward' }, 'pageForward()')
+  hr
+  ul
+    +simpleMenuItem('./account', 'user', 'Account')
+    +simpleMenuItem('./upload', 'upload', 'Upload File', { toggle: 'modal', type: 'frm', target: '#modal', src: '/upload', name: 'Upload File' })
+    +simpleMenuItem('#', 'bookmark', 'Bookmark Page')
 
 mixin contextMenuSection(id, items, style = '')
   div(id=id, class='context-section', style=style)
     ul
       each item in items
         +simpleMenuItem(item.href, item.icon, item.label, item.options)
+
+mixin simpleMenuItem(href, icon, label, options = {})
+  a(href=href, data-toggle=options.toggle, data-type=options.type, data-target=options.target, data-src=options.src, target=options.target, download=options.download, onclick=options.onclick, onmouseover=options.onmouseover)
+    li
+      i(class=`fas fa-fw fa-${icon}`)
+      span= label

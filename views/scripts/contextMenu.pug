@@ -2,8 +2,6 @@ script.
     function initContextMenu() {
         const contextMenu = document.getElementById('contextMenu');
         var activeContext
-        var devSwitch = false
-        
         let developmentMode = false;
 
         document.addEventListener('keydown', (e) => {
@@ -23,8 +21,9 @@ script.
 
         document.addEventListener('contextmenu', function(event) {
             const config = $(event.target).data()
-            console.log('config', config)
+            config.src = $(event.target).attr('src')
             console.log('event.target', event.target)
+            console.log('config', config)
             if (developmentMode == false) event.preventDefault();
 
             contextMenu.style.top     = `${event.pageY}px`;
@@ -32,21 +31,18 @@ script.
             contextMenu.style.display = 'block';
 
             if (config.context) {
-                var contextImageEdit = $('#context-image-edit')
+                var contextImageEdit = $('#context-image')
                 contextImageEdit.data('src', `/images/edit/${config._id}`)
                 contextImageEdit.data('name', `${event.target.alt}`)
 
                 activeContext = $(`#context-${config.context}`)
-                
-                $('#clipboard-url').find('*').data('text', `${event.target.src}`)
-                $('#download-url').attr('href', `${event.target.src}`)
-                $('#maximise-url').attr('href', `${event.target.src}`)
-
-                contextData = config
+                contextData   = config
+                console.log('contextData', contextData)
                 $(activeContext).show()
             } else {
-                $(activeContext).hide()
-                activeContext = ''
+                if (activeContext) $(activeContext).hide()
+                activeContext = undefined
+                contextData   = undefined
             }
         })
         document.addEventListener('click', function() {

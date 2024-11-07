@@ -97,10 +97,19 @@ script.
             setButton.addClass('dynamic-btn-highlight');
             $('.dynamic-active-filter').text(`Active: ${setButton.data('name')}`)
             types.forEach((type) => {
-                $(`.unitType${type.unitType.name}`).removeClass('darken');
-                if (type.cross)     $(`.cross${type.unitType.name}`).show();
-                if (type.defended)  $(`.defended${type.unitType.name}`).show();
-                if (type.fortified) $(`.fortified${type.unitType.name}`).show();
+                if (type.unitType) {
+                    $(`.unitType${type.unitType.name}`).removeClass('darken');
+                    if (type.cross)     $(`.cross${type.unitType.name}`).show();
+                    if (type.defended)  $(`.defended${type.unitType.name}`).show();
+                    if (type.fortified) $(`.fortified${type.unitType.name}`).show();
+                }
             })
         }
+    }
+
+    const setImageDetails = (e) => {
+        let element = $(e)
+        $(element).attr('href', contextData.src)
+        $(element).attr('src', contextData.src)
+        $(element).data('src', `/images/edit/${contextData._id}`)
     }
