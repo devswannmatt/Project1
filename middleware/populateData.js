@@ -5,7 +5,8 @@ const WFRPItem = require('../models/wfrp/wfrpItem');
 const File = require('../models/image');
 const WarmasterUnit = require('../models/warmaster/warmasterUnit');
 const WarmasterArmy = require('../models/warmaster/warmasterArmy');
-const TerrainType = require('../models/warmaster/warmasterTerrainType');
+const TerrainType   = require('../models/warmaster/warmasterTerrainType');
+const Operative     = require('../models/killteam/operative');
 
 async function populateData(req, res, next) {
   const { data, army, format, modal } = req.query;
@@ -29,6 +30,9 @@ async function populateData(req, res, next) {
       case 'warmaster':
         await loadWarmasterData(res.locals, army, format);
         break;
+      case 'killteam':
+        await loadKillteamData(res.locals);
+        break;
       default:
         if (data) console.warn(`No data loader found for type: "${data}"`);
         break;
@@ -43,7 +47,6 @@ async function populateData(req, res, next) {
   }
 }
 
-// Helper function to categorize pages by game system
 async function categorizedPages(gameSystems) {
   const pages = await Page.find();
   const categorizedPages = {};
@@ -60,6 +63,18 @@ async function categorizedPages(gameSystems) {
   });
 
   return categorizedPages;
+}
+
+// Load Killteam
+async function loadKillteamData(resLocals) {
+  console.log('loading kill teams')
+  try {
+    resLocals.killteam = {
+      operatives: await Operative.find()
+    }
+  } catch (err) {
+    console.error('Error loading Killteam data:', err);
+  }
 }
 
 // Load Warmaster-specific data

@@ -592,3 +592,10 @@ ul hr {
 .inline {
   display: inline-block;
 }
+
+.container-card {
+  margin: 10px;
+  padding: 20px;
+  background: #c9d8ee;
+  border-radius: 8px;
+}

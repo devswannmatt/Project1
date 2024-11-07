@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const Operative = require('../models/killteam/operativeModel');
+const Operative = require('../models/killteam/operative');
 
-mongoose.connect('mongodb://127.0.0.1:27017/killteam', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://127.0.0.1:27017/config', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Failed to connect to MongoDB', err));
 
@@ -143,7 +143,7 @@ const importData = async () => {
   try {
     await Operative.deleteMany();
     await Operative.insertMany(operativeData);
-    console.log('Data Imported Successfully');
+    console.log('Data Imported Successfully', operativeData);
     mongoose.connection.close();
   } catch (error) {
     console.error('Error importing data:', error);

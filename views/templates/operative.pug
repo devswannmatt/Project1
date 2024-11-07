@@ -1,0 +1,52 @@
+extends ../page
+
+block content
+  section.section
+      div.container
+        if killteam
+          each operative in killteam.operatives
+            div.container-card
+              table.table-striped.pull-right
+                tr
+                  td
+                    span='APL:'
+                  td.center
+                    strong=operative.apl
+                  td
+                    span='Move:'
+                  td.center
+                    strong=operative.move
+                  td
+                    span='Save:'
+                  td.center
+                    strong=operative.save
+                  td
+                    span='Wounds:'
+                  td.center
+                    strong=operative.wounds
+              h4=`${operative.name}`
+              table.table-striped(width="100%" style='margin-bottom: 10px;')
+                tr
+                  th='Name'
+                  th.center='Attacks'
+                  th.center='Hit'
+                  th.center='Damage'
+                  th='Rules'
+                each weapon in operative.weapons
+                  tr
+                    td
+                      strong
+                        span=weapon.name
+                    td.center
+                      span=weapon.atk
+                    td.center
+                      span=weapon.hit
+                    td.center
+                      span=weapon.dmg
+                    td
+                      span=weapon.wr
+              ul
+                each rule in operative.rules
+                  li
+                    strong=`${rule.name}: `
+                    span=`${rule.description}`
