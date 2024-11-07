@@ -17,8 +17,21 @@ html
     script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js')
     script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf.min.js')
+
+    // Add script to detect mobile device
+    script.
+      function isMobileDevice() {
+        return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+      }
+      var isMobile = isMobileDevice();
+      document.addEventListener("DOMContentLoaded", function() {
+        if (isMobile) {
+          document.body.classList.add('mobile-modal'); // Example of how you can use it
+        }
+      });
+  
   body
-    if (!isModal)
+    if (!isModal && !isMobile)
       include navbar
       <div class="page-container">
     else
