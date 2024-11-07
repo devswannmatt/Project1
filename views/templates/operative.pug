@@ -44,7 +44,10 @@ block content
                     td.center
                       span=weapon.dmg
                     td
-                      span=weapon.wr
+                      // Updated to render the new `wr` array
+                      each rule in weapon.wr
+                        if rule.name && rule.name !== '-'
+                          div.keyword(data-toggle='tooltip' title=`${rule.tooltip || ''}`)=`${rule.name}`
               ul
                 each rule in operative.rules
                   li

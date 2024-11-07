@@ -7,6 +7,7 @@ const WarmasterUnit = require('../models/warmaster/warmasterUnit');
 const WarmasterArmy = require('../models/warmaster/warmasterArmy');
 const TerrainType   = require('../models/warmaster/warmasterTerrainType');
 const Operative     = require('../models/killteam/operative');
+const WeaponRule    = require('../models/killteam/rules');
 
 async function populateData(req, res, next) {
   const { data, army, format, modal } = req.query;
@@ -69,11 +70,49 @@ async function categorizedPages(gameSystems) {
 async function loadKillteamData(resLocals) {
   console.log('loading kill teams')
   try {
+    // Retrieve all weapon rules to create a lookup table
+    const weaponRules = await WeaponRule.find();
+
+    // Create a list of rule name patterns for flexible matching
+    const rulePatterns = weaponRules.map(rule => {
+      // Convert " x" to a pattern that matches any number with optional characters (e.g., quotes)
+      const pattern = rule.name.replace(/ x\+?$/, ' (\\d+\\+?\\s?["\']?)');
+      return { pattern: new RegExp(`^${pattern}$`), description: rule.description };
+    });
+
+    // Retrieve all operatives and convert to plain JavaScript objects
+    const operatives = await Operative.find().lean();
+
+    // Process each operative's weapons to transform rule strings into an array of objects
+    operatives.forEach(operative => {
+      operative.weapons.forEach(weapon => {
+        if (weapon.wr) {
+          // Split the comma-delimited list into an array and map to objects with name and description
+          weapon.wr = weapon.wr.split(',').map(ruleName => {
+            ruleName = ruleName.trim(); // Remove extra whitespace
+            // Attempt to match the rule name using the patterns
+            const matchingRule = rulePatterns.find(rule => rule.pattern.test(ruleName));
+            if (matchingRule) {
+              // Extract the value from the rule name, e.g., "Torrent 2\" -> "2\""
+              const valueMatch = ruleName.match(/\d+\+?\s?["\']?/);
+              const value = valueMatch ? valueMatch[0] : '';
+              // Replace 'x' in the tooltip with the extracted value
+              const tooltip = matchingRule.description.replace('x', value);
+              return { name: ruleName, tooltip: tooltip };
+            }
+            return { name: ruleName, tooltip: 'Description not found' };
+          });
+        }
+      });
+    });
+
+    console.log('Retrieved Operatives:', operatives);
     resLocals.killteam = {
-      operatives: await Operative.find()
+      operatives: operatives
     }
   } catch (err) {
-    console.error('Error loading Killteam data:', err);
+    console.error(err);
+    res.status(500).send('Server Error');
   }
 }
 

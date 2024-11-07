@@ -1,11 +1,12 @@
-const mongoose = require('mongoose');
-const Operative = require('../models/killteam/operative');
+const mongoose   = require('mongoose');
+const Operative  = require('../models/killteam/operative');
+const WeaponRule = require('../models/killteam/rules');
 
 mongoose.connect('mongodb://127.0.0.1:27017/config', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Failed to connect to MongoDB', err));
 
-  const operativeData = [
+const operativeData = [
     {
       name: "Kasrkin Sergeant",
       apl: 3,
@@ -14,7 +15,6 @@ mongoose.connect('mongodb://127.0.0.1:27017/config', { useNewUrlParser: true, us
       wounds: 9,
       weapons: [
         { name: "Bolt pistol", atk: 4, hit: "3+", dmg: "3/4", wr: "Range 8\"" },
-        { name: "Hot-shot lasgun", atk: 4, hit: "3+", dmg: "3/4", wr: "-" },
         { name: "Hot-shot laspistol", atk: 4, hit: "3+", dmg: "3/4", wr: "Range 8\"" },
         { name: "Plasma pistol (standard)", atk: 4, hit: "3+", dmg: "3/5", wr: "Range 8\", Piercing 1" },
         { name: "Plasma pistol (supercharge)", atk: 4, hit: "3+", dmg: "4/5", wr: "Range 8\", Hot, Lethal 5+, Piercing 1" },
@@ -136,14 +136,14 @@ mongoose.connect('mongodb://127.0.0.1:27017/config', { useNewUrlParser: true, us
         { name: "BATTLE COMMS", description: "Increases a selected friendly operative's APL by 1 (max 3). Can be used twice per activation but not within enemy control range." }
       ]
     }
-  ];
+];
   
 
 const importData = async () => {
   try {
     await Operative.deleteMany();
     await Operative.insertMany(operativeData);
-    console.log('Data Imported Successfully', operativeData);
+    console.log('Data Imported Successfully');
     mongoose.connection.close();
   } catch (error) {
     console.error('Error importing data:', error);
@@ -151,4 +151,43 @@ const importData = async () => {
   }
 };
 
+const weaponRulesData = [
+    { name: "Accurate x", description: "Retain up to x attack dice as successes without rolling." },
+    { name: "Balanced", description: "Re-roll one attack die." },
+    { name: "Blast x", description: "Hit primary and secondary targets within x distance separately." },
+    { name: "Brutal", description: "Opponent can only block with critical successes." },
+    { name: "Ceaseless", description: "Re-roll any attack dice that show a 1." },
+    { name: "Devastating x", description: "Critical success inflicts x damage; retains success." },
+    { name: "Heavy", description: "Cannot move and use this weapon in the same activation." },
+    { name: "Hot", description: "Roll D6 after use; if less than Hit stat, take damage." },
+    { name: "Lethal x+", description: "Successes x or higher become critical." },
+    { name: "Limited x", description: "Use weapon x times before losing it." },
+    { name: "Piercing x", description: "Defender rolls x fewer defense dice." },
+    { name: "Piercing Crits x", description: "Defender rolls x fewer defense dice if a Critical hit is rolled." },
+    { name: "Punishing", description: "Retain one fail as a normal success if you roll a critical." },
+    { name: "Range x", description: "Only targets within x distance are valid." },
+    { name: "Relentless", description: "Re-roll any attack dice." },
+    { name: "Rending", description: "Normal success becomes critical if you roll a critical." },
+    { name: "Saturate", description: "Defender can’t use cover saves." },
+    { name: "Seek", description: "Ignore cover for selecting targets." },
+    { name: "Severe", description: "Change one normal success to critical if no criticals are rolled." },
+    { name: "Shock", description: "Discard one opponent’s success when you strike with a critical." },
+    { name: "Silent", description: "Shoot with this weapon even if concealed." },
+    { name: "Stun", description: "Critical success reduces target’s APL by 1." },
+    { name: "Torrent x", description: "Hit multiple targets within x distance of the primary target." }
+];
+
+const importWeaponRules = async () => {
+    try {
+      await WeaponRule.deleteMany();
+      await WeaponRule.insertMany(weaponRulesData);
+      console.log('Weapon Rules Imported Successfully');
+      mongoose.connection.close();
+    } catch (error) {
+      console.error('Error importing weapon rules:', error);
+      mongoose.connection.close();
+    }
+};
+
+importWeaponRules();
 importData();
