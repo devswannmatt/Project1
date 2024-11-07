@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const weaponSchema = new mongoose.Schema({
+  melee: Boolean,
   name: String,
   atk: Number,
   hit: String,

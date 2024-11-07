@@ -6,27 +6,29 @@ block content
         if killteam
           each operative in killteam.operatives
             div.container-card
-              table.table-striped.pull-right
-                tr
-                  td
-                    span='APL:'
-                  td.center
-                    strong=operative.apl
-                  td
-                    span='Move:'
-                  td.center
-                    strong=operative.move
-                  td
-                    span='Save:'
-                  td.center
-                    strong=operative.save
-                  td
-                    span='Wounds:'
-                  td.center
-                    strong=operative.wounds
-              h4=`${operative.name}`
+              div.container-card-header
+                table.table-striped.pull-right
+                  tr
+                    td.center.divider
+                      span='APL'
+                    td.center
+                      strong=operative.apl
+                    td.center.divider
+                      span='MOVE'
+                    td.center
+                      strong=operative.move
+                    td.center.divider
+                      span='SAVE'
+                    td.center
+                      strong=operative.save
+                    td.center.divider
+                      span='WOUNDS'
+                    td.center
+                      strong=operative.wounds
+                h4(style='display: inline-block;')=`${operative.name}`
               table.table-striped(width="100%" style='margin-bottom: 10px;')
                 tr
+                  th=' '
                   th='Name'
                   th.center='Attacks'
                   th.center='Hit'
@@ -34,7 +36,10 @@ block content
                   th='Rules'
                 each weapon in operative.weapons
                   tr
-                    td
+                    td.center
+                      if !weapon.melee
+                        span.danger(class='fas fa-fw fa-crosshairs')
+                    td(width='30%')
                       strong
                         span=weapon.name
                     td.center
@@ -43,13 +48,14 @@ block content
                       span=weapon.hit
                     td.center
                       span=weapon.dmg
-                    td
+                    td(width='50%')
                       // Updated to render the new `wr` array
                       each rule in weapon.wr
                         if rule.name && rule.name !== '-'
-                          div.keyword(data-toggle='tooltip' title=`${rule.tooltip || ''}`)=`${rule.name}`
-              ul
-                each rule in operative.rules
-                  li
-                    strong=`${rule.name}: `
-                    span=`${rule.description}`
+                          div.rule(data-toggle='tooltip' title=`${rule.tooltip || ''}`)=`${rule.name}`
+              div.container-card-rules
+                ul
+                  each rule in operative.rules
+                    li
+                      strong=`${rule.name}: `
+                      span=`${rule.description}`

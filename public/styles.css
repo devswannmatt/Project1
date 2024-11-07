@@ -595,7 +595,66 @@ ul hr {
 
 .container-card {
   margin: 10px;
-  padding: 20px;
   background: #c9d8ee;
   border-radius: 8px;
+}
+
+.container-card th {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  font-size: smaller;
+}
+
+.container-card td {
+  font-size: smaller;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.container-card-header {
+  background: rgb(54, 54, 54);
+  color: white;
+  padding: 10px;
+}
+
+.container-card-header td {
+  background: rgb(75, 74, 74);
+  border-right: 4px solid rgb(54, 54, 54);
+  font-size: larger;
+}
+
+.container-card-header td.divider {
+  border-right: 2px solid #b62815;
+  margin-right: 4px;
+  color: rgb(214, 210, 210);
+  font-size: smaller;
+  padding: 8px;
+}
+
+.container-card-header h4 {
+  border-bottom: 2px solid #b62815;
+}
+
+.container-card-rules {
+  padding-bottom: 5px;
+}
+
+.container-card-rules ul {
+  list-style-type: square;
+  font-size: smaller;
+}
+
+.rule {
+  padding: 2px;
+  padding-left: 6px;
+  padding-right: 6px;
+  margin: 2px;
+  background-color: rgb(75, 74, 74);
+  color: white;
+  display: inline-block;
+}
+
+.rule:hover {
+  cursor: pointer;
+  filter: brightness(0.9);
 }
