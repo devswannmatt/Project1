@@ -614,12 +614,12 @@ ul hr {
 .container-card-header {
   background: rgb(54, 54, 54);
   color: white;
-  padding: 10px;
+  padding: 5px;
 }
 
 .container-card-header td {
   background: rgb(75, 74, 74);
-  border-right: 4px solid rgb(54, 54, 54);
+  border-right: 3px solid rgb(54, 54, 54);
   font-size: larger;
 }
 
@@ -633,6 +633,8 @@ ul hr {
 
 .container-card-header h4 {
   border-bottom: 2px solid #b62815;
+  font-size: 20px;
+  margin-bottom:10px;
 }
 
 .container-card-rules {
