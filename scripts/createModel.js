@@ -78,9 +78,9 @@ const express = require('express');
 const router = express.Router();
 const ${modelName} = require('../models/${toCamelCase(modelName)}');
 
-// Route to display the form for creating a new Person
+// Route to display the form for creating a new ${modelName}
 router.get('/${modelName.toLowerCase()}/create', (req, res) => {
-  res.render('person', { title: 'Create Person' });
+  res.render('${modelName.toLowerCase()}', { title: 'Create ${modelName}' });
 });
 
 // Create a new ${modelName}
@@ -88,7 +88,7 @@ router.post('/api/${modelName.toLowerCase()}', async (req, res) => {
   try {
     const new${modelName} = new ${modelName}(req.body);
     const saved${modelName} = await new${modelName}.save();
-    res.status(201).json(saved${modelName});
+    res.redirect('./${modelName.toLowerCase()}/create').json(saved${modelName});
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
