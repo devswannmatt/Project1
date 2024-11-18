@@ -1,14 +1,14 @@
-const express       = require('express');
-const session       = require('express-session');
-const flash         = require('connect-flash');
-const path          = require('path');
-const bodyParser    = require('body-parser');
-const passport      = require('passport');
-const MongoStore    = require('connect-mongo');
-const LocalStrategy = require('passport-local').Strategy;
+const express           = require('express');
+const session           = require('express-session');
+const flash             = require('connect-flash');
+const path              = require('path');
+const bodyParser        = require('body-parser');
+const passport          = require('passport');
+const MongoStore        = require('connect-mongo');
+const LocalStrategy     = require('passport-local').Strategy;
 const populateFunctions = require('./middleware/functions');
-const populateData  = require('./middleware/populateData');
-const populateLog   = require('./middleware/populateLog')
+const populateData      = require('./middleware/populateData');
+const populateLog       = require('./middleware/populateLog')
 
 const app   = express()
 const port  = 3000
@@ -53,6 +53,7 @@ const { pagesRouter, usersRouter, rolesRouter, logsRouter, authRouter, accountRo
 const wfrpItems   = require('./routes/wfrp/wfrpItems');
 const wfrpSources = require('./routes/wfrp/wfrpSources');
 const killteam    = require('./routes/killteam/killteam');
+const persons     = require('./routes/personRoutes');
 
 // app.get('/', (req, res) => { res.render('index'); });
 app.use('/', pagesRouter);
@@ -68,6 +69,7 @@ app.use('/', wfrpItems);
 app.use('/', wfrpSources);
 app.use('/', warmasterRouter);
 app.use('/', killteam);
+app.use('/', persons);
 
 app.use((req, res, next)      => { res.status(404).render('404') });
 app.use((err, req, res, next) => {
