@@ -1,60 +1,84 @@
 extends ../page
 
 block content
-      div
-        if killteam
-          each operative in killteam.operatives
-            div.container-card
-              div.container-card-header
-                table.table-striped.pull-right
-                  tr
-                    td.center.divider
-                      span='APL'
-                    td.center
-                      strong=operative.apl
-                    td.center.divider
-                      span='MOVE'
-                    td.center
-                      strong=operative.move
-                    td.center.divider
-                      span='SAVE'
-                    td.center
-                      strong=operative.save
-                    td.center.divider
-                      span='WOUNDS'
-                    td.center
-                      strong=operative.wounds
-                h4(style='display: inline-block;')=`${operative.name}`
-              table.table-striped(width="100%" style='margin-bottom: 10px;')
-                tr
-                  th=' '
-                  th='Name'
-                  th.center='Attacks'
-                  th.center='Hit'
-                  th.center='Damage'
-                  th='Rules'
-                each weapon in operative.weapons
-                  tr
-                    td.center
-                      if !weapon.melee
-                        span.danger(class='fas fa-fw fa-crosshairs')
-                    td(width='30%')
-                      strong
-                        span=weapon.name
-                    td.center
-                      span=weapon.atk
-                    td.center
-                      span=weapon.hit
-                    td.center
-                      span=weapon.dmg
-                    td(width='50%')
-                      // Updated to render the new `wr` array
-                      each rule in weapon.wr
-                        if rule.name && rule.name !== '-'
-                          div.rule(data-toggle='tooltip' title=`${rule.tooltip || ''}`)=`${rule.name}`
-              div.container-card-rules
-                ul
-                  each rule in operative.rules
-                    li
+  div
+    if killteam
+      div.row(style='font-size:smaller;')
+        div.container-card
+          h3 Kasrkin
+          div.container-card
+            div.container-card-header.col-md-12(onclick="toggleVisibility('rules-section')")
+              h4 Rules
+            div.row
+              div#rules-section
+                each rule in killteam.faction[0].rules
+                  div.col-md-12
+                    div.rule
                       strong=`${rule.name}: `
-                      span=`${rule.description}`
+                      span=`${rule.effect}`
+          div.container-card
+            div.container-card-header.col-md-12(onclick="toggleVisibility('equipment-section')") 
+              h4 Equipment
+            div.row
+              div#equipment-section
+                each equipment in killteam.faction[0].equipment
+                  div.col-md-12
+                    div.rule
+                      strong=`${equipment.name}: `
+                      span=`${equipment.effect}`
+
+    each operative in killteam.operatives
+      div.container-card
+        div.container-card-header
+          table.table-striped.pull-right
+            tr
+              td.center.divider
+                span='APL'
+              td.center
+                strong=operative.apl
+              td.center.divider
+                span='MOVE'
+              td.center
+                strong=operative.move
+              td.center.divider
+                span='SAVE'
+              td.center
+                strong=operative.save
+              td.center.divider
+                span='WOUNDS'
+              td.center
+                strong=operative.wounds
+          h4(style='display: inline-block;')=`${operative.name}`
+        table.table-striped(width="100%" style='margin-bottom: 10px;')
+          tr
+            th=' '
+            th='Name'
+            th.center='Attacks'
+            th.center='Hit'
+            th.center='Damage'
+            th='Rules'
+          each weapon in operative.weapons
+            tr
+              td.center
+                if !weapon.melee
+                  span.danger(class='fas fa-fw fa-crosshairs')
+              td(width='30%')
+                strong
+                  span=weapon.name
+              td.center
+                span=weapon.atk
+              td.center
+                span=weapon.hit
+              td.center
+                span=weapon.dmg
+              td(width='50%')
+                // Updated to render the new `wr` array
+                each rule in weapon.wr
+                  if rule.name && rule.name !== '-'
+                    div.rule(data-toggle='tooltip' title=`${rule.tooltip || ''}`)=`${rule.name}`
+        div.container-card-rules
+          ul
+            each rule in operative.rules
+              li
+                strong=`${rule.name}: `
+                span=`${rule.description}`

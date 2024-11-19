@@ -8,6 +8,7 @@ const WarmasterArmy = require('../models/warmaster/warmasterArmy');
 const TerrainType   = require('../models/warmaster/warmasterTerrainType');
 const Operative     = require('../models/killteam/operative');
 const WeaponRule    = require('../models/killteam/rules');
+const Faction       = require('../models/killteam/faction');
 
 async function populateData(req, res, next) {
   const { data, army, format, modal } = req.query;
@@ -120,7 +121,8 @@ async function loadKillteamData(resLocals) {
 
     console.log('Retrieved Operatives:', operatives);
     resLocals.killteam = {
-      operatives: operatives
+      operatives: operatives,
+      faction: await Faction.find()
     }
   } catch (err) {
     console.error(err);

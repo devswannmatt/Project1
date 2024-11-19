@@ -2,6 +2,7 @@ const express    = require('express');
 const router     = express.Router();
 const Operative  = require('../../models/killteam/operative');
 const WeaponRule = require('../../models/killteam/rules');
+const Faction    = require('../../models/killteam/faction');
 
 router.get('/api/killteam/operatives', async (req, res) => {
   try {
@@ -66,6 +67,16 @@ router.get('/api/killteam/weaponrules', async (req, res) => {
     const weaponRules = await WeaponRule.find()
     console.log('Retrieved WeaponRules:', weaponRules);
     res.send({ weaponRules: weaponRules });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server Error');
+  }
+});
+
+router.get('/api/killteam/factions', async (req, res) => {
+  try {
+    const factions = await Faction.find()
+    res.send({ factions: factions });
   } catch (err) {
     console.error(err);
     res.status(500).send('Server Error');

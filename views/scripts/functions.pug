@@ -113,3 +113,7 @@ script.
         $(element).attr('src', contextData.src)
         $(element).data('src', `/images/edit/${contextData._id}`)
     }
+
+    const toggleVisibility = (sectionId) => {
+        $(`#${sectionId}`).toggle(400)
+    }

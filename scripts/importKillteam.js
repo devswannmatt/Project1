@@ -1,6 +1,10 @@
 const mongoose   = require('mongoose');
 const Operative  = require('../models/killteam/operative');
 const WeaponRule = require('../models/killteam/rules');
+const Faction    = require('../models/killteam/faction');
+
+const kasrkinData = require('./data/killteam/kasrkin')
+console.log('kasrkinData', kasrkinData)
 
 mongoose.connect('mongodb://127.0.0.1:27017/config', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
@@ -20,7 +24,8 @@ const operativeData = [
         { name: "Plasma pistol (supercharge)", atk: 4, hit: "3+", dmg: "4/5", wr: "Range 8\", Hot, Lethal 5+, Piercing 1" },
         { name: "Chainsword", atk: 4, hit: "3+", dmg: "4/5", wr: "-", melee: true },
         { name: "Hot-shot lasgun", atk: 4, hit: "3+", dmg: "3/4", wr: "Range 8\"" },
-        { name: "Gun butt", atk: 3, hit: "3+", dmg: "2/3", wr: "-", melee: true }
+        { name: "Gun butt", atk: 3, hit: "3+", dmg: "2/3", wr: "-", melee: true },
+        { name: "Rules", atk: 3, hit: "3+", dmg: "2/3", wr: "-", melee: true, wr: "Severe, Saturate" }
       ],
       rules: [
         { name: "Tactical Command (0 AP)", description: "Select a friendly KASRKIN operative to gain a new SKILL AT ARMS until the Ready step of the next Strategy phase, or relocate the Clearance Sweep marker. Cannot perform this action within enemy control range." }
@@ -144,7 +149,14 @@ const importData = async () => {
     await Operative.deleteMany();
     await Operative.insertMany(operativeData);
     console.log('Data Imported Successfully');
-    mongoose.connection.close();
+
+    // Clear existing data (if needed)
+    await Faction.deleteMany();
+    await Faction.insertMany(kasrkinData);
+    
+    console.log('Kasrkin Faction Data Imported Successfully');
+
+    // mongoose.connection.close();
   } catch (error) {
     console.error('Error importing data:', error);
     mongoose.connection.close();
@@ -182,7 +194,7 @@ const importWeaponRules = async () => {
       await WeaponRule.deleteMany();
       await WeaponRule.insertMany(weaponRulesData);
       console.log('Weapon Rules Imported Successfully');
-      mongoose.connection.close();
+    //   mongoose.connection.close();
     } catch (error) {
       console.error('Error importing weapon rules:', error);
       mongoose.connection.close();
