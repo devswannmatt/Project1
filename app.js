@@ -1,12 +1,13 @@
 const express           = require('express');
 const session           = require('express-session');
 const flash             = require('connect-flash');
+const fs                = require('fs');
 const path              = require('path');
 const bodyParser        = require('body-parser');
 const passport          = require('passport');
 const MongoStore        = require('connect-mongo');
 const LocalStrategy     = require('passport-local').Strategy;
-const populateFunctions = require('./middleware/functions');
+const populateFunctions = require('./middleware/functions').populateFunctions;
 const populateData      = require('./middleware/populateData');
 const populateLog       = require('./middleware/populateLog')
 
@@ -48,28 +49,29 @@ app.use(populateFunctions);
 app.use(populateData);
 app.use(populateLog);
 
-const { pagesRouter, usersRouter, rolesRouter, logsRouter, authRouter, accountRouter, templateRouter, imagesRouter, gameSystemRouter, warmasterRouter } = require('./routes');
 
-const wfrpItems   = require('./routes/wfrp/wfrpItems');
-const wfrpSources = require('./routes/wfrp/wfrpSources');
-const killteam    = require('./routes/killteam/killteam');
-const persons     = require('./routes/personRoutes');
+const routesDirectory = path.join(__dirname, 'routes');
+const routeFiles = fs.readdirSync(routesDirectory);
 
-// app.get('/', (req, res) => { res.render('index'); });
-app.use('/', pagesRouter);
-app.use('/', usersRouter);
-app.use('/', rolesRouter);
-app.use('/', logsRouter);
-app.use('/', authRouter);
-app.use('/', accountRouter);
-app.use('/', templateRouter);
-app.use('/', imagesRouter);
-app.use('/', gameSystemRouter);
-app.use('/', wfrpItems);
-app.use('/', wfrpSources);
-app.use('/', warmasterRouter);
-app.use('/', killteam);
-app.use('/', persons);
+const filenameRouter = {};
+
+routeFiles.forEach((file) => {
+  if (file.endsWith('.js')) {
+    const routeName = path.basename(file, '.js');
+    const router = require(path.join(routesDirectory, file));
+
+    if (typeof router === 'function' || router instanceof express.Router) {
+      filenameRouter[`${routeName}Router`] = router;
+    } else {
+      console.warn(`Skipping ${file}: Not a valid Express router.`);
+    }
+  }
+});
+
+Object.values(filenameRouter).forEach((router) => {
+  console.log('router', router)
+  app.use(router);
+});
 
 app.use((req, res, next)      => { res.status(404).render('404') });
 app.use((err, req, res, next) => {

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const User = require('../models/user'); // Adjust the path if your user model is in a different directory
+const User = require('../../models/user'); // Adjust the path if your user model is in a different directory
 
 const mongoUrl = 'mongodb://127.0.0.1:27017/config'; // Use your MongoDB connection string
 

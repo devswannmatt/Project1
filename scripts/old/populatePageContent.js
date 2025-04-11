@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Template = require('../models/template');
+const Template = require('../../models/template');
 
 // MongoDB URI
 const db = 'mongodb://127.0.0.1:27017/config'; // Replace with your actual MongoDB URI

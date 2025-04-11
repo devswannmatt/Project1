@@ -1,6 +1,6 @@
 const mongoose    = require('mongoose');
-const TerrainType = require('../models/warmaster/warmasterTerrainType'); // Adjust path to your TerrainType model
-const UnitType    = require('../models/warmaster/warmasterUnitType'); // Adjust path to your UnitType model
+const TerrainType = require('../../models/warmaster/warmasterTerrainType'); // Adjust path to your TerrainType model
+const UnitType    = require('../../models/warmaster/warmasterUnitType'); // Adjust path to your UnitType model
 
 const terrainTypesData = require('./data/terrainTypes')
 

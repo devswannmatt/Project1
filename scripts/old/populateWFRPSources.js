@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const WFRPSources = require('../models/wfrp/wfrpSources');
+const WFRPSources = require('../../models/wfrp/wfrpSources');
 
 const db = 'mongodb://127.0.0.1:27017/config';
 

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const WarmasterArmy = require('../models/warmaster/warmasterArmy'); // Adjust path as necessary
+const WarmasterArmy = require('../../models/warmaster/warmasterArmy'); // Adjust path as necessary
 
 // MongoDB connection URI
 const mongoURI = 'mongodb://127.0.0.1:27017/config'; // Preferred MongoDB URI

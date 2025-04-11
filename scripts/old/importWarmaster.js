@@ -1,19 +1,19 @@
 const mongoose       = require('mongoose');
-const WarmasterUnit  = require('../models/warmaster/warmasterUnit');
-const UnitType       = require('../models/warmaster/warmasterUnitType');
-const SpecialRule    = require('../models/warmaster/warmasterSpecialRule');
-const TerrainType    = require('../models/warmaster/warmasterTerrainType');
-const WarmasterArmy  = require('../models/warmaster/warmasterArmy');
-const WarmasterMagic = require('../models/warmaster/warmasterMagic');
-const CoreRule       = require('../models/warmaster/warmasterCoreRule');
+const WarmasterUnit  = require('../../models/warmaster/warmasterUnit');
+const UnitType       = require('../../models/warmaster/warmasterUnitType');
+const SpecialRule    = require('../../models/warmaster/warmasterSpecialRule');
+const TerrainType    = require('../../models/warmaster/warmasterTerrainType');
+const WarmasterArmy  = require('../../models/warmaster/warmasterArmy');
+const WarmasterMagic = require('../../models/warmaster/warmasterMagic');
+const CoreRule       = require('../../models/warmaster/warmasterCoreRule');
 
-const specialRulesData = require('./data/warmaster/specialRules')
-const unitTypesData    = require('./data/warmaster/unitTypes')
-const armiesData       = require('./data/warmaster/armies')
-const spellsData       = require('./data/warmaster/spells')
-const terrainTypesData = require('./data/warmaster/terrainTypes')
-const unitsData        = require('./data/warmaster/units')
-const coreRulesData    = require('./data/warmaster/coreRules')
+const specialRulesData = require('../data/warmaster/specialRules')
+const unitTypesData    = require('../data/warmaster/unitTypes')
+const armiesData       = require('../data/warmaster/armies')
+const spellsData       = require('../data/warmaster/spells')
+const terrainTypesData = require('../data/warmaster/terrainTypes')
+const unitsData        = require('../data/warmaster/units')
+const coreRulesData    = require('../data/warmaster/coreRules')
 
 mongoose.connect('mongodb://127.0.0.1:27017/config', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))

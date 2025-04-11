@@ -1,4 +1,4 @@
-const { Page, connectDB } = require('../models');
+const { Page, connectDB } = require('../../models');
 
 (async () => {
   await connectDB();

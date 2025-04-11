@@ -1,0 +1,25 @@
+include partials/header
+
+block content
+  h1 Create Roster
+  form(action="/api/roster", method="post")
+    table.table
+      tr
+        td
+          +formInput('owner', 'text', 'Owner') 
+      tr
+        td
+          +formInput('gameSystem', 'text', 'Gamesystem') 
+      tr
+        td
+          +formInput('max', 'text', 'Max') 
+          +formInput('current', 'text', 'Current') 
+      tr
+        td
+          +formInput('0', 'text', '0') 
+      tr
+        td
+          +formButton('Save Changes', 'submit', 'btn-success pull-right', 'save') 
+
+  
+include partials/footer

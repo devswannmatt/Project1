@@ -1,9 +1,9 @@
 const mongoose   = require('mongoose');
-const Operative  = require('../models/killteam/operative');
-const WeaponRule = require('../models/killteam/rules');
-const Faction    = require('../models/killteam/faction');
+const Operative  = require('../../models/killteam/operative');
+const WeaponRule = require('../../models/killteam/rules');
+const Faction    = require('../../models/killteam/faction');
 
-const kasrkinData = require('./data/killteam/kasrkin')
+const kasrkinData = require('../data/killteam/kasrkin')
 console.log('kasrkinData', kasrkinData)
 
 mongoose.connect('mongodb://127.0.0.1:27017/config', { useNewUrlParser: true, useUnifiedTopology: true })

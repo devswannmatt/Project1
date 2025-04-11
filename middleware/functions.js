@@ -14,4 +14,24 @@ async function populateFunctions(req, res, next) {
     }
 }
 
-module.exports = populateFunctions;
+// Helper function to convert a string to camelCase
+const toCamelCase = (str) => {
+    if (typeof str !== 'string') return str
+    return str
+      .replace(/[-_](.)/g, (_, char) => char.toUpperCase())
+      .replace(/^(.)/, (char) => char.toLowerCase());
+};
+  
+const toTitleCase = (str) => {
+    if (typeof str !== 'string') return str
+    return str.replace(
+        /\w\S*/g,
+        text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
+    );
+}
+
+module.exports = {
+    populateFunctions,
+    toCamelCase,
+    toTitleCase
+};

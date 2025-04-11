@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const UnitType = require('../models/warmaster/warmasterUnitType');
+const UnitType = require('../../models/warmaster/warmasterUnitType');
 
 const unitTypesData = require('./data/unitTypes')
 

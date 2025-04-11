@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const GameSystem = require('../models/gameSystem');
+const GameSystem = require('../../models/gameSystem');
 
 // MongoDB URI
 const db = 'mongodb://127.0.0.1:27017/config'; // Replace with your actual MongoDB URI

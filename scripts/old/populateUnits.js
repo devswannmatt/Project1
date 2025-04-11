@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
-const WarmasterUnit = require('../models/warmaster/warmasterUnit'); // Adjust the path to your WarmasterUnit model
-const UnitType = require('../models/warmaster/warmasterUnitType'); // Adjust the path to your UnitType model
-const SpecialRule = require('../models/warmaster/warmasterSpecialRule'); // Adjust the path to your SpecialRule model
-const WarmasterArmy = require('../models/warmaster/warmasterArmy'); // Adjust the path to your WarmasterArmy model
+const WarmasterUnit = require('../../models/warmaster/warmasterUnit'); // Adjust the path to your WarmasterUnit model
+const UnitType = require('../../models/warmaster/warmasterUnitType'); // Adjust the path to your UnitType model
+const SpecialRule = require('../../models/warmaster/warmasterSpecialRule'); // Adjust the path to your SpecialRule model
+const WarmasterArmy = require('../../models/warmaster/warmasterArmy'); // Adjust the path to your WarmasterArmy model
 
 // MongoDB connection URI
 const mongoURI = 'mongodb://127.0.0.1:27017/config'; // MongoDB URI

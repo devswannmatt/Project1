@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const SpecialRule = require('../models/warmaster/warmasterSpecialRule'); // Adjust the path to your SpecialRule model
+const SpecialRule = require('../../models/warmaster/warmasterSpecialRule'); // Adjust the path to your SpecialRule model
 
 // MongoDB connection URI
 const mongoURI = 'mongodb://127.0.0.1:27017/config';
