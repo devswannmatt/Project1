@@ -388,7 +388,47 @@ const spellsData = [
     los: false,
     flavour: "A swirling cloud of virulence envelops the enemy, causing eruptions of pustules and sores.",
     description: "Deals six attacks to an unengaged enemy unit within range. This attack does not cause Drive-backs."
-  }
+  },
+  {
+    name: "Raise Dead",
+    cast: 5,
+    range: 30,
+    target: "Combat Engagement",
+    duration: "Instant",
+    los: false,
+    flavour: "At the Wizard's beckoning, the mangled corpses that litter the battleground rise to continue the slaughter.",
+    description: "Creates a unit of three Skeleton stands in combat with an existing engagement within range. Units must support or engage and cannot split the engagement. Raised units do not count as charging and are ignored for break/victory points. Cannot target the same combat more than once per turn."
+  },
+  {
+    name: "Vanhel's Danse Macabre",
+    cast: 5,
+    range: 40,
+    target: "Unit (Friendly, Not Ghouls)",
+    duration: "Instant",
+    los: false,
+    flavour: "The bodies of the dead move under the powerful influence of necromantic magic, renewing their vigour once more.",
+    description: "Moves a single friendly unit (excluding Ghouls) as if given an order in the Command phase. Characters joined to the unit remain in place."
+  },
+  {
+    name: "Death Bolt",
+    cast: 5,
+    range: 30,
+    target: "Unit (Enemy, Visible, Unengaged)",
+    duration: "Instant",
+    los: true,
+    flavour: "A fearsome bolt of sorcerous lightning flies from the Wizard’s fingertips, striking the enemy with unholy force.",
+    description: "Three shooting attacks that ignore armour. Target must be visible and not engaged in combat. Can cause drive back like normal shooting."
+  },
+  {
+    name: "Curse of Years",
+    cast: 6,
+    range: 0,
+    target: "Unit (Touching Wizard)",
+    duration: "Instant",
+    los: false,
+    flavour: "The Wizard's enemies crumble to dust under the corrupting Curse of Years.",
+    description: "If the Wizard is in combat, this spell deals six attacks to an enemy unit touching the Wizard’s unit. Hits carry into the first round of combat and count toward combat resolution."
+  }  
 ];
 
 module.exports = spellsData;

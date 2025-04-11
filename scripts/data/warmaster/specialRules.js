@@ -320,6 +320,11 @@ const specialRulesData = [
     "rule": "Screaming Bell",
     "description": "In combat it is automatically destroyed if forced to retreat but will pursue, advance and fall back so long as it is touching a Skaven infantry unit at the start and end of its move: otherwise it cannot pursue, advance or fall back as it is unable to move of its own accord. All Skaven units touching the Screaming Bell are unaffected by the usual penalty for Terror whilst they remain so. In addition, any Skaven Hero or Warlock within 30cm of the Screaming Bell adds +1 to their Command value. Any enemy character within 30cm of the Screaming Bell deducts -1 from their Command value. A Skaven army can only ever include a maximum of 1 Screaming Bell no matter how large.",
     boon: false
+  },
+  {
+    "rule": "Ethereal",
+    "description": "This unit always hits on an unmodified 4+, and ignores all terrain and cover modifiers.",
+    boon: true
   }
 ]
 

@@ -54,6 +54,7 @@ const wfrpItems   = require('./routes/wfrp/wfrpItems');
 const wfrpSources = require('./routes/wfrp/wfrpSources');
 const killteam    = require('./routes/killteam/killteam');
 const persons     = require('./routes/personRoutes');
+const campaign    = require('./routes/campaign/campaign');
 
 // app.get('/', (req, res) => { res.render('index'); });
 app.use('/', pagesRouter);
@@ -70,6 +71,7 @@ app.use('/', wfrpSources);
 app.use('/', warmasterRouter);
 app.use('/', killteam);
 app.use('/', persons);
+app.use('/', campaign);
 
 app.use((req, res, next)      => { res.status(404).render('404') });
 app.use((err, req, res, next) => {

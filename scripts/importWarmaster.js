@@ -21,21 +21,22 @@ mongoose.connect('mongodb://127.0.0.1:27017/config', { useNewUrlParser: true, us
 
 async function importAllWarmasterData() {
   try {
-    if (await populateCoreRules()                  === false) throw 'Core Rules Failed'
-    if (await populateSpecialRules()               === false) throw 'Special Rules Failed' 
-    if (await populateUnitTypes()                  === false) throw 'Unit Types Failed'
-    if (await populateTerrainTypes()               === false) throw 'Terrain Types Failed'
-    if (await populateWarmasterArmies()            === false) throw 'Armies Failed'
-    if (await populateWarmasterMagic()             === false) throw 'Magic Failed'
-    if (await resetUnits()                         === false) throw 'Unit Reset Failed'
-    if (await populateWarmasterUnits('bretonnia')  === false) throw 'Bretonnia Units Failed'
-    if (await populateWarmasterUnits('orc')        === false) throw 'Orc Units Failed'
-    if (await populateWarmasterUnits('wood_elves') === false) throw 'Wood Elves Units Failed'
-    if (await populateWarmasterUnits('goblins')    === false) throw 'Goblin Units Failed'
-    if (await populateWarmasterUnits('empire')     === false) throw 'Empire Units Failed'
-    if (await populateWarmasterUnits('chaos')      === false) throw 'Chaos Units Failed'
-    if (await populateWarmasterUnits('tombKings')  === false) throw 'Tomb Kings Units Failed'
-    if (await populateWarmasterUnits('skaven')     === false) throw 'Skaven Units Failed'
+    if (await populateCoreRules()                     === false) throw 'Core Rules Failed'
+    if (await populateSpecialRules()                  === false) throw 'Special Rules Failed' 
+    if (await populateUnitTypes()                     === false) throw 'Unit Types Failed'
+    if (await populateTerrainTypes()                  === false) throw 'Terrain Types Failed'
+    if (await populateWarmasterArmies()               === false) throw 'Armies Failed'
+    if (await populateWarmasterMagic()                === false) throw 'Magic Failed'
+    if (await resetUnits()                            === false) throw 'Unit Reset Failed'
+    if (await populateWarmasterUnits('bretonnia')     === false) throw 'Bretonnia Units Failed'
+    if (await populateWarmasterUnits('orc')           === false) throw 'Orc Units Failed'
+    if (await populateWarmasterUnits('wood_elves')    === false) throw 'Wood Elves Units Failed'
+    if (await populateWarmasterUnits('goblins')       === false) throw 'Goblin Units Failed'
+    if (await populateWarmasterUnits('empire')        === false) throw 'Empire Units Failed'
+    if (await populateWarmasterUnits('chaos')         === false) throw 'Chaos Units Failed'
+    if (await populateWarmasterUnits('tombKings')     === false) throw 'Tomb Kings Units Failed'
+    if (await populateWarmasterUnits('skaven')        === false) throw 'Skaven Units Failed'
+    if (await populateWarmasterUnits('vampireCounts') === false) throw 'Skaven Units Failed'
 
     console.log('All collections imported.');
   } catch (error) {

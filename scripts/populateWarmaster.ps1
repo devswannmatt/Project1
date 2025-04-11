@@ -23,7 +23,6 @@ if ($?) {
     exit
 }
 
-
 node populateArmies.js
 if ($?) {
     Write-Host "populateArmies.js completed successfully"
