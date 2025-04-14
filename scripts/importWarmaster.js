@@ -1,25 +1,29 @@
-const mongoose       = require('mongoose');
-const WarmasterUnit  = require('../../models/warmaster/warmasterUnit');
-const UnitType       = require('../../models/warmaster/warmasterUnitType');
-const SpecialRule    = require('../../models/warmaster/warmasterSpecialRule');
-const TerrainType    = require('../../models/warmaster/warmasterTerrainType');
-const WarmasterArmy  = require('../../models/warmaster/warmasterArmy');
-const WarmasterMagic = require('../../models/warmaster/warmasterMagic');
-const CoreRule       = require('../../models/warmaster/warmasterCoreRule');
 
-const specialRulesData = require('../data/warmaster/specialRules')
-const unitTypesData    = require('../data/warmaster/unitTypes')
-const armiesData       = require('../data/warmaster/armies')
-const spellsData       = require('../data/warmaster/spells')
-const terrainTypesData = require('../data/warmaster/terrainTypes')
-const unitsData        = require('../data/warmaster/units')
-const coreRulesData    = require('../data/warmaster/coreRules')
+console.log('Starting Warmaster Data Import...');
+
+const mongoose       = require('mongoose');
+const WarmasterUnit  = require('../models/warmaster/warmasterUnit');
+const UnitType       = require('../models/warmaster/warmasterUnitType');
+const SpecialRule    = require('../models/warmaster/warmasterSpecialRule');
+const TerrainType    = require('../models/warmaster/warmasterTerrainType');
+const WarmasterArmy  = require('../models/warmaster/warmasterArmy');
+const WarmasterMagic = require('../models/warmaster/warmasterMagic');
+const CoreRule       = require('../models/warmaster/warmasterCoreRule');
+
+const specialRulesData = require('./data/warmaster/specialRules')
+const unitTypesData    = require('./data/warmaster/unitTypes')
+const armiesData       = require('./data/warmaster/armies')
+const spellsData       = require('./data/warmaster/spells')
+const terrainTypesData = require('./data/warmaster/terrainTypes')
+const unitsData        = require('./data/warmaster/units')
+const coreRulesData    = require('./data/warmaster/coreRules')
 
 mongoose.connect('mongodb://127.0.0.1:27017/config', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Could not connect to MongoDB...', err));
 
 async function importAllWarmasterData() {
+  console.log('Starting Import All');
   try {
     if (await populateCoreRules()                     === false) throw 'Core Rules Failed'
     if (await populateSpecialRules()                  === false) throw 'Special Rules Failed' 
@@ -36,7 +40,7 @@ async function importAllWarmasterData() {
     if (await populateWarmasterUnits('chaos')         === false) throw 'Chaos Units Failed'
     if (await populateWarmasterUnits('tombKings')     === false) throw 'Tomb Kings Units Failed'
     if (await populateWarmasterUnits('skaven')        === false) throw 'Skaven Units Failed'
-    if (await populateWarmasterUnits('vampireCounts') === false) throw 'Skaven Units Failed'
+    if (await populateWarmasterUnits('vampireCounts') === false) throw 'Vampire Counts Failed'
 
     console.log('All collections imported.');
   } catch (error) {
@@ -289,5 +293,5 @@ async function getOrCreateUnitType(unitTypeName) {
   }
   return unitType;
 }
-
+console.log('importAllWarmasterData()')
 importAllWarmasterData();
